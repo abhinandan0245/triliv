@@ -2,7 +2,7 @@ import Header from "./components/layout/Header/Header";
 import NavIcons from "./components/layout/Header/NavIcons";
 import SearchModal from "./components/ui/Modal/Search";
 import Search from "./components/ui/Modal/Search";
-import WishlistPage from "./components/ui/WishlistButton";
+import WishlistPage from "./components/ui/WishlistPage";
 import AccountDetail from "./pages/Account/AcoountDetail";
 import Addresses from "./pages/Account/Addresses";
 import MyAccount from "./pages/Account/MyAccount";
