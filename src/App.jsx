@@ -1,17 +1,34 @@
 import Header from "./components/layout/Header/Header";
-import Footer from "./components/layout/Footer/Footer";
-// import Preloader from "./components/layout/Header/Preloader";
-// import ScrollToTop from "./components/layout/Header/ScrollToTop";
-
-import Homepage from "./Homepage";
-import Slider from "./components/sections/Slider";
-
-// import Slider from "./components/sections/Slider";
+import NavIcons from "./components/layout/Header/NavIcons";
+import SearchModal from "./components/ui/Modal/Search";
+import Search from "./components/ui/Modal/Search";
+import WishlistPage from "./components/ui/WishlistButton";
+import AccountDetail from "./pages/Account/AcoountDetail";
+import Addresses from "./pages/Account/Addresses";
+import MyAccount from "./pages/Account/MyAccount";
+import Orders from "./pages/Account/Orders";
+import CheckoutPage from "./pages/Cart/Checkout/CheckoutPage";
+import ContactPage from "./pages/Contact/ContactPage";
+import Homepage from "./pages/Home/HomePage";
+import AboutPage from "./pages/OurStory&AboutUs/AboutPage";
+import Shop from "./pages/Shop/Shop";
 function App() {
   return (
     <>
       <div>
-      <Homepage/>
+      {/* <Homepage/> */}
+      {/* <Header/> */}
+      {/* <NavIcons/> */}
+      {/* <Shop/> */}
+      {/* <AboutPage/> */}
+      {/* <ContactPage/> */}
+      {/* <SearchModal/> */}
+      {/* <MyAccount/> */}
+      {/* <Addresses/> */}
+      {/* <Orders/> */}
+      {/* <AccountDetail/> */}
+      {/* <CheckoutPage/> */}
+      <WishlistPage/>
       </div>
     </>
   );

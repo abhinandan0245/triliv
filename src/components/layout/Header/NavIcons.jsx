@@ -1,7 +1,9 @@
+
 const NavIcons = () => (
+  
   <ul className="nav-icon d-flex justify-content-end align-items-center">
     <li className="nav-search">
-      <a href="#search" data-bs-toggle="modal" className="nav-icon-item">
+      <a href="D:\Coding\React\Intern-Vidhaalay\Triliv\src\components\ui\Modal\Search.jsx" data-bs-toggle="modal" className="nav-icon-item">
         <i className="icon icon-search" />
       </a>
     </li>

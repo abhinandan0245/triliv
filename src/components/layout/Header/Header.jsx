@@ -53,6 +53,8 @@ const MainHeader = () => {
     { path: "contact.php", label: "Contact US" }
   ];
 
+
+  
   const iconItems = [
     { id: "search", icon: "search", action: "#search", dataToggle: "modal" },
     { id: "account", icon: "user", action: "#login", dataToggle: "offcanvas" },
