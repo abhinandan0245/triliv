@@ -1,10 +1,10 @@
-import React from 'react';
+import React from "react";
 
 const TopBar = () => {
   const announcements = [
     "Return extended to 60 days",
     "Life-time Guarantees",
-    "Limited-Time Offer"
+    "Limited-Time Offer",
   ];
 
   return (
@@ -13,10 +13,35 @@ const TopBar = () => {
         <div className="topbar-wraper">
           <div className="d-none d-xl-block flex-shrink-0">
             <ul className="tf-social-icon topbar-left">
-              <li><a href="https://www.facebook.com/" className="social-item social-facebook"><i className="icon icon-fb"></i></a></li>
-              <li><a href="https://www.instagram.com/" className="social-item social-instagram"><i className="icon icon-instagram"></i></a></li>
-              <li><a href="https://x.com/" className="social-item social-x"><i className="icon icon-x"></i></a></li>
-              <li><a href="https://www.snapchat.com/" className="social-item social-snapchat"><i className="icon icon-snapchat"></i></a></li>
+              <li>
+                <a
+                  href="https://www.facebook.com/"
+                  className="social-item social-facebook"
+                >
+                  <i className="icon icon-fb"></i>
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://www.instagram.com/"
+                  className="social-item social-instagram"
+                >
+                  <i className="icon icon-instagram"></i>
+                </a>
+              </li>
+              <li>
+                <a href="https://x.com/" className="social-item social-x">
+                  <i className="icon icon-x"></i>
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://www.snapchat.com/"
+                  className="social-item social-snapchat"
+                >
+                  <i className="icon icon-snapchat"></i>
+                </a>
+              </li>
             </ul>
           </div>
           <div className="overflow-hidden">
@@ -30,7 +55,9 @@ const TopBar = () => {
                           <p>{text}</p>
                         </div>
                         {j < announcements.length - 1 && (
-                          <div className="marquee-child-item"><span className="dot"></span></div>
+                          <div className="marquee-child-item">
+                            <span className="dot"></span>
+                          </div>
                         )}
                       </React.Fragment>
                     ))}
@@ -47,27 +74,40 @@ const TopBar = () => {
 
 const MainHeader = () => {
   const navItems = [
-    { path: "index.php", label: "Home" },
-    { path: "product.php", label: "Shop" },
-    { path: "about-us.php", label: "Our Story" },
-    { path: "contact.php", label: "Contact US" }
+    { path: "/", label: "Home" },
+    { path: "product", label: "Shop" },
+    { path: "about-us", label: "Our Story" },
+    { path: "contact", label: "Contact US" },
   ];
 
-
-  
   const iconItems = [
     { id: "search", icon: "search", action: "#search", dataToggle: "modal" },
     { id: "account", icon: "user", action: "#login", dataToggle: "offcanvas" },
     { id: "wishlist", icon: "heart", action: "wish-list.php", count: 0 },
-    { id: "cart", icon: "cart", action: "#shoppingCart", dataToggle: "offcanvas", count: 2, pl: true }
+    {
+      id: "cart",
+      icon: "cart",
+      action: "#shoppingCart",
+      dataToggle: "offcanvas",
+      count: 2,
+      pl: true,
+    },
   ];
 
   return (
-    <header id="header" className="header-default header-absolute header-white header-uppercase">
+    <header
+      id="header"
+      className="header-default header-absolute header-white header-uppercase"
+    >
       <div className="container">
         <div className="row wrapper-header align-items-center">
           <div className="col-md-4 col-3 d-xl-none">
-            <a href="#mobileMenu" className="mobile-menu" data-bs-toggle="offcanvas" aria-controls="mobileMenu">
+            <a
+              href="#mobileMenu"
+              className="mobile-menu"
+              data-bs-toggle="offcanvas"
+              aria-controls="mobileMenu"
+            >
               <i className="icon icon-categories1"></i>
             </a>
           </div>
@@ -93,14 +133,21 @@ const MainHeader = () => {
           <div className="col-xxl-5 col-xl-4 col-md-4 col-3">
             <ul className="nav-icon d-flex justify-content-end align-items-center">
               {iconItems.map((item) => (
-                <li key={item.id} className={`nav-${item.id} ${item.pl ? 'pl' : ''}`}>
-                  <a 
-                    href={item.action} 
+                <li
+                  key={item.id}
+                  className={`nav-${item.id} ${item.pl ? "pl" : ""}`}
+                >
+                  <a
+                    href={item.action}
                     className="nav-icon-item"
-                    {...(item.dataToggle ? { "data-bs-toggle": item.dataToggle } : {})}
+                    {...(item.dataToggle
+                      ? { "data-bs-toggle": item.dataToggle }
+                      : {})}
                   >
                     <i className={`icon icon-${item.icon}`}></i>
-                    {item.count !== undefined && <span className="count-box">{item.count}</span>}
+                    {item.count !== undefined && (
+                      <span className="count-box">{item.count}</span>
+                    )}
                   </a>
                 </li>
               ))}
