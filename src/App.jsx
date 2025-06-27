@@ -22,6 +22,11 @@ import CartTitle from "./pages/Cart/CartTitle";
 import ShoppingCart from "./pages/Cart/ShoppingCart";
 import YouMayAlsoLike from "./pages/Cart/YouMayAlsoLike";
 import Cart from "./pages/Cart/CartPage";
+import Breadcrumb from "./components/ProductDetails/Breadcrumb";
+import MainDetail from "./components/ProductDetails/MainDetail";
+import ProductDescription from "./components/ProductDetails/ProductDescription";
+import RecentlyViewed from "./components/ProductDetails/RecentlyViewed";
+import PeopleAlsoBought from "./components/ProductDetails/PeopleAlso";
 function App() {
   return (
     <> 
@@ -29,7 +34,7 @@ function App() {
        <FAQPage/>
       <PrivacyPolicy/> */}
       <div>
-      {/* <Homepage/> */}
+      <Homepage/>
       {/* <Header/> */}
       {/* <NavIcons/> */}
       {/* <Shop/> */}
@@ -48,10 +53,17 @@ function App() {
 
       {/* <Cart/> */}
 
-         <CartTitle/>
+         {/* <CartTitle/>
       <ShoppingCart/>
-      <YouMayAlsoLike/>
+      <YouMayAlsoLike/> */}
 
+
+      {/* <Breadcrumb/> */}
+   {/* <MainDetail/> */}
+   {/* <ProductDescription/> */}
+   {/* <PeopleAlsoBought/> */}
+   {/* <RecentlyViewed/> */}
+  
       </div>
     </>
   );
