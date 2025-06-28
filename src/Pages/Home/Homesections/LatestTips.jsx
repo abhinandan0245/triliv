@@ -89,17 +89,17 @@ const LatestTips = () => {
               <SwiperSlide key={tip.id}>
                 <div className="blog-item-v2 border-0 bg-white hover-img">
                   <div className="entry-image hover-img">
-                    <a href="/blog-single" className="image-box img-style">
+                    <a href="/notfound" className="image-box img-style">
                       <img src={tip.image} alt={tip.alt} />
                     </a>
                   </div>
                   <div className="entry-content">
                     <div className="info-box">
-                      <a href="/blog-single" className="title fw-medium link text-xl text-line-clamp-2">
+                      <a href="/notfound" className="title fw-medium link text-xl text-line-clamp-2">
                         {tip.title}
                       </a>
                     </div>
-                    <a href="/blog-single" className="btn-readmore text-green-2 link">
+                    <a href="notfound" className="btn-readmore text-green-2 link">
                       Read more <i className="icon icon-arr-right" />
                     </a>
                   </div>

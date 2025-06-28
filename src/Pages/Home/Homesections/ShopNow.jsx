@@ -31,31 +31,31 @@ const ShopNow = () => {
       id: 1,
       title: "Plants",
       image: "images/plant-1.jpg",
-      link: "product"
+      link: "shop"
     },
     {
       id: 2,
       title: "Plant Care",
       image: "images/plant-2.jpg",
-      link: "product"
+      link: "shop"
     },
     {
       id: 3,
       title: "Pots",
       image: "images/plant-3.jpg",
-      link: "product.php"
+      link: "shop"
     },
     {
       id: 4,
       title: "Pet-Friendly",
       image: "images/plant-4.jpg",
-      link: "product.php"
+      link: "shop"
     },
     {
       id: 5,
       title: "Gift Ideas",
       image: "images/plant-5.jpg",
-      link: "product.php"
+      link: "shop"
     }
   ];
 

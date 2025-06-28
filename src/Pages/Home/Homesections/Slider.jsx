@@ -15,7 +15,7 @@ const Slider= () => {
       image: 'images/slider-plant-1.jpg',
       title: 'Elegance Redefined',
       subtitle: 'Discover timeless styles for every occasion.',
-      link: 'product.php',
+      link: 'shop',
       animations: {
         title: 'animate__fadeInDown',
         subtitle: 'animate__fadeInUp',
@@ -27,7 +27,7 @@ const Slider= () => {
       image: 'images/slider-plant-2.jpg',
       title: 'Timeless Elegance',
       subtitle: 'Explore classic designs that suit every moment.',
-      link: 'product.php',
+      link: 'shop',
       animations: {
         title: 'animate__zoomIn',
         subtitle: 'animate__fadeInRight',
@@ -39,7 +39,7 @@ const Slider= () => {
       image: 'images/slider-plant-3.jpg',
       title: 'Refined Beauty',
       subtitle: 'Explore classic designs that suit every moment.',
-      link: 'product.php',
+      link: 'shop',
       animations: {
         title: 'animate__flipInX',
         subtitle: 'animate__lightSpeedIn',
@@ -112,7 +112,7 @@ const Slider= () => {
 
   return (
     <div className="tf-slideshow slider-plant slider-default">
-      <div dir="ltr" className="swiper tf-sw-slideshow slider-effect-fade"
+      <div dir="ltr" className="swiper tf-sw-slideshow slider-effect-fade swiper-initialized swiper-horizontal swiper-backface-hidden"
            data-preview="1" data-tablet="1" data-mobile="1"
            data-centered="false" data-space="0" data-space-mb="0"
            data-loop="true" data-auto-play="true">
@@ -120,11 +120,11 @@ const Slider= () => {
         <Swiper
           {...swiperConfig}
           modules={[Autoplay, Pagination, EffectFade]}
-          className="swiper-wrapper"
+          className="swiper-wrapper "
           ref={swiperRef}
         >
           {slides.map((slide, index) => (
-            <SwiperSlide key={slide.id} className="swiper-slide" data-swiper-slide-index={index}>
+            <SwiperSlide key={slide.id} className="swiper-slide swiper-slide-next" data-swiper-slide-index={index}>
               <div className="slider-wrap">
                 <div className="image">
                   <img 

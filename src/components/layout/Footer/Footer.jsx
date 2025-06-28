@@ -145,16 +145,16 @@ const Footer = () => {
                   <div className="tf-collapse-content">
                     <ul className="footer-menu-list">
                       <li>
-                        <a href="about-us.php">About Us</a>
+                        <a href="aboutus">About Us</a>
                       </li>
                       <li>
-                        <a href="contact-us.php">Contact Us</a>
+                        <a href="contact">Contact Us</a>
                       </li>
                       <li>
-                        <a href="faq.php">FAQ</a>
+                        <a href="faq">FAQ</a>
                       </li>
                       <li>
-                        <a href="store-location.php">Sitemap</a>
+                        <a href="notfound">Sitemap</a>
                       </li>
                     </ul>
                   </div>
@@ -164,19 +164,19 @@ const Footer = () => {
                   <div className="tf-collapse-content">
                     <ul className="footer-menu-list">
                       <li>
-                        <a href="privacy-policy.php">Privacy Policies</a>
+                        <a href="privacypolicy">Privacy Policies</a>
                       </li>
                       <li>
-                        <a href="term-and-condition.php">Terms & Conditions</a>
+                        <a href="term-condition">Terms & Conditions</a>
                       </li>
                       <li>
-                        <a href="return-and-refund.php">Returns & Refunds</a>
+                        <a href="returnrefund">Returns & Refunds</a>
                       </li>
                       <li>
-                        <a href="faq.php">FAQ's</a>
+                        <a href="faq">FAQ's</a>
                       </li>
                       <li>
-                        <a href="shipping.php">Shipping</a>
+                        <a href="shipping">Shipping</a>
                       </li>
                     </ul>
                   </div>
@@ -190,8 +190,8 @@ const Footer = () => {
             <div className="footer-bottom-wrap">
               <p>Copyright © {new Date().getFullYear()} by <span className="fw-medium">Triliv</span> All Rights Reserved.</p>
               <div className="box-right">
-                <a className="link" href="privacy-policy.php">Privacy Policy</a>
-                <a className="link" href="term-and-condition.php">Term of Use</a>
+                <a className="link" href="/privacypolicy">Privacy Policy</a>
+                <a className="link" href="/termscondition">Term of Use</a>
               </div>
             </div>
           </div>

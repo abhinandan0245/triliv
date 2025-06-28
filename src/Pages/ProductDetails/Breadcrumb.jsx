@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const Breadcrumb = ({ currentPage }) => {
+const BreadcrumbP = ({ currentPage }) => {
   const navigate = useNavigate();
 
   const handlePrev = () => {
@@ -44,4 +44,4 @@ const Breadcrumb = ({ currentPage }) => {
   );
 };
 
-export default Breadcrumb;
+export default BreadcrumbP;

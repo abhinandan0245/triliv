@@ -1,12 +1,23 @@
+import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import TopBar from "./TopBar";
 import SearchModal from "../../ui/Modal/Search";
 import LoginPopup from "../../ui/Modal/Login";
 import { Link } from "react-router-dom";
 import ShoppingCart from "../../ui/Modal/ShoppingCart";
+import MobileMenu from "../../ui/Modal/MobileMenu";
+
 const Header = () => {
   const location = useLocation();
   const isHomePage = location.pathname === "/";
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
+
+   const [showLogin, setShowLogin] = useState(false); // 👈 Add this state
+
+  // Toggle login popup
+  const toggleLogin = () => {
+    setShowLogin(!showLogin);
+  };
 
   // TopBar announcements data
   const announcements = [
@@ -27,12 +38,11 @@ const Header = () => {
         <div className="container">
           <div className="row wrapper-header align-items-center">
             {/* Mobile Menu (Same for both) */}
-            <div className="col-md-4 col-3 d-xl-none">
+           <div className="col-md-4 col-3 d-xl-none">
               <a
-                href="#MobileMenu"
                 className="mobile-menu"
-                data-bs-toggle="offcanvas"
-                aria-controls="mobileMenu"
+                onClick={() => setShowMobileMenu(true)}
+                aria-label="Open mobile menu"
               >
                 <i className="icon icon-categories1"></i>
               </a>
@@ -157,8 +167,13 @@ const Header = () => {
         </div>
       </header>
       <SearchModal />
-      <LoginPopup />
+      <LoginPopup show={showLogin} onClose={() => setShowLogin(false)} /> 
       <ShoppingCart />
+       <MobileMenu 
+        show={showMobileMenu} 
+        handleClose={() => setShowMobileMenu(false)} 
+        toggleLogin={toggleLogin} // ✅ Pass the function
+      />
     </>
   );
 };

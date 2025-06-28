@@ -1,50 +1,61 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Offcanvas } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import LoginPopup from './Login';
 
-const MobileMenu = () => {
-  // This effect would be needed if you have external JS that needs to run
-  useEffect(() => {
-    // Any initialization code for the mobile menu would go here
-    // For example, if you had jQuery event handlers, they would need to be converted to React
-    
-    return () => {
-      // Cleanup if needed
-    };
-  }, []);
-
+const MobileMenu = ({ show, handleClose, toggleLogin }) => {
   return (
     <Offcanvas 
-      show={false} // You'll need to manage this state in parent component
-      onHide={() => {}} // You'll need to pass a handler from parent
-      className="offcanvas offcanvas-start canvas-mb" 
-      id="mobileMenu"
+      show={show} 
+      onHide={handleClose} 
+      className="offcanvas offcanvas-start canvas-mb"
       placement="start"
     >
       <button 
         className="icon-close icon-close-popup" 
-        onClick={() => {}} // You'll need to pass the close handler
+         data-bs-dismiss="offcanvas"
+        onClick={handleClose} 
         aria-label="Close"
       ></button>
       <div className="mb-canvas-content">
         <div className="mb-body">
           <div className="mb-content-top">
             <ul className="nav-ul-mb" id="wrapper-menu-navigation">
-              {/* Menu items would be rendered here */}
+              <li className='nav-mb-item'>
+                <Link to="/" className="item-link  mb-menu-link" onClick={handleClose}>
+                  Home
+                </Link>
+              </li>
+              <li className='nav-mb-item'>
+                <Link to="/shop" className="item-link mb-menu-link" onClick={handleClose}>
+                  Shop
+                </Link>
+              </li>
+              <li  className='nav-mb-item'>
+                <Link to="/about-us" className="item-link  mb-menu-link" onClick={handleClose}>
+                  Our Story
+                </Link>
+              </li>
+              <li  className='nav-mb-item'>
+                <Link to="/contact" className="item-link  mb-menu-link" onClick={handleClose}>
+                  Contact US
+                </Link>
+              </li>
             </ul>
           </div>
           <div className="mb-other-content">
             <div className="group-icon">
-              <a href="wish-list.php" className="site-nav-icon">
+              <Link to="/wish-list" className="site-nav-icon" onClick={handleClose}>
                 <i className="icon icon-heart"></i>
                 Wishlist
-              </a>
+              </Link>
               <a 
                 href="#login" 
-                data-bs-toggle="offcanvas" 
                 className="site-nav-icon"
                 onClick={(e) => {
                   e.preventDefault();
-                  // You'll need to handle the login offcanvas toggle here
+                  handleClose();
+                  toggleLogin();
                 }}
               >
                 <i className="icon icon-user"></i>
@@ -52,7 +63,9 @@ const MobileMenu = () => {
               </a>
             </div>
             <div className="mb-notice">
-              <a href="contact-us.php" className="text-need">Need Help?</a>
+              <Link to="/contact-us" className="text-need" onClick={handleClose}>
+                Need Help?
+              </Link>
             </div>
             <div className="mb-contact">
               <p>Address: 123 Yarran st, Punchbowl, NSW 2196, Australia</p>

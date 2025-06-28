@@ -6,6 +6,15 @@ import AboutPage from "./pages/OurStory&AboutUs/AboutPage";
 import ContactPage from "./pages/Contact/ContactPage";
 import Header from "./components/layout/Header/Header";
 import WishlistPage from "./pages/Wishlist/WishlistPage"; 
+import ProductDetail from "./pages/ProductDetails/ProductDetail";
+import NotFoundPage from "./pages/System/NotFound";
+import PrivacyPolicy from "./pages/Policies/PrivacyPolicy";
+import TermsCondition from "./pages/Policies/TermsCondition";
+import FAQPage from "./pages/Policies/FAQs";
+import ReturnRefund from "./pages/Policies/ReturnRefund";
+import Shipping from "./pages/Policies/Shipping";
+import QuickAddModal from "./components/ui/Modal/QuickAdd";
+import CheckoutPage from "./pages/Cart/CheckoutPage";
 
 
 function App() {
@@ -17,10 +26,23 @@ function App() {
           <Routes>
             <Route path="/" element={<Homepage />} />
             <Route path="/shop" element={<Shop/>} />
-            <Route path="/about-us" element={<AboutPage />} />
+            <Route path="/aboutus" element={<AboutPage />} />
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/wish-list" element={<WishlistPage />} />
-         
+            <Route path="/productdetail" element={<ProductDetail />} />
+            <Route path="/privacypolicy" element={<PrivacyPolicy />} />
+            <Route path="/term-condition" element={<TermsCondition/>} />
+            <Route path="/faq" element={<FAQPage />} />
+            <Route path="/returnrefund" element={<ReturnRefund />} />
+            <Route path="/notfound" element={<NotFoundPage />} />
+            <Route path="/shipping" element={< Shipping/>} />
+            
+            
+            <Route path="/" element={< QuickAddModal/>} />
+            <Route path="/checkout" element={<CheckoutPage/>} />
+            <Route path="/shipping" element={< Shipping/>} />
+
+            
           </Routes>
         </main>
         <Footer />

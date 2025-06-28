@@ -4,7 +4,7 @@ import React from 'react';
 const PrivacyPolicy = () => {
   return (
     <>
-      <Header />
+     
       
       {/* Title Page */}
       <section className="tf-page-title">
@@ -159,8 +159,6 @@ const PrivacyPolicy = () => {
         </div>
       </section>
       {/* /Privacy policy */}
-
-      <Footer />
     </>
   );
 };

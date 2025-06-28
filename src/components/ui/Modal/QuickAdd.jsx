@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 
-const QuickAddModal = () => {
+const QuickAddModal = ({ product, onClose }) => {
   const [quantity, setQuantity] = useState(1);
-  const [selectedColor, setSelectedColor] = useState('White');
+    const [selectedColor, setSelectedColor] = useState(product.colors[0].name);
 
   const handleQuantityChange = (type) => {
     if (type === 'minus' && quantity > 1) {
@@ -17,32 +17,36 @@ const QuickAddModal = () => {
   };
 
   return (
-    <div className="modal fade modalCentered popup-quickadd" id="quickAdd">
+      <div className="modal fade modalCentered popup-quickadd show" style={{ display: 'block' }}>
       <div className="modal-dialog modal-dialog-centered">
         <div className="modal-content">
           <span 
             className="icon-close icon-close-popup" 
-            data-bs-dismiss="modal" 
-            onClick={() => document.getElementById('quickAdd').classList.remove('show')}
+            onClick={onClose}
           />
           <div className="main-product-quickadd card-product">
             <div className="item-product-info">
               <div className="product-img">
                 <img 
                   className="img-product lazyload" 
-                  data-src="images/product-1.jpg" 
-                  src="images/product-1.jpg" 
-                  alt="image-product" 
+                  src={product.images.main} 
+                  alt={product.name} 
                 />
               </div>
               <div className="content-box">
-                <a href="product-detail.php" className="name-product link text-lg">Bird of Paradise</a>
+                <a href="product-detail.php" className="name-product link text-lg">
+                  {product.name}
+                </a>
                 <div className="price-show-badge">
                   <div className="price-wrap">
-                    <span className="price-new">$130.00</span>
-                    <span className="price-old">$150.00</span>
+                    <span className="price-new">{product.priceNew}</span>
+                    {product.priceOld && (
+                      <span className="price-old">{product.priceOld}</span>
+                    )}
                   </div>
-                  <span className="on-sale-item">20% Off</span>
+                  {product.discount && (
+                    <span className="on-sale-item">{product.discount}</span>
+                  )}
                 </div>
               </div>
             </div>
@@ -52,45 +56,21 @@ const QuickAddModal = () => {
                   Color: <span className="variant-value">{selectedColor}</span>
                 </div>
                 <ul className="list-color-product">
-                  <li 
-                    className={`list-color-item color-swatch hover-tooltip tooltip-bot line ${selectedColor === 'White' ? 'active' : ''}`}
-                    onClick={() => handleColorSelect('White')}
-                  >
-                    <span className="tooltip color-label">White</span>
-                    <span className="swatch-value bg-white" />
-                    <img 
-                      className="lazyload" 
-                      data-src="images/product-1.jpg" 
-                      src="images/product-1.jpg" 
-                      alt="image-product" 
-                    />
-                  </li>
-                  <li 
-                    className={`list-color-item color-swatch hover-tooltip tooltip-bot ${selectedColor === 'Brown' ? 'active' : ''}`}
-                    onClick={() => handleColorSelect('Brown')}
-                  >
-                    <span className="tooltip color-label">Brown</span>
-                    <span className="swatch-value bg-brown-9" />
-                    <img 
-                      className="lazyload" 
-                      data-src="images/product-2.jpg" 
-                      src="images/product-2.jpg" 
-                      alt="image-product" 
-                    />
-                  </li>
-                  <li 
-                    className={`list-color-item color-swatch hover-tooltip tooltip-bot ${selectedColor === 'Black' ? 'active' : ''}`}
-                    onClick={() => handleColorSelect('Black')}
-                  >
-                    <span className="tooltip color-label">Black</span>
-                    <span className="swatch-value bg-dark" />
-                    <img 
-                      className="lazyload" 
-                      data-src="images/product-3.jpg" 
-                      src="images/product-3.jpg" 
-                      alt="image-product" 
-                    />
-                  </li>
+                  {product.colors.map((color, index) => (
+                    <li 
+                      key={index}
+                      className={`list-color-item color-swatch hover-tooltip tooltip-bot ${selectedColor === color.name ? 'active' : ''}`}
+                      onClick={() => handleColorSelect(color.name)}
+                    >
+                      <span className="tooltip color-label">{color.name}</span>
+                      <span className={`swatch-value ${color.value}`} />
+                      <img 
+                        className="lazyload" 
+                        src={color.image} 
+                        alt={color.name} 
+                      />
+                    </li>
+                  ))}
                 </ul>
               </div>
             </div>
@@ -143,7 +123,7 @@ const QuickAddModal = () => {
                 <i className="icon icon-compare" />
               </a>
               <a 
-                href="checkout.php" 
+                href="/checkout" 
                 className="tf-btn btn-primary animate-btn w-100"
                 onClick={(e) => {
                   // Buy now logic here
@@ -153,7 +133,7 @@ const QuickAddModal = () => {
                 Buy It Now
               </a>
             </div>
-            <a href="checkout.php" className="tf-btn btn-line-dark payment-link">
+            <a href="/checkout" className="tf-btn btn-line-dark payment-link">
               More payment options
             </a>
           </div>

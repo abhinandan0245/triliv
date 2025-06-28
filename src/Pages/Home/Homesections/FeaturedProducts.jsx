@@ -1,7 +1,9 @@
-import React, { useEffect } from 'react';
-
+import React, { useState , useEffect } from 'react';
+import QuickAddModal from '../../../components/ui/Modal/QuickAdd';
 const FeaturedProducts = () => {
   // Initialize Swiper when component mounts
+  const [showQuickAdd, setShowQuickAdd] = useState(false);
+const [selectedProduct, setSelectedProduct] = useState(null);
   useEffect(() => {
     // Check if Swiper is available (you'll need to import Swiper in your project)
     if (typeof window !== 'undefined' && window.Swiper) {
@@ -120,10 +122,11 @@ const FeaturedProducts = () => {
 
   // Quick add handler
   const handleQuickAdd = (e, productId) => {
-    e.preventDefault();
-    // Implement quick add logic here
-    console.log(`Quick add product ${productId}`);
-  };
+  e.preventDefault();
+  const product = products.find(p => p.id === productId);
+  setSelectedProduct(product);
+  setShowQuickAdd(true);
+};
 
   // Wishlist handler
   const handleWishlist = (e, productId) => {
@@ -159,7 +162,7 @@ const FeaturedProducts = () => {
                 <div className="swiper-slide" key={product.id}>
                   <div className="card-product">
                     <div className="card-product-wrapper asp-ratio-0">
-                      <a href="product-detail.php" className="product-img">
+                      <a href="productdetail" className="product-img">
                         <img 
                           className="img-product lazyload" 
                           data-src={product.images.main} 
@@ -176,7 +179,7 @@ const FeaturedProducts = () => {
                       <ul className="list-product-btn">
                         <li>
                           <a 
-                            href="#quickAdd" 
+                            href="#quickadd" 
                             onClick={(e) => handleQuickAdd(e, product.id)}
                             className="hover-tooltip tooltip-left box-icon"
                           >
@@ -222,7 +225,7 @@ const FeaturedProducts = () => {
                       )}
                     </div>
                     <div className="card-product-info">
-                      <a href="product-detail.php" className="name-product link fw-medium text-md">
+                      <a href="" className="name-product link fw-medium text-md">
                         {product.name}
                       </a>
                       <p className="price-wrap fw-medium">
@@ -261,6 +264,12 @@ const FeaturedProducts = () => {
           <div className="d-none d-xl-flex swiper-button-prev nav-swiper nav-prev-product" />
         </div>
       </div>
+      {showQuickAdd && selectedProduct && (
+  <QuickAddModal 
+    product={selectedProduct}
+    onClose={() => setShowQuickAdd(false)}
+  />
+)}
     </section>
   );
 };

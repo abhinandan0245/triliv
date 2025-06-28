@@ -31,7 +31,7 @@ const BannerOne = () => {
                 your home. Shop now and elevate your space with nature's beauty.</p>
             </div>
             {/* Using React Router's Link would be better for internal navigation */}
-            <a href="/product" className="tf-btn btn-orange animate-btn">Shop Now</a>
+            <a href="/shop" className="tf-btn btn-orange animate-btn">Shop Now</a>
           </div>
         </div>
       </div>

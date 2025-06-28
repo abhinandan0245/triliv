@@ -62,7 +62,7 @@ const ShopGram = () => {
                     />
                   </div>
                   <a
-                    href="product-detail.php"
+                    href="productdetail"
                     className="box-icon hover-tooltip"
                   >
                     <span className="icon icon-cart2">

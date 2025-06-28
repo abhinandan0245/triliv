@@ -12,7 +12,7 @@ const BannerTwo = () => {
               <p className="desc text-main text-md">From small succulents to statement plants, find the ideal
                 green companion for any room. Explore our collection today!</p>
             </div>
-            <a href="product.php" className="tf-btn btn-orange animate-btn">Shop Collection</a>
+            <a href="/shop" className="tf-btn btn-orange animate-btn">Shop Collection</a>
           </div>
           <div className="image-banner">
             <div className="image image-1 hover-img">
