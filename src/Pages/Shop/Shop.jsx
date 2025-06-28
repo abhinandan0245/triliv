@@ -4,7 +4,7 @@ import ShopDescription from "./ShopDescription";
 import SubProduct from "./SubProduct";
 
 
-function Shop(){
+const Shop = () => {
     return (
         <>
         <CollectionTitle/>

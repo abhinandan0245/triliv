@@ -40,7 +40,7 @@ const SubProduct = () => {
     // Clean up Swiper when component unmounts
     return () => {
       if (swiperRef.current) {
-        swiperRef.current.destroy();
+        // swiperRef.current.destroy();
       }
     };
   }, []);

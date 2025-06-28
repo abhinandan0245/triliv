@@ -1,3 +1,5 @@
+import React from 'react';
+
 const Marquee = () => (
   <div className="overflow-hidden">
     <div className="topbar-center marquee-wrapper">
