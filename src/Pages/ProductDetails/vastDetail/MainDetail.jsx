@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import Swiper from 'swiper';
+import 'swiper/swiper-bundle.css';
 
 const MainDetail = () => {
-   const [quantity, setQuantity] = useState(1);
+  const [quantity, setQuantity] = useState(1);
   const [selectedColor, setSelectedColor] = useState('black');
   const [selectedSize, setSelectedSize] = useState('small');
   const [bundleItems, setBundleItems] = useState([
@@ -10,12 +12,67 @@ const MainDetail = () => {
     { id: 3, checked: false, title: "One Shoulder Velvet T-Shirt", newPrice: 85, oldPrice: 100, variant: "Black / S" }
   ]);
 
-  // Initialize Swiper and other JS functionality (would need to be implemented)
+  // Image data structure
+  const [allImages] = useState([
+    { id: 1, color: 'black', size: 'small', thumb: 'images/women-black-1.jpg', main: 'images/women-black-1.jpg' },
+    { id: 2, color: 'black', size: 'medium', thumb: 'images/women-black-2.jpg', main: 'images/women-black-2.jpg' },
+    { id: 3, color: 'black', size: 'large', thumb: 'images/women-black-3.jpg', main: 'images/women-black-3.jpg' },
+    { id: 4, color: 'black', size: 'extra large', thumb: 'images/women-black-4.jpg', main: 'images/women-black-4.jpg' },
+    { id: 5, color: 'orange', size: 'small', thumb: 'images/fs-orange1.jpg', main: 'images/fs-orange1.jpg' },
+    { id: 6, color: 'orange', size: 'medium', thumb: 'images/fs-orange2.jpg', main: 'images/fs-orange2.jpg' },
+    { id: 7, color: 'green', size: 'large', thumb: 'images/fs-green1.jpg', main: 'images/fs-green1.jpg' },
+    { id: 8, color: 'green', size: 'extra large', thumb: 'images/fs-green2.jpg', main: 'images/fs-green2.jpg' },
+  ]);
+
+  const [filteredImages, setFilteredImages] = useState([]);
+  const mainSwiperRef = useRef(null);
+  const thumbsSwiperRef = useRef(null);
+
+  // Filter images based on selected color and size
   useEffect(() => {
-    // This is where you would initialize Swiper and other JS functionality
-    // You'll need to use React-specific libraries or refs to handle this
-    console.log("Component mounted - initialize Swiper here");
-  }, []);
+    const filtered = allImages.filter(
+      img => img.color === selectedColor && img.size === selectedSize
+    );
+    setFilteredImages(filtered);
+  }, [selectedColor, selectedSize, allImages]);
+
+  // Initialize Swiper when filtered images change
+  useEffect(() => {
+    if (filteredImages.length > 0) {
+      // Destroy existing Swiper instances if they exist
+      if (thumbsSwiperRef.current) thumbsSwiperRef.current.destroy();
+      if (mainSwiperRef.current) mainSwiperRef.current.destroy();
+
+      // Initialize thumbs swiper
+      thumbsSwiperRef.current = new Swiper('.tf-product-media-thumbs', {
+        direction: 'vertical',
+        slidesPerView: 4,
+        spaceBetween: 10,
+        watchSlidesProgress: true,
+      });
+
+      // Initialize main swiper
+      mainSwiperRef.current = new Swiper('.tf-product-media-main', {
+        thumbs: {
+          swiper: thumbsSwiperRef.current
+        },
+      });
+
+      // Navigation buttons
+      document.querySelector('.thumbs-next').addEventListener('click', () => {
+        mainSwiperRef.current.slideNext();
+      });
+      document.querySelector('.thumbs-prev').addEventListener('click', () => {
+        mainSwiperRef.current.slidePrev();
+      });
+    }
+
+    return () => {
+      // Cleanup on unmount
+      if (thumbsSwiperRef.current) thumbsSwiperRef.current.destroy();
+      if (mainSwiperRef.current) mainSwiperRef.current.destroy();
+    };
+  }, [filteredImages]);
 
   const handleQuantityChange = (type) => {
     if (type === 'increase') {
@@ -27,6 +84,8 @@ const MainDetail = () => {
 
   const handleColorChange = (color) => {
     setSelectedColor(color);
+    // Reset to first size when color changes
+    setSelectedSize('small');
   };
 
   const handleSizeChange = (size) => {
@@ -49,7 +108,7 @@ const MainDetail = () => {
   }, 0);
 
   return (
-     <section className="flat-single-product">
+    <section className="flat-single-product">
       <div className="tf-main-product section-image-zoom">
         <div className="container">
           <div className="row">
@@ -59,97 +118,25 @@ const MainDetail = () => {
                 <div className="product-thumbs-slider">
                   <div dir="ltr" className="swiper tf-product-media-thumbs other-image-zoom" data-preview={4} data-direction="vertical">
                     <div className="swiper-wrapper stagger-wrap">
-                      {/* black */}
-                      <div className="swiper-slide stagger-item" data-color="black" data-size="small">
-                        <div className="item">
-                          <img className="lazyload" data-src="images/women-black-1.jpg" src="images/women-black-1.jpg" alt="img-product" />
+                      {filteredImages.map((image) => (
+                        <div key={image.id} className="swiper-slide stagger-item" data-color={image.color} data-size={image.size}>
+                          <div className="item">
+                            <img className="lazyload" data-src={image.thumb} src={image.thumb} alt="img-product" />
+                          </div>
                         </div>
-                      </div>
-                      <div className="swiper-slide stagger-item" data-color="black" data-size="medium">
-                        <div className="item">
-                          <img className="lazyload" data-src="images/women-black-2.jpg" src="images/women-black-2.jpg" alt="img-product" />
-                        </div>
-                      </div>
-                      <div className="swiper-slide stagger-item" data-color="black" data-size="large">
-                        <div className="item">
-                          <img className="lazyload" data-src="images/women-black-3.jpg" src="images/women-black-3.jpg" alt="img-product" />
-                        </div>
-                      </div>
-                      <div className="swiper-slide stagger-item" data-color="black" data-size="extra large">
-                        <div className="item">
-                          <img className="lazyload" data-src="images/women-black-4.jpg" src="images/women-black-4.jpg" alt="img-product" />
-                        </div>
-                      </div>
-                      {/* yellow */}
-                      <div className="swiper-slide stagger-item" data-color="orange" data-size="small">
-                        <div className="item">
-                          <img className="lazyload" data-src="images/fs-orange1.jpg" src="images/fs-orange1.jpg" alt="img-product" />
-                        </div>
-                      </div>
-                      <div className="swiper-slide stagger-item" data-color="orange" data-size="medium">
-                        <div className="item">
-                          <img className="lazyload" data-src="images/fs-orange2.jpg" src="images/fs-orange2.jpg" alt="img-product" />
-                        </div>
-                      </div>
-                      {/* grey */}
-                      <div className="swiper-slide stagger-item" data-color="green" data-size="large">
-                        <div className="item">
-                          <img className="lazyload" data-src="images/fs-green1.jpg" src="images/fs-green1.jpg" alt="img-product" />
-                        </div>
-                      </div>
-                      <div className="swiper-slide stagger-item" data-color="green" data-size="extra large">
-                        <div className="item">
-                          <img className="lazyload" data-src="images/fs-green2.jpg" src="images/fs-green2.jpg" alt="img-product" />
-                        </div>
-                      </div>
+                      ))}
                     </div>
                   </div>
                   <div className="flat-wrap-media-product">
                     <div dir="ltr" className="swiper tf-product-media-main" id="gallery-swiper-started">
                       <div className="swiper-wrapper">
-                        {/* black */}
-                        <div className="swiper-slide" data-color="black" data-size="small">
-                          <a href="images/women-black-1.jpg" target="_blank" className="item" data-pswp-width="552px" data-pswp-height="827px">
-                            <img className="tf-image-zoom lazyload" data-zoom="images/women-black-1.jpg" data-src="images/women-black-1.jpg" src="images/women-black-1.jpg" alt="img-product" />
-                          </a>
-                        </div>
-                        <div className="swiper-slide" data-color="black" data-size="medium">
-                          <a href="images/women-black-2.jpg" target="_blank" className="item" data-pswp-width="552px" data-pswp-height="827px">
-                            <img className="tf-image-zoom lazyload" data-zoom="images/women-black-2.jpg" data-src="images/women-black-2.jpg" src="images/women-black-2.jpg" alt="img-product" />
-                          </a>
-                        </div>
-                        <div className="swiper-slide" data-color="black" data-size="large">
-                          <a href="images/women-black-3.jpg" target="_blank" className="item" data-pswp-width="552px" data-pswp-height="827px">
-                            <img className="tf-image-zoom lazyload" data-zoom="images/women-black-3.jpg" data-src="images/women-black-3.jpg" src="images/women-black-3.jpg" alt="img-product" />
-                          </a>
-                        </div>
-                        <div className="swiper-slide" data-color="black" data-size="extra large">
-                          <a href="images/women-black-4.jpg" target="_blank" className="item" data-pswp-width="552px" data-pswp-height="827px">
-                            <img className="tf-image-zoom lazyload" data-zoom="images/women-black-4.jpg" data-src="images/women-black-4.jpg" src="images/women-black-4.jpg" alt="img-product" />
-                          </a>
-                        </div>
-                        {/* yellow */}
-                        <div className="swiper-slide" data-color="orange" data-size="small">
-                          <a href="images/fs-orange1.jpg" target="_blank" className="item" data-pswp-width="552px" data-pswp-height="827px">
-                            <img className="tf-image-zoom lazyload" data-zoom="images/fs-orange1.jpg" data-src="images/fs-orange1.jpg" src="images/fs-orange1.jpg" alt="img-product" />
-                          </a>
-                        </div>
-                        <div className="swiper-slide" data-color="orange" data-size="medium">
-                          <a href="images/fs-orange2.jpg" target="_blank" className="item" data-pswp-width="552px" data-pswp-height="827px">
-                            <img className="tf-image-zoom lazyload" data-zoom="images/fs-orange2.jpg" data-src="images/fs-orange2.jpg" src="images/fs-orange2.jpg" alt="img-product" />
-                          </a>
-                        </div>
-                        {/* grey */}
-                        <div className="swiper-slide" data-color="green" data-size="large">
-                          <a href="images/fs-green1.jpg" target="_blank" className="item" data-pswp-width="552px" data-pswp-height="827px">
-                            <img className="tf-image-zoom lazyload" data-zoom="images/fs-green1.jpg" data-src="images/fs-green1.jpg" src="images/fs-green1.jpg" alt="img-product" />
-                          </a>
-                        </div>
-                        <div className="swiper-slide" data-color="green" data-size="extra large">
-                          <a href="images/fs-green2.jpg" target="_blank" className="item" data-pswp-width="552px" data-pswp-height="827px">
-                            <img className="tf-image-zoom lazyload" data-zoom="images/fs-green2.jpg" data-src="images/fs-green2.jpg" src="images/fs-green2.jpg" alt="img-product" />
-                          </a>
-                        </div>
+                        {filteredImages.map((image) => (
+                          <div key={image.id} className="swiper-slide" data-color={image.color} data-size={image.size}>
+                            <a href={image.main} target="_blank" rel="noopener noreferrer" className="item" data-pswp-width="552px" data-pswp-height="827px">
+                              <img className="tf-image-zoom lazyload" data-zoom={image.main} data-src={image.main} src={image.main} alt="img-product" />
+                            </a>
+                          </div>
+                        ))}
                       </div>
                     </div>
                     <div className="swiper-button-next nav-swiper thumbs-next" />
@@ -361,7 +348,6 @@ const MainDetail = () => {
                             <div className="bundle-variant tf-select">
                               <select value={item.variant}>
                                 <option>{item.variant}</option>
-                                {/* Other options would be added here */}
                               </select>
                             </div>
                           </div>
