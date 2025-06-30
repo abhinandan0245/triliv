@@ -19,29 +19,24 @@ const BreadcrumbP = ({ currentPage }) => {
   };
 
   return (
+
     <div className="breadcrumb-sec">
       <div className="container">
         <div className="breadcrumb-wrap">
           <div className="breadcrumb-list">
-            <a className="breadcrumb-item" href="/">Home</a>
-            <div className="breadcrumb-item dot"><span></span></div>
-            <div className="breadcrumb-item current">{currentPage}</div>
+            <a className="breadcrumb-item" href="index.php">Home</a>
+            <div className="breadcrumb-item dot"><span /></div>
+            <div className="breadcrumb-item current">Linen Blend Pants</div>
           </div>
           <div className="breadcrumb-prev-next">
-            <button onClick={handlePrev} className="breadcrumb-prev">
-              <i className="icon icon-arr-left"></i>
-            </button>
-            <button onClick={handleBackToShop} className="breadcrumb-back">
-              <i className="icon icon-shop"></i>
-            </button>
-            <button onClick={handleNext} className="breadcrumb-next">
-              <i className="icon icon-arr-right2"></i>
-            </button>
+            <a href="#" className="breadcrumb-prev"><i className="icon icon-arr-left"></i></a>
+            <a href="product.php" className="breadcrumb-back"><i className="icon icon-shop"></i></a>
+            <a href="#" className="breadcrumb-next"><i className="icon icon-arr-right2"></i></a>
           </div>
         </div>
       </div>
     </div>
-  );
+  )
 };
 
 export default BreadcrumbP;

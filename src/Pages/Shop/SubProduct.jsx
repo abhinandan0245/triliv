@@ -93,7 +93,7 @@ const SubProduct = () => {
               {collectionItems.map((item) => (
                 <div className="swiper-slide" key={item.id}>
                   <div className="wg-cls style-abs2 hover-img">
-                    <a href="product.php" className="image-wrap relative">
+                    <a href="/shop" className="image-wrap relative">
                       <div className="image img-style">
                         <img 
                           src={item.image} 
@@ -108,7 +108,7 @@ const SubProduct = () => {
                       <span className="tf-overlay" />
                     </a>
                     <div className="cls-content text-center">
-                      <a href="product.php" className="text-type text-xl-2 fw-medium link">
+                      <a href="/shop" className="text-type text-xl-2 fw-medium link">
                         {item.title}
                       </a>
                       <span className="count-item body-text-2 text-main">{item.count}</span>

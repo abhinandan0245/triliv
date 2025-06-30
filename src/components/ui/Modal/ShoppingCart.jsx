@@ -1,12 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 const ShoppingCart = () => {
   const [quantity1, setQuantity1] = useState(1);
   const [quantity2, setQuantity2] = useState(1);
-  const [giftWrapOpen, setGiftWrapOpen] = useState(false);
-  const [noteOpen, setNoteOpen] = useState(false);
-  const [couponOpen, setCouponOpen] = useState(false);
-  const [shippingOpen, setShippingOpen] = useState(false);
+  const [activePopup, setActivePopup] = useState(null);
   const [orderNote, setOrderNote] = useState('');
   const [couponCode, setCouponCode] = useState('');
   const [shippingData, setShippingData] = useState({
@@ -26,7 +23,6 @@ const ShoppingCart = () => {
 
   const handleShippingSubmit = (e) => {
     e.preventDefault();
-    // Simulate shipping calculation
     if (shippingData.zipcode) {
       setShippingMessage({
         type: 'success',
@@ -48,36 +44,26 @@ const ShoppingCart = () => {
     }));
   };
 
-  // Calculate total based on quantities and prices
   const calculateTotal = () => {
     const product1Price = 130.00;
     const product2Price = 110.00;
     return (product1Price * quantity1 + product2Price * quantity2).toFixed(2);
   };
 
-  // Close all tool popups
-  const closeAllPopups = () => {
-    setGiftWrapOpen(false);
-    setNoteOpen(false);
-    setCouponOpen(false);
-    setShippingOpen(false);
+  const openPopup = (popupName) => {
+    setActivePopup(popupName);
   };
 
-  // Effect to handle click outside of popups
-  useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (giftWrapOpen || noteOpen || couponOpen || shippingOpen) {
-        if (!e.target.closest('.tf-mini-cart-tool-content')) {
-          closeAllPopups();
-        }
-      }
-    };
+  const closePopup = (e) => {
+    if (e) e.stopPropagation();
+    setActivePopup(null);
+  };
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.addEventListener('mousedown', handleClickOutside);
-    };
-  }, [giftWrapOpen, noteOpen, couponOpen, shippingOpen]);
+  const handleOverlayClick = (e) => {
+    if (e.target.classList.contains('overplay')) {
+      closePopup();
+    }
+  };
 
   return (
     <div className="offcanvas offcanvas-end popup-style-1 popup-shopping-cart" id="shoppingCart">
@@ -203,7 +189,7 @@ const ShoppingCart = () => {
                       <div className="swiper-slide">
                         <div className="tf-mini-cart-item line radius-16">
                           <div className="tf-mini-cart-image">
-                            <a href="product-detail.php">
+                            <a href="productdetail">
                               <img className="lazyload" data-src="images/product-5.jpg" src="images/product-5.jpg" alt="img-product" />
                             </a>
                           </div>
@@ -223,19 +209,19 @@ const ShoppingCart = () => {
             </div>
             <div className="tf-mini-cart-bottom">
               <div className="tf-mini-cart-tool">
-                <div className="tf-mini-cart-tool-btn btn-add-gift" onClick={() => { closeAllPopups(); setGiftWrapOpen(true); }}>
+                <div className="tf-mini-cart-tool-btn btn-add-gift" onClick={() => openPopup('giftWrap')}>
                   <i className="icon icon-gift2" />
                   <div className="text-xxs">Add gift wrap</div>
                 </div>
-                <div className="tf-mini-cart-tool-btn btn-add-note" onClick={() => { closeAllPopups(); setNoteOpen(true); }}>
+                <div className="tf-mini-cart-tool-btn btn-add-note" onClick={() => openPopup('note')}>
                   <i className="icon icon-note" />
                   <div className="text-xxs">Order note</div>
                 </div>
-                <div className="tf-mini-cart-tool-btn btn-coupon" onClick={() => { closeAllPopups(); setCouponOpen(true); }}>
+                <div className="tf-mini-cart-tool-btn btn-coupon" onClick={() => openPopup('coupon')}>
                   <i className="icon icon-coupon" />
                   <div className="text-xxs">Coupon</div>
                 </div>
-                <div className="tf-mini-cart-tool-btn btn-estimate-shipping" onClick={() => { closeAllPopups(); setShippingOpen(true); }}>
+                <div className="tf-mini-cart-tool-btn btn-estimate-shipping" onClick={() => openPopup('shipping')}>
                   <i className="icon icon-car" />
                   <div className="text-xxs">Shipping</div>
                 </div>
@@ -259,32 +245,32 @@ const ShoppingCart = () => {
                   </label>
                 </div>
                 <div className="tf-mini-cart-view-checkout">
-                  <a href="checkout.php" className="tf-btn animate-btn d-inline-flex bg-dark-2 w-100 justify-content-center"><span>Check out</span></a>
-                  <a href="view-cart.php" className="tf-btn btn-out-line-dark2 w-100 justify-content-center">View cart</a>
+                  <a href="/checkout" className="tf-btn animate-btn d-inline-flex bg-dark-2 w-100 justify-content-center"><span>Check out</span></a>
+                  <a href="/cart" className="tf-btn btn-out-line-dark2 w-100 justify-content-center">View cart</a>
                 </div>
               </div>
             </div>
             
             {/* Gift Wrap Popup */}
-            {giftWrapOpen && (
-              <div className="tf-mini-cart-tool-openable add-gift">
-                <div className="overplay tf-mini-cart-tool-close" onClick={closeAllPopups} />
-                <form action="#" className="tf-mini-cart-tool-content">
+            {activePopup === 'giftWrap' && (
+              <div className="tf-mini-cart-tool-openable add-gift" onClick={handleOverlayClick}>
+                <div className="overplay tf-mini-cart-tool-close" />
+                <form className="tf-mini-cart-tool-content">
                   <div className="tf-mini-cart-tool-text text-sm fw-medium">Add gift wrap</div>
                   <div className="tf-mini-cart-tool-text1">The product will be wrapped carefully. Fee is only <span className="text fw-medium text-dark">$10.00</span>. Do you want a gift wrap?</div>
                   <div className="tf-cart-tool-btns">
                     <button className="subscribe-button tf-btn animate-btn d-inline-flex bg-dark-2 w-100" type="submit">Add a Gift Wrap</button>
-                    <div className="tf-btn btn-out-line-dark2 w-100 tf-mini-cart-tool-close" onClick={closeAllPopups}>Cancel</div>
+                    <button className="tf-btn btn-out-line-dark2 w-100 tf-mini-cart-tool-close" onClick={closePopup}>Cancel</button>
                   </div>
                 </form>
               </div>
             )}
             
             {/* Order Note Popup */}
-            {noteOpen && (
-              <div className="tf-mini-cart-tool-openable add-note">
-                <div className="overplay tf-mini-cart-tool-close" onClick={closeAllPopups} />
-                <form action="#" className="tf-mini-cart-tool-content">
+            {activePopup === 'note' && (
+              <div className="tf-mini-cart-tool-openable add-note" onClick={handleOverlayClick}>
+                <div className="overplay tf-mini-cart-tool-close" />
+                <form className="tf-mini-cart-tool-content">
                   <label htmlFor="Cart-note" className="tf-mini-cart-tool-text text-sm fw-medium">Order note</label>
                   <textarea 
                     name="note" 
@@ -295,17 +281,17 @@ const ShoppingCart = () => {
                   />
                   <div className="tf-cart-tool-btns">
                     <button className="subscribe-button tf-btn animate-btn d-inline-flex bg-dark-2 w-100" type="submit">Save</button>
-                    <div className="tf-btn btn-out-line-dark2 w-100 tf-mini-cart-tool-close" onClick={closeAllPopups}>Close</div>
+                    <button className="tf-btn btn-out-line-dark2 w-100 tf-mini-cart-tool-close" onClick={closePopup}>Close</button>
                   </div>
                 </form>
               </div>
             )}
             
             {/* Coupon Popup */}
-            {couponOpen && (
-              <div className="tf-mini-cart-tool-openable coupon">
-                <div className="overplay tf-mini-cart-tool-close" onClick={closeAllPopups} />
-                <form action="#" className="tf-mini-cart-tool-content">
+            {activePopup === 'coupon' && (
+              <div className="tf-mini-cart-tool-openable coupon" onClick={handleOverlayClick}>
+                <div className="overplay tf-mini-cart-tool-close" />
+                <form className="tf-mini-cart-tool-content">
                   <div className="tf-mini-cart-tool-text text-sm fw-medium">Add coupon</div>
                   <div className="tf-mini-cart-tool-text1">* Discount will be calculated and applied at checkout</div>
                   <input 
@@ -317,24 +303,23 @@ const ShoppingCart = () => {
                   />
                   <div className="tf-cart-tool-btns">
                     <button className="subscribe-button tf-btn animate-btn d-inline-flex bg-dark-2 w-100" type="submit">Save</button>
-                    <div className="tf-btn btn-out-line-dark2 w-100 tf-mini-cart-tool-close" onClick={closeAllPopups}>Close</div>
+                    <button className="tf-btn btn-out-line-dark2 w-100 tf-mini-cart-tool-close" onClick={closePopup}>Close</button>
                   </div>
                 </form>
               </div>
             )}
             
             {/* Shipping Estimate Popup */}
-            {shippingOpen && (
-              <div className="tf-mini-cart-tool-openable estimate-shipping">
-                <div className="overplay tf-mini-cart-tool-close" onClick={closeAllPopups} />
-                <form id="shipping-form" className="tf-mini-cart-tool-content" onSubmit={handleShippingSubmit}>
+            {activePopup === 'shipping' && (
+              <div className="tf-mini-cart-tool-openable estimate-shipping" onClick={handleOverlayClick}>
+                <div className="overplay tf-mini-cart-tool-close" />
+                <form className="tf-mini-cart-tool-content" onSubmit={handleShippingSubmit}>
                   <div className="tf-mini-cart-tool-text text-sm fw-medium">Shipping estimates</div>
                   <div className="field">
                     <p className="text-sm">Country</p>
                     <div className="tf-select">
                       <select 
                         className="w-100" 
-                        id="shipping-country-form" 
                         name="country" 
                         value={shippingData.country}
                         onChange={handleShippingChange}
@@ -364,7 +349,6 @@ const ShoppingCart = () => {
                     <p className="text-sm">State/Province</p>
                     <div className="tf-select">
                       <select 
-                        id="shipping-province-form" 
                         name="province" 
                         value={shippingData.province}
                         onChange={handleShippingChange}
@@ -384,29 +368,27 @@ const ShoppingCart = () => {
                     <p className="text-sm">Zipcode</p>
                     <input 
                       type="text" 
-                      data-opend-focus 
-                      id="zipcode" 
                       name="zipcode" 
                       value={shippingData.zipcode}
                       onChange={handleShippingChange}
                     />
                   </div>
                   {shippingMessage.type === 'error' && (
-                    <div id="zipcode-message" className="error">
+                    <div className="error">
                       {shippingMessage.text}
                     </div>
                   )}
                   {shippingMessage.type === 'success' && (
-                    <div id="zipcode-success" className="success">
+                    <div className="success">
                       <p>We found one shipping rate available for your address:</p>
                       <p className="standard">Standard at <span>$0.00</span> USD</p>
                     </div>
                   )}
                   <div className="tf-cart-tool-btns">
                     <button className="subscribe-button tf-btn animate-btn d-inline-flex bg-dark-2 w-100" type="submit">Estimate</button>
-                    <div className="tf-mini-cart-tool-primary tf-btn btn-out-line-dark2 w-100 tf-mini-cart-tool-close" onClick={closeAllPopups}>
+                    <button className="tf-btn btn-out-line-dark2 w-100 tf-mini-cart-tool-close" onClick={closePopup}>
                       Close
-                    </div>
+                    </button>
                   </div>
                 </form>
               </div>

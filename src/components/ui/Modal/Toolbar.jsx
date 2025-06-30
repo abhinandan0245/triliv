@@ -1,10 +1,16 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import ShoppingCart from "../Modal/ShoppingCart"
 
-const Toolbar = () => {
+const Toolbar = ({ onClose }) => {
+   const navigate = useNavigate();
+  const handleAccountClick = () => {  // Close the popup
+    navigate('/myaccount');  // Navigate to MyAccount
+  };
   return (
     <div className="tf-toolbar-bottom">
       <div className="toolbar-item">
-        <a href="index.php">
+        <a href="/">
           <div className="toolbar-icon">
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
@@ -25,7 +31,8 @@ const Toolbar = () => {
         </a>
       </div>
       <div className="toolbar-item">
-        <a href="#login" data-bs-toggle="offcanvas">
+        <a href="/myaccount" data-bs-toggle="offcanvas">
+         <div onClick={handleAccountClick} style={{ cursor: 'pointer' }}>
           <div className="toolbar-icon">
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path fillRule="evenodd" clipRule="evenodd"
@@ -33,11 +40,12 @@ const Toolbar = () => {
                 fill="black" />
             </svg>
           </div>
+          </div>
           <div className="toolbar-label">Account</div>
         </a>
       </div>
       <div className="toolbar-item">
-        <a href="product.php">
+        <a href="/shop">
           <div className="toolbar-icon">
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path fillRule="evenodd" clipRule="evenodd"
@@ -61,7 +69,7 @@ const Toolbar = () => {
         </a>
       </div>
       <div className="toolbar-item">
-        <a href="wish-list.php">
+        <a href="/wish-list">
           <div className="toolbar-icon">
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
               <g clipPath="url(#clip0_4013_1872)">
@@ -81,6 +89,7 @@ const Toolbar = () => {
         </a>
       </div>
       <div className="toolbar-item">
+        <li>
         <a href="#shoppingCart" data-bs-toggle="offcanvas">
           <div className="toolbar-icon">
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -95,7 +104,9 @@ const Toolbar = () => {
           </div>
           <div className="toolbar-label">Cart</div>
         </a>
+        </li>
       </div>
+      <ShoppingCart />
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import BreadcrumbP from "./Breadcrumb";
-import MainDetail from "./MainDetail";
+import MainDetail from "./vastDetail/MainDetail";
 import ProductDescription from "./ProductDescription";
 import PeopleAlsoBought from "./PeopleAlso";
 const ProductDetail = () => {

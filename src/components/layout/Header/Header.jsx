@@ -6,11 +6,12 @@ import LoginPopup from "../../ui/Modal/Login";
 import { Link } from "react-router-dom";
 import ShoppingCart from "../../ui/Modal/ShoppingCart";
 import MobileMenu from "../../ui/Modal/MobileMenu";
-
+import RegisterPopup from "../../ui/Modal/Register";
 const Header = () => {
   const location = useLocation();
   const isHomePage = location.pathname === "/";
   const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const [showRegister, setShowRegister] = useState(false);
 
    const [showLogin, setShowLogin] = useState(false); // 👈 Add this state
 
@@ -18,7 +19,10 @@ const Header = () => {
   const toggleLogin = () => {
     setShowLogin(!showLogin);
   };
-
+   const toggleRegister = () => {
+  setShowRegister(!showRegister);
+};
+ 
   // TopBar announcements data
   const announcements = [
     "Return extended to 60 days",
@@ -65,7 +69,7 @@ const Header = () => {
                         </Link>
                       </li>
                       <li className="menu-item">
-                        <Link to="/about-us" className="item-link">
+                        <Link to="/aboutus" className="item-link">
                           Our Story<i className="icon"></i>
                         </Link>
                       </li>
@@ -104,7 +108,7 @@ const Header = () => {
                         </Link>
                       </li>
                       <li className="menu-item">
-                        <Link to="/about-us" className="item-link">
+                        <Link to="/aboutus" className="item-link">
                           Our Story<i className="icon"></i>
                         </Link>
                       </li>
@@ -140,6 +144,7 @@ const Header = () => {
                     href="#login"
                     data-bs-toggle="offcanvas"
                     className="nav-icon-item"
+                    
                   >
                     <i className="icon icon-user"></i>
                   </a>
@@ -167,13 +172,23 @@ const Header = () => {
         </div>
       </header>
       <SearchModal />
-      <LoginPopup show={showLogin} onClose={() => setShowLogin(false)} /> 
+      <LoginPopup 
+      show={showLogin} 
+      toggleRegister={toggleRegister} 
+       onClose={() => setShowLogin(false)}
+       /> 
+          
+<RegisterPopup 
+  show={showRegister} 
+  onClose={() => setShowRegister(false)}
+/>
       <ShoppingCart />
        <MobileMenu 
         show={showMobileMenu} 
         handleClose={() => setShowMobileMenu(false)} 
         toggleLogin={toggleLogin} // ✅ Pass the function
       />
+ 
     </>
   );
 };

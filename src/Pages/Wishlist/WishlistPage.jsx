@@ -33,7 +33,7 @@ const WishlistPage = () => {
           <div className="box-title text-center">
             <h4 className="title">My Wishlist</h4>
             <div className="breadcrumb-list">
-              <a className="breadcrumb-item" href="index.php">Home</a>
+              <a className="breadcrumb-item" href="index">Home</a>
               <div className="breadcrumb-item dot"><span /></div>
               <div className="breadcrumb-item current">Wishlist</div>
             </div>
@@ -49,7 +49,7 @@ const WishlistPage = () => {
             <div className="card-product style-wishlist style-3 card-product-size">
               <i className="icon icon-close remove" onClick={handleRemoveItem} />
               <div className="card-product-wrapper">
-                <a href="product-detail.php" className="product-img">
+                <a href="productdetail" className="product-img">
                   <img className="img-product lazyload" data-src="images/product/product-19.jpg" src="images/product/product-19.jpg" alt="image-product" />
                   <img className="img-hover lazyload" data-src="images/women-grey-2.jpg" src="images/women-grey-2.jpg" alt="image-product" />
                 </a>
@@ -75,7 +75,7 @@ const WishlistPage = () => {
                 </ul>
               </div>
               <div className="card-product-info">
-                <a href="product-detail.php" className="name-product link fw-medium text-md">Loose Fit Tee</a>
+                <a href="productdetail" className="name-product link fw-medium text-md">Loose Fit Tee</a>
                 <p className="price-wrap fw-medium">
                   <span className="price-new">$120.00</span>
                   <span className="price-old">$150.00</span>
@@ -104,13 +104,13 @@ const WishlistPage = () => {
             <div className="card-product style-wishlist style-3 out-of-stock">
               <i className="icon icon-close remove" onClick={handleRemoveItem} />
               <div className="card-product-wrapper">
-                <a href="product-detail.php" className="product-img">
+                <a href="productdetail" className="product-img">
                   <img className="img-product lazyload" data-src="images/product/product-2.jpg" src="images/product/product-2.jpg" alt="image-product" />
                   <img className="img-hover lazyload" data-src="images/product/product-2.jpg" src="images/product/product-2.jpg" alt="image-product" />
                 </a>
               </div>
               <div className="card-product-info">
-                <a href="product-detail.php" className="name-product link fw-medium text-md">Regular Fit Pima Cotton Polo Shirt</a>
+                <a href="productdetail" className="name-product link fw-medium text-md">Regular Fit Pima Cotton Polo Shirt</a>
                 <p className="price-wrap fw-medium">
                   <span className="price-new">$130.00</span>
                 </p>
@@ -121,7 +121,7 @@ const WishlistPage = () => {
             <div className="card-product style-wishlist style-3 card-product-size">
               <i className="icon icon-close remove" onClick={handleRemoveItem} />
               <div className="card-product-wrapper">
-                <a href="product-detail.php" className="product-img">
+                <a href="productdetail" className="product-img">
                   <img className="img-product lazyload" data-src="images/product/product-3.jpg" src="images/product/product-3.jpg" alt="image-product" />
                   <img className="img-hover lazyload" data-src="images/product/product-4.jpg" src="images/product/product-4.jpg" alt="image-product" />
                 </a>
@@ -150,7 +150,7 @@ const WishlistPage = () => {
                 </div>
               </div>
               <div className="card-product-info">
-                <a href="product-detail.php" className="name-product link fw-medium text-md">Long Regular Fit Tee</a>
+                <a href="productdetail" className="name-product link fw-medium text-md">Long Regular Fit Tee</a>
                 <p className="price-wrap fw-medium">
                   <span className="price-new">$60.00</span>
                   <span className="price-old">$70.00</span>
@@ -179,7 +179,7 @@ const WishlistPage = () => {
             <div className="card-product style-wishlist style-3 card-product-size">
               <i className="icon icon-close remove" onClick={handleRemoveItem} />
               <div className="card-product-wrapper">
-                <a href="product-detail.php" className="product-img">
+                <a href="productdetail" className="product-img">
                   <img className="img-product lazyload" data-src="images/product/product-17.jpg" src="images/product/product-17.jpg" alt="image-product" />
                   <img className="img-hover lazyload" data-src="images/product/product-1.jpg" src="images/product/product-1.jpg" alt="image-product" />
                 </a>
@@ -205,7 +205,7 @@ const WishlistPage = () => {
                 </ul>
               </div>
               <div className="card-product-info">
-                <a href="product-detail.php" className="name-product link fw-medium text-md">Regular Fit Pima Cotton Polo Shirt</a>
+                <a href="productdetail" className="name-product link fw-medium text-md">Regular Fit Pima Cotton Polo Shirt</a>
                 <p className="price-wrap fw-medium">
                   <span className="price-new">$80.00</span>
                   <span className="price-old">$100.00</span>
@@ -234,7 +234,7 @@ const WishlistPage = () => {
             <div className="card-product style-wishlist style-3 card-product-size">
               <i className="icon icon-close remove" onClick={handleRemoveItem} />
               <div className="card-product-wrapper">
-                <a href="product-detail.php" className="product-img">
+                <a href="productdetail" className="product-img">
                   <img className="img-product lazyload" data-src="images/product/product-25.jpg" src="images/product/product-25.jpg" alt="image-product" />
                   <img className="img-hover lazyload" data-src="images/product/product-24.jpg" src="images/product/product-24.jpg" alt="image-product" />
                 </a>
@@ -260,7 +260,7 @@ const WishlistPage = () => {
                 </ul>
               </div>
               <div className="card-product-info">
-                <a href="product-detail.php" className="name-product link fw-medium text-md">Midi Knit Dress</a>
+                <a href="productdetail" className="name-product link fw-medium text-md">Midi Knit Dress</a>
                 <p className="price-wrap fw-medium">
                   <span className="price-new">$40.00</span>
                   <span className="price-old">$60.00</span>
@@ -289,7 +289,7 @@ const WishlistPage = () => {
             <div className="card-product style-wishlist style-3 card-product-size">
               <i className="icon icon-close remove" onClick={handleRemoveItem} />
               <div className="card-product-wrapper">
-                <a href="product-detail.php" className="product-img">
+                <a href="productdetail" className="product-img">
                   <img className="img-product lazyload" data-src="images/product/product-6.jpg" src="images/product/product-6.jpg" alt="image-product" />
                   <img className="img-hover lazyload" data-src="images/product/product-21.jpg" src="images/product/product-21.jpg" alt="image-product" />
                 </a>
@@ -315,7 +315,7 @@ const WishlistPage = () => {
                 </ul>
               </div>
               <div className="card-product-info">
-                <a href="product-detail.php" className="name-product link fw-medium text-md">Oversized Fit Tee</a>
+                <a href="productdetail" className="name-product link fw-medium text-md">Oversized Fit Tee</a>
                 <p className="price-wrap fw-medium">
                   <span className="price-new">$60.00</span>
                   <span className="price-old">$180.00</span>
@@ -339,7 +339,7 @@ const WishlistPage = () => {
             <div className="card-product style-wishlist style-3">
               <i className="icon icon-close remove" onClick={handleRemoveItem} />
               <div className="card-product-wrapper">
-                <a href="product-detail.php" className="product-img">
+                <a href="productdetail" className="product-img">
                   <img className="img-product lazyload" data-src="images/women-yellow-2.jpg" src="images/women-yellow-2.jpg" alt="image-product" />
                   <img className="img-hover lazyload" data-src="images/product/product-28.jpg" src="images/product/product-28.jpg" alt="image-product" />
                 </a>
@@ -365,7 +365,7 @@ const WishlistPage = () => {
                 </ul>
               </div>
               <div className="card-product-info">
-                <a href="product-detail.php" className="name-product link fw-medium text-md">Puff Sleeve Shirred Blouse</a>
+                <a href="productdetail" className="name-product link fw-medium text-md">Puff Sleeve Shirred Blouse</a>
                 <p className="price-wrap fw-medium">
                   <span className="price-new">$57.00</span>
                   <span className="price-old">$60.00</span>
@@ -394,7 +394,7 @@ const WishlistPage = () => {
             <div className="card-product style-wishlist style-3 card-product-size">
               <i className="icon icon-close remove" onClick={handleRemoveItem} />
               <div className="card-product-wrapper">
-                <a href="product-detail.php" className="product-img">
+                <a href="productdetail" className="product-img">
                   <img className="img-product lazyload" data-src="images/product/product-26.jpg" src="images/product/product-26.jpg" alt="image-product" />
                   <img className="img-hover lazyload" data-src="images/product/product-26.jpg" src="images/product/product-26.jpg" alt="image-product" />
                 </a>
@@ -420,7 +420,7 @@ const WishlistPage = () => {
                 </ul>
               </div>
               <div className="card-product-info">
-                <a href="product-detail.php" className="name-product link fw-medium text-md">Printed T-shirt</a>
+                <a href="productdetail" className="name-product link fw-medium text-md">Printed T-shirt</a>
                 <p className="price-wrap fw-medium">
                   <span className="price-new">$120.00</span>
                   <span className="price-old">$140.00</span>
@@ -449,7 +449,7 @@ const WishlistPage = () => {
             <div className="card-product style-wishlist style-3 card-product-size">
               <i className="icon icon-close remove" onClick={handleRemoveItem} />
               <div className="card-product-wrapper">
-                <a href="product-detail.php" className="product-img">
+                <a href="productdetail" className="product-img">
                   <img className="img-product lazyload" data-src="images/product/product-27.jpg" src="images/product/product-27.jpg" alt="image-product" />
                   <img className="img-hover lazyload" data-src="images/product/product-23.jpg" src="images/product/product-23.jpg" alt="image-product" />
                 </a>
@@ -475,7 +475,7 @@ const WishlistPage = () => {
                 </ul>
               </div>
               <div className="card-product-info">
-                <a href="product-detail.php" className="name-product link fw-medium text-md">Basic Sports T-Shirt Crew Neck Ribbed</a>
+                <a href="productdetail" className="name-product link fw-medium text-md">Basic Sports T-Shirt Crew Neck Ribbed</a>
                 <p className="price-wrap fw-medium">
                   <span className="price-new">80.00</span>
                   <span className="price-old">$100.00</span>
@@ -504,7 +504,7 @@ const WishlistPage = () => {
             <div className="card-product style-wishlist style-3">
               <i className="icon icon-close remove" onClick={handleRemoveItem} />
               <div className="card-product-wrapper">
-                <a href="product-detail.php" className="product-img">
+                <a href="productdetail" className="product-img">
                   <img className="img-product lazyload" data-src="images/product/product-10.jpg" src="images/product/product-10.jpg" alt="image-product" />
                   <img className="img-hover lazyload" data-src="images/product/product-20.jpg" src="images/product/product-20.jpg" alt="image-product" />
                 </a>
@@ -530,7 +530,7 @@ const WishlistPage = () => {
                 </ul>
               </div>
               <div className="card-product-info">
-                <a href="product-detail.php" className="name-product link fw-medium text-md">Regular Fit Fine Knit Polo Shirt</a>
+                <a href="productdetail" className="name-product link fw-medium text-md">Regular Fit Fine Knit Polo Shirt</a>
                 <p className="price-wrap fw-medium">
                   <span className="price-new">$130.00</span>
                   <span className="price-old">$130.00</span>
@@ -559,7 +559,7 @@ const WishlistPage = () => {
             <div className="card-product style-wishlist style-3">
               <i className="icon icon-close remove" onClick={handleRemoveItem} />
               <div className="card-product-wrapper">
-                <a href="product-detail.php" className="product-img">
+                <a href="productdetail" className="product-img">
                   <img className="img-product lazyload" data-src="images/product/product-21.jpg" src="images/product/product-21.jpg" alt="image-product" />
                   <img className="img-hover lazyload" data-src="images/women-black-3.jpg" src="images/women-black-3.jpg" alt="image-product" />
                 </a>
@@ -585,7 +585,7 @@ const WishlistPage = () => {
                 </ul>
               </div>
               <div className="card-product-info">
-                <a href="product-detail.php" className="name-product link fw-medium text-md">Crop College T-Shirt</a>
+                <a href="productdetail" className="name-product link fw-medium text-md">Crop College T-Shirt</a>
                 <p className="price-wrap fw-medium">
                   <span className="price-new">$80.00</span>
                   <span className="price-old">$100.00</span>
@@ -614,7 +614,7 @@ const WishlistPage = () => {
             <div className="card-product style-wishlist style-3 card-product-size">
               <i className="icon icon-close remove" onClick={handleRemoveItem} />
               <div className="card-product-wrapper">
-                <a href="product-detail.php" className="product-img">
+                <a href="productdetail" className="product-img">
                   <img className="img-product lazyload" data-src="images/product/product-22.jpg" src="images/product/product-22.jpg" alt="image-product" />
                   <img className="img-hover lazyload" data-src="images/product/product-5.jpg" src="images/product/product-5.jpg" alt="image-product" />
                 </a>
@@ -640,7 +640,7 @@ const WishlistPage = () => {
                 </ul>
               </div>
               <div className="card-product-info">
-                <a href="product-detail.php" className="name-product link fw-medium text-md">Bow-Tie T-Shirt</a>
+                <a href="productdetail" className="name-product link fw-medium text-md">Bow-Tie T-Shirt</a>
                 <p className="price-wrap fw-medium">
                   <span className="price-new">$120.00</span>
                   <span className="price-old">$140.00</span>
@@ -695,7 +695,7 @@ const WishlistPage = () => {
               {/* Item 1 */}
               <div className="card-product style-2 card-product-size">
                 <div className="card-product-wrapper">
-                  <a href="product-detail.php" className="product-img">
+                  <a href="productdetail" className="product-img">
                     <img className="img-product lazyload" data-src="images/product/product-5.jpg" src="images/product/product-5.jpg" alt="image-product" />
                     <img className="img-hover lazyload" data-src="images/product/product-22.jpg" src="images/product/product-22.jpg" alt="image-product" />
                   </a>
@@ -738,7 +738,7 @@ const WishlistPage = () => {
                   </div>
                 </div>
                 <div className="card-product-info">
-                  <a href="product-detail.php" className="name-product link fw-medium text-md">Turtleneck T-shirt</a>
+                  <a href="productdetail" className="name-product link fw-medium text-md">Turtleneck T-shirt</a>
                   <p className="price-wrap fw-medium">
                     <span className="price-new">$80.00</span>
                     <span className="price-old">$100.00</span>
@@ -761,7 +761,7 @@ const WishlistPage = () => {
               {/* Item 2 */}
               <div className="card-product style-2">
                 <div className="card-product-wrapper">
-                  <a href="product-detail.php" className="product-img">
+                  <a href="productdetail" className="product-img">
                     <img className="img-product lazyload" data-src="images/product/product-12.jpg" src="images/product/product-12.jpg" alt="image-product" />
                     <img className="img-hover lazyload" data-src="images/product/product-39.jpg" src="images/product/product-39.jpg" alt="image-product" />
                   </a>
@@ -796,7 +796,7 @@ const WishlistPage = () => {
                   </div>
                 </div>
                 <div className="card-product-info">
-                  <a href="product-detail.php" className="name-product link fw-medium text-md">Loose Fit Tee</a>
+                  <a href="productdetail" className="name-product link fw-medium text-md">Loose Fit Tee</a>
                   <p className="price-wrap fw-medium">
                     <span className="price-new">$65.00</span>
                   </p>

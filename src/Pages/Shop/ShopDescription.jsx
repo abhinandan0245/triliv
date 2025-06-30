@@ -50,9 +50,9 @@ const ShopDescription = () => {
             detail for lasting comfort and a perfect fit.
           </p>
           <p className="mt_12 text-md text-center">Looking for more? Don't miss out on our other exciting collections
-            for <a href="shop-sub-collection.php"
+            for <a href="/notfound"
               className="text-primary text-decoration-underline fw-medium">BAGS</a> and
-            <a href="shop-sub-collection.php"
+            <a href="/notfound"
               className="text-primary text-decoration-underline fw-medium">ACCESSORIES</a>.
           </p>
         </div>

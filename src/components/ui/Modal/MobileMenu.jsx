@@ -32,7 +32,7 @@ const MobileMenu = ({ show, handleClose, toggleLogin }) => {
                 </Link>
               </li>
               <li  className='nav-mb-item'>
-                <Link to="/about-us" className="item-link  mb-menu-link" onClick={handleClose}>
+                <Link to="/aboutus" className="item-link  mb-menu-link" onClick={handleClose}>
                   Our Story
                 </Link>
               </li>

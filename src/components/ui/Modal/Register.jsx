@@ -1,102 +1,121 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 
-const Register = () => {
+
+const RegisterPopup = ({ show, onClose }) => {
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    password: ''
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
   });
 
+const navigate = useNavigate();
+ 
+const handleRegisterClick = () => {
+    onClose();  // Close the popup
+    navigate('/myaccount');  // Navigate to MyAccount
+  };
+   
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Here you would typically handle form submission, like API calls
-    console.log('Form submitted:', formData);
-    // For demo purposes, we'll just log to console
+    // Handle registration logic here
+    console.log("Registration form submitted:", formData);
+    // You would typically make an API call here
   };
 
   return (
-    <div className="offcanvas offcanvas-end popup-style-1 popup-register" id="register">
+    <div
+      className={`offcanvas offcanvas-end popup-style-1 popup-register ${
+        show ? "show" : ""
+      }`}
+    >
       <div className="canvas-wrapper">
         <div className="canvas-header popup-header">
-          <span className="title">Create account</span>
-          <button 
-            className="icon-close icon-close-popup" 
-            data-bs-dismiss="offcanvas" 
-            aria-label="Close" 
+          <span className="title">Create Account</span>
+          <button
+            className="icon-close icon-close-popup"
+            onClick={onClose} // Changed from data-bs-dismiss
+            aria-label="Close"
           />
         </div>
         <div className="canvas-body popup-inner">
-          <form onSubmit={handleSubmit} className="form-login">
-            <div>
-              <fieldset className="mb_12">
-                <input 
-                  type="text" 
-                  placeholder="First name" 
+          <form onSubmit={handleSubmit} className="form-register">
+            <div className="name-fields">
+              <fieldset className="first-name mb_12">
+                <input
+                  type="text"
                   name="firstName"
+                  className="form-control"
+                  placeholder="First Name*"
+                  required
                   value={formData.firstName}
                   onChange={handleChange}
                 />
               </fieldset>
-              <fieldset className="mb_12">
-                <input 
-                  type="text" 
-                  placeholder="Last name" 
+              <fieldset className="last-name mb_12">
+                <input
+                  type="text"
                   name="lastName"
+                  className="form-control"
+                  placeholder="Last Name*"
+                  required
                   value={formData.lastName}
                   onChange={handleChange}
                 />
               </fieldset>
-              <fieldset className="email mb_12">
-                <input 
-                  type="email" 
-                  placeholder="Email*" 
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                />
-              </fieldset>
-              <fieldset className="password">
-                <input 
-                  type="password" 
-                  placeholder="Password*" 
-                  name="password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  required
-                />
-              </fieldset>
             </div>
-            <div className="bot">
-              <p className="text text-sm text-main-2">
-                Sign up for early Sale access plus tailored new arrivals, trends and promotions. 
-                To opt out, click unsubscribe in our emails.
-              </p>
-              <div className="button-wrap">
-                <button 
-                  className="subscribe-button tf-btn animate-btn bg-dark-2 w-100" 
-                  type="submit"
-                >
-                  Sign up
-                </button>
-                <button 
-                  type="button" 
-                  data-bs-target="#login" 
-                  data-bs-toggle="offcanvas" 
-                  className="tf-btn btn-out-line-dark2 w-100"
-                >
-                  Sign in
-                </button>
-              </div>
+            <fieldset className="email mb_12">
+              <input
+                type="email"
+                name="email"
+                className="form-control"
+                placeholder="Email*"
+                required
+                value={formData.email}
+                onChange={handleChange}
+              />
+            </fieldset>
+            <fieldset className="password mb_12">
+              <input
+                type="password"
+                name="password"
+                className="form-control"
+                placeholder="Password*"
+                required
+                value={formData.password}
+                onChange={handleChange}
+              />
+            </fieldset>
+
+            <div className="button-wrap">
+              <button
+                className="subscribe-button tf-btn animate-btn d-inline-flex bg-dark-2 w-100"
+                type="submit"
+                 onClick={handleRegisterClick}
+              >
+                Register
+              </button>
+              <button
+                type="button"
+                className="tf-btn btn-out-line-dark2 w-100"
+                onClick={() => {
+                  onClose(); // Close register
+                  // This function should be passed from Header
+                  toggleLogin(); // Open login
+                }}
+              >
+                Already have an account? Sign in
+              </button>
             </div>
           </form>
         </div>
@@ -105,4 +124,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default RegisterPopup;

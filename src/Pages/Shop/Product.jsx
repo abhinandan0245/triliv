@@ -480,7 +480,7 @@ const Product = () => {
                 data-brand={product.brand}
               >
                 <div className="card-product-wrapper">
-                  <a href="product-detail.php" className="product-img">
+                  <a href="/productdetail" className="product-img">
                     <img className="img-product lazyload" data-src={product.mainImage} src={product.mainImage} alt="image-product" />
                     <img className="img-hover lazyload" data-src={product.hoverImage} src={product.hoverImage} alt="image-product" />
                   </a>
@@ -490,7 +490,7 @@ const Product = () => {
                 </div>
                 <div className="card-product-info">
                   <div className="info-list">
-                    <a href="product-detail.php" className="name-product link fw-medium text-md">{product.name}</a>
+                    <a href="/productdetail" className="name-product link fw-medium text-md">{product.name}</a>
                     <p className="price-wrap fw-medium text-md">
                       <span className="price-new">{product.priceNew}</span>
                       {product.priceOld && <span className="price-old">{product.priceOld}</span>}
@@ -571,7 +571,7 @@ const Product = () => {
                 data-brand={product.brand}
               >
                 <div className="card-product-wrapper">
-                  <a href="product-detail.php" className="product-img">
+                  <a href="/productdetail" className="product-img">
                     <img className="img-product lazyload" data-src={product.mainImage} src={product.mainImage} alt="image-product" />
                     <img className="img-hover lazyload" data-src={product.hoverImage} src={product.hoverImage} alt="image-product" />
                   </a>
@@ -613,7 +613,7 @@ const Product = () => {
                   )}
                 </div>
                 <div className="card-product-info">
-                  <a href="product-detail.php" className="name-product link fw-medium text-md">{product.name}</a>
+                  <a href="/productdetail" className="name-product link fw-medium text-md">{product.name}</a>
                   <p className="price-wrap fw-medium">
                     <span className="price-new">{product.priceNew}</span>
                     {product.priceOld && <span className="price-old">{product.priceOld}</span>}

@@ -1,24 +1,22 @@
 import React, { useState, useEffect } from 'react';
 
 const MainDetail = () => {
+   const [quantity, setQuantity] = useState(1);
   const [selectedColor, setSelectedColor] = useState('black');
   const [selectedSize, setSelectedSize] = useState('small');
-  const [quantity, setQuantity] = useState(1);
-  const [checkedItems, setCheckedItems] = useState([true, false, false]);
-  const [totalPrice, setTotalPrice] = useState(60.00);
-  const [totalOldPrice, setTotalOldPrice] = useState(80.00);
+  const [bundleItems, setBundleItems] = useState([
+    { id: 1, checked: true, title: "Single Breasted Blazer", newPrice: 60, oldPrice: 80, variant: "Black / S" },
+    { id: 2, checked: false, title: "Short Sleeve Sweat", newPrice: 75, oldPrice: 0, variant: "White / S" },
+    { id: 3, checked: false, title: "One Shoulder Velvet T-Shirt", newPrice: 85, oldPrice: 100, variant: "Black / S" }
+  ]);
 
-  // Handle color selection
-  const handleColorChange = (color) => {
-    setSelectedColor(color);
-  };
+  // Initialize Swiper and other JS functionality (would need to be implemented)
+  useEffect(() => {
+    // This is where you would initialize Swiper and other JS functionality
+    // You'll need to use React-specific libraries or refs to handle this
+    console.log("Component mounted - initialize Swiper here");
+  }, []);
 
-  // Handle size selection
-  const handleSizeChange = (size) => {
-    setSelectedSize(size);
-  };
-
-  // Handle quantity changes
   const handleQuantityChange = (type) => {
     if (type === 'increase') {
       setQuantity(prev => prev + 1);
@@ -27,36 +25,31 @@ const MainDetail = () => {
     }
   };
 
-  // Handle checkbox changes for bundle items
-  const handleCheckboxChange = (index) => {
-    const newCheckedItems = [...checkedItems];
-    newCheckedItems[index] = !newCheckedItems[index];
-    setCheckedItems(newCheckedItems);
-
-    // Calculate new total price
-    let newTotal = 60.00;
-    let newOldTotal = 80.00;
-    
-    if (newCheckedItems[1]) {
-      newTotal += 75.00;
-    }
-    if (newCheckedItems[2]) {
-      newTotal += 85.00;
-      newOldTotal += 100.00;
-    }
-    
-    setTotalPrice(newTotal);
-    setTotalOldPrice(newOldTotal);
+  const handleColorChange = (color) => {
+    setSelectedColor(color);
   };
 
-  // For sticky add to cart functionality
-  useEffect(() => {
-    // This would be where you'd implement any sticky behavior
-    // You might need to add event listeners for scroll position
-  }, []);
+  const handleSizeChange = (size) => {
+    setSelectedSize(size);
+  };
+
+  const toggleBundleItem = (id) => {
+    setBundleItems(bundleItems.map(item => 
+      item.id === id ? { ...item, checked: !item.checked } : item
+    ));
+  };
+
+  // Calculate total price for bundle
+  const bundleTotal = bundleItems.reduce((total, item) => {
+    return item.checked ? total + item.newPrice : total;
+  }, 0);
+
+  const bundleOldTotal = bundleItems.reduce((total, item) => {
+    return item.checked && item.oldPrice ? total + item.oldPrice : total;
+  }, 0);
 
   return (
-    <section className="flat-single-product">
+     <section className="flat-single-product">
       <div className="tf-main-product section-image-zoom">
         <div className="container">
           <div className="row">
@@ -67,44 +60,44 @@ const MainDetail = () => {
                   <div dir="ltr" className="swiper tf-product-media-thumbs other-image-zoom" data-preview={4} data-direction="vertical">
                     <div className="swiper-wrapper stagger-wrap">
                       {/* black */}
-                      <div className={`swiper-slide stagger-item ${selectedColor === 'black' ? 'active' : ''}`} data-color="black" data-size="small">
+                      <div className="swiper-slide stagger-item" data-color="black" data-size="small">
                         <div className="item">
                           <img className="lazyload" data-src="images/women-black-1.jpg" src="images/women-black-1.jpg" alt="img-product" />
                         </div>
                       </div>
-                      <div className={`swiper-slide stagger-item ${selectedColor === 'black' ? 'active' : ''}`} data-color="black" data-size="medium">
+                      <div className="swiper-slide stagger-item" data-color="black" data-size="medium">
                         <div className="item">
                           <img className="lazyload" data-src="images/women-black-2.jpg" src="images/women-black-2.jpg" alt="img-product" />
                         </div>
                       </div>
-                      <div className={`swiper-slide stagger-item ${selectedColor === 'black' ? 'active' : ''}`} data-color="black" data-size="large">
+                      <div className="swiper-slide stagger-item" data-color="black" data-size="large">
                         <div className="item">
                           <img className="lazyload" data-src="images/women-black-3.jpg" src="images/women-black-3.jpg" alt="img-product" />
                         </div>
                       </div>
-                      <div className={`swiper-slide stagger-item ${selectedColor === 'black' ? 'active' : ''}`} data-color="black" data-size="extra large">
+                      <div className="swiper-slide stagger-item" data-color="black" data-size="extra large">
                         <div className="item">
                           <img className="lazyload" data-src="images/women-black-4.jpg" src="images/women-black-4.jpg" alt="img-product" />
                         </div>
                       </div>
                       {/* yellow */}
-                      <div className={`swiper-slide stagger-item ${selectedColor === 'orange' ? 'active' : ''}`} data-color="orange" data-size="small">
+                      <div className="swiper-slide stagger-item" data-color="orange" data-size="small">
                         <div className="item">
                           <img className="lazyload" data-src="images/fs-orange1.jpg" src="images/fs-orange1.jpg" alt="img-product" />
                         </div>
                       </div>
-                      <div className={`swiper-slide stagger-item ${selectedColor === 'orange' ? 'active' : ''}`} data-color="orange" data-size="medium">
+                      <div className="swiper-slide stagger-item" data-color="orange" data-size="medium">
                         <div className="item">
                           <img className="lazyload" data-src="images/fs-orange2.jpg" src="images/fs-orange2.jpg" alt="img-product" />
                         </div>
                       </div>
                       {/* grey */}
-                      <div className={`swiper-slide stagger-item ${selectedColor === 'green' ? 'active' : ''}`} data-color="green" data-size="large">
+                      <div className="swiper-slide stagger-item" data-color="green" data-size="large">
                         <div className="item">
                           <img className="lazyload" data-src="images/fs-green1.jpg" src="images/fs-green1.jpg" alt="img-product" />
                         </div>
                       </div>
-                      <div className={`swiper-slide stagger-item ${selectedColor === 'green' ? 'active' : ''}`} data-color="green" data-size="extra large">
+                      <div className="swiper-slide stagger-item" data-color="green" data-size="extra large">
                         <div className="item">
                           <img className="lazyload" data-src="images/fs-green2.jpg" src="images/fs-green2.jpg" alt="img-product" />
                         </div>
@@ -115,44 +108,44 @@ const MainDetail = () => {
                     <div dir="ltr" className="swiper tf-product-media-main" id="gallery-swiper-started">
                       <div className="swiper-wrapper">
                         {/* black */}
-                        <div className={`swiper-slide ${selectedColor === 'black' && selectedSize === 'small' ? 'active' : ''}`} data-color="black" data-size="small">
+                        <div className="swiper-slide" data-color="black" data-size="small">
                           <a href="images/women-black-1.jpg" target="_blank" className="item" data-pswp-width="552px" data-pswp-height="827px">
                             <img className="tf-image-zoom lazyload" data-zoom="images/women-black-1.jpg" data-src="images/women-black-1.jpg" src="images/women-black-1.jpg" alt="img-product" />
                           </a>
                         </div>
-                        <div className={`swiper-slide ${selectedColor === 'black' && selectedSize === 'medium' ? 'active' : ''}`} data-color="black" data-size="medium">
+                        <div className="swiper-slide" data-color="black" data-size="medium">
                           <a href="images/women-black-2.jpg" target="_blank" className="item" data-pswp-width="552px" data-pswp-height="827px">
                             <img className="tf-image-zoom lazyload" data-zoom="images/women-black-2.jpg" data-src="images/women-black-2.jpg" src="images/women-black-2.jpg" alt="img-product" />
                           </a>
                         </div>
-                        <div className={`swiper-slide ${selectedColor === 'black' && selectedSize === 'large' ? 'active' : ''}`} data-color="black" data-size="large">
+                        <div className="swiper-slide" data-color="black" data-size="large">
                           <a href="images/women-black-3.jpg" target="_blank" className="item" data-pswp-width="552px" data-pswp-height="827px">
                             <img className="tf-image-zoom lazyload" data-zoom="images/women-black-3.jpg" data-src="images/women-black-3.jpg" src="images/women-black-3.jpg" alt="img-product" />
                           </a>
                         </div>
-                        <div className={`swiper-slide ${selectedColor === 'black' && selectedSize === 'extra large' ? 'active' : ''}`} data-color="black" data-size="extra large">
+                        <div className="swiper-slide" data-color="black" data-size="extra large">
                           <a href="images/women-black-4.jpg" target="_blank" className="item" data-pswp-width="552px" data-pswp-height="827px">
                             <img className="tf-image-zoom lazyload" data-zoom="images/women-black-4.jpg" data-src="images/women-black-4.jpg" src="images/women-black-4.jpg" alt="img-product" />
                           </a>
                         </div>
                         {/* yellow */}
-                        <div className={`swiper-slide ${selectedColor === 'orange' && selectedSize === 'small' ? 'active' : ''}`} data-color="orange" data-size="small">
+                        <div className="swiper-slide" data-color="orange" data-size="small">
                           <a href="images/fs-orange1.jpg" target="_blank" className="item" data-pswp-width="552px" data-pswp-height="827px">
                             <img className="tf-image-zoom lazyload" data-zoom="images/fs-orange1.jpg" data-src="images/fs-orange1.jpg" src="images/fs-orange1.jpg" alt="img-product" />
                           </a>
                         </div>
-                        <div className={`swiper-slide ${selectedColor === 'orange' && selectedSize === 'medium' ? 'active' : ''}`} data-color="orange" data-size="medium">
+                        <div className="swiper-slide" data-color="orange" data-size="medium">
                           <a href="images/fs-orange2.jpg" target="_blank" className="item" data-pswp-width="552px" data-pswp-height="827px">
                             <img className="tf-image-zoom lazyload" data-zoom="images/fs-orange2.jpg" data-src="images/fs-orange2.jpg" src="images/fs-orange2.jpg" alt="img-product" />
                           </a>
                         </div>
                         {/* grey */}
-                        <div className={`swiper-slide ${selectedColor === 'green' && selectedSize === 'large' ? 'active' : ''}`} data-color="green" data-size="large">
+                        <div className="swiper-slide" data-color="green" data-size="large">
                           <a href="images/fs-green1.jpg" target="_blank" className="item" data-pswp-width="552px" data-pswp-height="827px">
                             <img className="tf-image-zoom lazyload" data-zoom="images/fs-green1.jpg" data-src="images/fs-green1.jpg" src="images/fs-green1.jpg" alt="img-product" />
                           </a>
                         </div>
-                        <div className={`swiper-slide ${selectedColor === 'green' && selectedSize === 'extra large' ? 'active' : ''}`} data-color="green" data-size="extra large">
+                        <div className="swiper-slide" data-color="green" data-size="extra large">
                           <a href="images/fs-green2.jpg" target="_blank" className="item" data-pswp-width="552px" data-pswp-height="827px">
                             <img className="tf-image-zoom lazyload" data-zoom="images/fs-green2.jpg" data-src="images/fs-green2.jpg" src="images/fs-green2.jpg" alt="img-product" />
                           </a>
@@ -185,8 +178,8 @@ const MainDetail = () => {
                       <span className="count-review">(5 reviews)</span>
                     </div>
                     <div className="product-price">
-                      <div className="display-sm price-new price-on-sale">${(60.00 * quantity).toFixed(2)}</div>
-                      <div className="display-sm price-old">${(80.00 * quantity).toFixed(2)}</div>
+                      <div className="display-sm price-new price-on-sale">$60.00</div>
+                      <div className="display-sm price-old">$80.00</div>
                       <span className="badge-sale">20% Off</span>
                     </div>
                     <div className="product-stock">
@@ -203,7 +196,7 @@ const MainDetail = () => {
                     <div className="product-progress-sale">
                       <div className="title-hurry-up"><span className="text-primary fw-medium">HURRY UP!</span> Only <span className="count">4</span> items left!</div>
                       <div className="progress-sold">
-                        <div className="value" style={{ width: '70%' }} data-progress={70} />
+                        <div className="value" style={{width: '70%'}} data-progress={70} />
                       </div>
                     </div>
                   </div>
@@ -241,8 +234,7 @@ const MainDetail = () => {
                     </div>
                     <div className="variant-picker-item variant-size">
                       <div className="variant-picker-label">
-                        <div>Size:<span className="variant-picker-label-value value-currentSize">{selectedSize.charAt(0).toUpperCase() + selectedSize.slice(1)}</span>
-                        </div>
+                        <div>Size:<span className="variant-picker-label-value value-currentSize">{selectedSize.charAt(0).toUpperCase() + selectedSize.slice(1)}</span></div>
                         <a href="#sizeGuide" data-bs-toggle="modal" className="size-guide link">Size Guide</a>
                       </div>
                       <div className="variant-picker-values">
@@ -250,30 +242,22 @@ const MainDetail = () => {
                           className={`size-btn ${selectedSize === 'small' ? 'active' : ''}`} 
                           data-size="small"
                           onClick={() => handleSizeChange('small')}
-                        >
-                          S
-                        </span>
+                        >S</span>
                         <span 
                           className={`size-btn ${selectedSize === 'medium' ? 'active' : ''}`} 
                           data-size="medium"
                           onClick={() => handleSizeChange('medium')}
-                        >
-                          M
-                        </span>
+                        >M</span>
                         <span 
                           className={`size-btn ${selectedSize === 'large' ? 'active' : ''}`} 
                           data-size="large"
                           onClick={() => handleSizeChange('large')}
-                        >
-                          L
-                        </span>
+                        >L</span>
                         <span 
                           className={`size-btn ${selectedSize === 'extra large' ? 'active' : ''}`} 
                           data-size="extra large"
                           onClick={() => handleSizeChange('extra large')}
-                        >
-                          XL
-                        </span>
+                        >XL</span>
                       </div>
                     </div>
                   </div>
@@ -281,18 +265,7 @@ const MainDetail = () => {
                     <div className="group-btn">
                       <div className="wg-quantity">
                         <button className="btn-quantity btn-decrease" onClick={() => handleQuantityChange('decrease')}>-</button>
-                        <input 
-                          className="quantity-product" 
-                          type="text" 
-                          name="number" 
-                          value={quantity} 
-                          onChange={(e) => {
-                            const value = parseInt(e.target.value);
-                            if (!isNaN(value) && value > 0) {
-                              setQuantity(value);
-                            }
-                          }}
-                        />
+                        <input className="quantity-product" type="text" name="number" value={quantity} readOnly />
                         <button className="btn-quantity btn-increase" onClick={() => handleQuantityChange('increase')}>+</button>
                       </div>
                       <a href="#shoppingCart" data-bs-toggle="offcanvas" className="tf-btn animate-btn btn-add-to-cart">Add to cart</a>
@@ -364,116 +337,44 @@ const MainDetail = () => {
                 </div>
                 <div className="tf-product-fbt">
                   <div className="title text-xl fw-medium">Frequently Bought Together</div>
-                  <div className="tf-product-form-bundle">
+                  <form className="tf-product-form-bundle">
                     <div className="tf-bundle-products">
-                      <div className={`tf-bundle-product-item item-has-checkbox ${checkedItems[0] ? 'check' : ''}`}>
-                        <div className="bundle-check">
-                          <input 
-                            type="checkbox" 
-                            checked={checkedItems[0]} 
-                            onChange={() => handleCheckboxChange(0)} 
-                            className="tf-check" 
-                          />
-                        </div>
-                        <a href="product-detail.php" className="bundle-image">
-                          <img src="images/women-black-1.jpg" alt="img-product" />
-                        </a>
-                        <div className="bundle-info">
-                          <div className="bundle-title text-sm fw-medium">This item: Single Breasted Blazer</div>
-                          <div className="bundle-price text-md fw-medium">
-                            <span className="new-price">$60.00</span>
-                            <span className="old-price">$80.00</span>
+                      {bundleItems.map(item => (
+                        <div key={item.id} className={`tf-bundle-product-item item-has-checkbox ${item.checked ? 'check' : ''}`}>
+                          <div className="bundle-check">
+                            <input 
+                              type="checkbox" 
+                              checked={item.checked}
+                              onChange={() => toggleBundleItem(item.id)}
+                              className="tf-check" 
+                            />
                           </div>
-                          <div className="bundle-variant tf-select">
-                            <select>
-                              <option selected={selectedColor === 'black' && selectedSize === 'small'}>Black / S</option>
-                              <option>Black / M</option>
-                              <option>Black / L</option>
-                              <option>Blue / S</option>
-                              <option>Blue / M</option>
-                              <option>Blue / L</option>
-                              <option>Blue / XL</option>
-                              <option>White / S</option>
-                              <option>White / M</option>
-                              <option>White / L</option>
-                            </select>
+                          <a href="product-detail.php" className="bundle-image">
+                            <img src={item.id === 1 ? "images/women-black-1.jpg" : item.id === 2 ? "images/women-grey-3.jpg" : "images/women-black-6.jpg"} alt="img-product" />
+                          </a>
+                          <div className="bundle-info">
+                            <div className="bundle-title text-sm fw-medium">{item.title}</div>
+                            <div className="bundle-price text-md fw-medium">
+                              <span className="new-price">${item.newPrice.toFixed(2)}</span>
+                              {item.oldPrice > 0 && <span className="old-price">${item.oldPrice.toFixed(2)}</span>}
+                            </div>
+                            <div className="bundle-variant tf-select">
+                              <select value={item.variant}>
+                                <option>{item.variant}</option>
+                                {/* Other options would be added here */}
+                              </select>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                      <div className={`tf-bundle-product-item item-has-checkbox ${checkedItems[1] ? 'check' : ''}`}>
-                        <div className="bundle-check">
-                          <input 
-                            type="checkbox" 
-                            checked={checkedItems[1]} 
-                            onChange={() => handleCheckboxChange(1)} 
-                            className="tf-check" 
-                          />
-                        </div>
-                        <a href="product-detail.php" className="bundle-image">
-                          <img src="images/women-grey-3.jpg" alt="img-product" />
-                        </a>
-                        <div className="bundle-info">
-                          <div className="bundle-title text-sm fw-medium">Short Sleeve Sweat</div>
-                          <div className="bundle-price text-md fw-medium">
-                            <span className="new-price">$75.00</span>
-                          </div>
-                          <div className="bundle-variant tf-select">
-                            <select>
-                              <option selected="selected">White / S</option>
-                              <option>White / M</option>
-                              <option>White / L</option>
-                              <option>Black / M</option>
-                              <option>Black / L</option>
-                              <option>Blue / S</option>
-                              <option>Blue / M</option>
-                              <option>Blue / L</option>
-                              <option>Blue / XL</option>
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-                      <div className={`tf-bundle-product-item item-has-checkbox ${checkedItems[2] ? 'check' : ''}`}>
-                        <div className="bundle-check">
-                          <input 
-                            type="checkbox" 
-                            checked={checkedItems[2]} 
-                            onChange={() => handleCheckboxChange(2)} 
-                            className="tf-check" 
-                          />
-                        </div>
-                        <a href="product-detail.php" className="bundle-image">
-                          <img src="images/women-black-6.jpg" alt="img-product" />
-                        </a>
-                        <div className="bundle-info">
-                          <div className="bundle-title text-sm fw-medium">One Shoulder Velvet T-Shirt</div>
-                          <div className="bundle-price text-md fw-medium">
-                            <span className="new-price">$85.00</span>
-                            <span className="old-price">$100.00</span>
-                          </div>
-                          <div className="bundle-variant tf-select">
-                            <select>
-                              <option selected="selected">Black / S</option>
-                              <option>Black / M</option>
-                              <option>Black / L</option>
-                              <option>Blue / S</option>
-                              <option>Blue / M</option>
-                              <option>Blue / L</option>
-                              <option>Blue / XL</option>
-                              <option>White / S</option>
-                              <option>White / M</option>
-                              <option>White / L</option>
-                            </select>
-                          </div>
-                        </div>
-                      </div>
+                      ))}
                     </div>
                     <div className="bundle-total-submit">
                       <div className="text">Total price:</div>
-                      <span className="total-price">${totalPrice.toFixed(2)}</span>
-                      <span className="total-price-old">${totalOldPrice.toFixed(2)}</span>
+                      <span className="total-price">${bundleTotal.toFixed(2)}</span>
+                      {bundleOldTotal > 0 && <span className="total-price-old">${bundleOldTotal.toFixed(2)}</span>}
                     </div>
                     <button data-bs-target="#shoppingCart" type="button" data-bs-toggle="offcanvas" className="btn-submit-total tf-btn btn-out-line-primary">Add selected to cart</button>
-                  </div>
+                  </form>
                 </div>
               </div>
             </div>
@@ -491,10 +392,10 @@ const MainDetail = () => {
               <div className="tf-sticky-atc-title fw-5 d-xl-block d-none">Long Sleeve T-Shirt</div>
             </div>
             <div className="tf-sticky-atc-infos">
-              <div>
+              <form>
                 <div className="tf-sticky-atc-variant-price text-center tf-select">
                   <select>
-                    <option selected={selectedColor === 'black' && selectedSize === 'small'}>Black / Small - $60.00</option>
+                    <option selected>Black / Small - $60.00</option>
                     <option>Black / M - $60.00</option>
                     <option>Black / L - $60.00</option>
                     <option>Blue / S - $60.00</option>
@@ -509,25 +410,14 @@ const MainDetail = () => {
                 <div className="tf-sticky-atc-btns">
                   <div className="tf-product-info-quantity">
                     <div className="wg-quantity">
-                      <button className="btn-quantity minus-btn" onClick={() => handleQuantityChange('decrease')}>-</button>
-                      <input 
-                        className="quantity-product font-4" 
-                        type="text" 
-                        name="number" 
-                        value={quantity} 
-                        onChange={(e) => {
-                          const value = parseInt(e.target.value);
-                          if (!isNaN(value) && value > 0) {
-                            setQuantity(value);
-                          }
-                        }}
-                      />
-                      <button className="btn-quantity plus-btn" onClick={() => handleQuantityChange('increase')}>+</button>
+                      <button className="btn-quantity minus-btn" onClick={(e) => { e.preventDefault(); handleQuantityChange('decrease'); }}>-</button>
+                      <input className="quantity-product font-4" type="text" name="number" value={quantity} readOnly />
+                      <button className="btn-quantity plus-btn" onClick={(e) => { e.preventDefault(); handleQuantityChange('increase'); }}>+</button>
                     </div>
                   </div>
                   <a href="#shoppingCart" data-bs-toggle="offcanvas" className="tf-btn animate-btn d-inline-flex justify-content-center">Add to cart</a>
                 </div>
-              </div>
+              </form>
             </div>
           </div>
         </div>

@@ -15,7 +15,15 @@ import ReturnRefund from "./pages/Policies/ReturnRefund";
 import Shipping from "./pages/Policies/Shipping";
 import QuickAddModal from "./components/ui/Modal/QuickAdd";
 import CheckoutPage from "./pages/Cart/CheckoutPage";
-
+import Register from "./components/ui/Modal/Register";
+import LoginPopup from "./components/ui/Modal/Login";
+import Toolbar from "./components/ui/Modal/Toolbar"; 
+import Cart from "./pages/Cart/CartPage";
+import RegisterPopup from "./components/ui/Modal/Register";
+import MyAccount from "./pages/Account/MyAccount";
+import Orders from "./pages/Account/Orders";
+import Addresses from "./pages/Account/Addresses";
+import AccountDetail from "./pages/Account/AcoountDetail";
 
 function App() {
   return (
@@ -36,15 +44,23 @@ function App() {
             <Route path="/returnrefund" element={<ReturnRefund />} />
             <Route path="/notfound" element={<NotFoundPage />} />
             <Route path="/shipping" element={< Shipping/>} />
+            <Route path="/cart" element={<Cart/>} />
             
             
             <Route path="/" element={< QuickAddModal/>} />
             <Route path="/checkout" element={<CheckoutPage/>} />
-            <Route path="/shipping" element={< Shipping/>} />
+            <Route path="/register" element={< RegisterPopup/>} />
+            <Route path="/login" element={< LoginPopup/>} />
+            <Route path="/myaccount" element={< MyAccount/>} />
+            <Route path="/addresses" element={<Addresses/>} />
+            <Route path="/orders" element={<Orders/>} />
+            <Route path="/accountdetails" element={<AccountDetail/>} />
+
 
             
           </Routes>
         </main>
+        <Toolbar/>
         <Footer />
       </div>
 

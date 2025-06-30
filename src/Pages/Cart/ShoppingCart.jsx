@@ -13,7 +13,7 @@ import dinersClub from '../../../public/images/DinersClub.png';
 import mastercard from '../../../public/images/Mastercard.png';
 import stripe from '../../../public/images/Stripe.png';
 
-const ShoppingCart = () => {
+const Shopping = () => {
   // State for cart items
   const [cartItems, setCartItems] = useState([
     {
@@ -505,4 +505,4 @@ const ShoppingCart = () => {
   );
 };
 
-export default ShoppingCart;
+export default Shopping;
