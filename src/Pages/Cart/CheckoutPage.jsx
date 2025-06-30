@@ -45,7 +45,7 @@ const CheckoutPage = () => {
           <div className="box-title text-center">
             <h4 className="title">Checkout</h4>
             <div className="breadcrumb-list">
-              <a className="breadcrumb-item" href="index.php">Home</a>
+              <a className="breadcrumb-item" href="/">Home</a>
               <div className="breadcrumb-item dot"><span /></div>
               <div className="breadcrumb-item current">Checkout</div>
             </div>
@@ -372,7 +372,7 @@ const CheckoutPage = () => {
                   </div>
                   <p className="text-dark-6 text-sm">Your personal data will be used to process your order,
                     support your experience throughout this website, and for other purposes described in
-                    our <a href="privacy-policy.php" className="fw-medium text-decoration-underline link text-sm">privacy policy.</a></p>
+                    our <a href="privacypolicy" className="fw-medium text-decoration-underline link text-sm">privacy policy.</a></p>
                 </div>
               </form>
             </div>

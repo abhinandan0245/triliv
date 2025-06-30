@@ -89,13 +89,13 @@ const ShoppingCart = () => {
                 <div className="tf-mini-cart-items">
                   <div className="tf-mini-cart-item file-delete">
                     <div className="tf-mini-cart-image">
-                      <a href="product-detail.php">
+                      <a href="productdetail">
                         <img className="lazyload" data-src="images/product-1.jpg" src="images/product-1.jpg" alt="img-product" />
                       </a>
                     </div>
                     <div className="tf-mini-cart-info">
                       <div className="d-flex justify-content-between">
-                        <a className="title link text-md fw-medium" href="product-detail.php">Bird of Paradise</a>
+                        <a className="title link text-md fw-medium" href="productdetail">Bird of Paradise</a>
                         <i className="icon icon-close remove fs-12" />
                       </div>
                       <p className="price-wrap text-sm fw-medium">
@@ -111,13 +111,13 @@ const ShoppingCart = () => {
                   </div>
                   <div className="tf-mini-cart-item file-delete">
                     <div className="tf-mini-cart-image">
-                      <a href="product-detail.php">
+                      <a href="productdetail">
                         <img className="lazyload" data-src="images/product-4.jpg" src="images/product-4.jpg" alt="img-product" />
                       </a>
                     </div>
                     <div className="tf-mini-cart-info">
                       <div className="d-flex justify-content-between">
-                        <a className="title link text-md fw-medium" href="product-detail.php">Ficus 'Ruby'</a>
+                        <a className="title link text-md fw-medium" href="productdetail">Ficus 'Ruby'</a>
                         <i className="icon icon-close remove fs-12" />
                       </div>
                       <p className="price-wrap text-sm fw-medium">
@@ -156,12 +156,12 @@ const ShoppingCart = () => {
                       <div className="swiper-slide">
                         <div className="tf-mini-cart-item line radius-16">
                           <div className="tf-mini-cart-image">
-                            <a href="product-detail.php">
+                            <a href="productdetail">
                               <img className="lazyload" data-src="images/product-7.jpg" src="images/product-7.jpg" alt="img-product" />
                             </a>
                           </div>
                           <div className="tf-mini-cart-info justify-content-center">
-                            <a className="title link text-md fw-medium" href="product-detail.php">Olive Tree</a>
+                            <a className="title link text-md fw-medium" href="productdetail">Olive Tree</a>
                             <p className="price-wrap text-sm fw-medium">
                               <span className="new-price">$150.00</span>
                             </p>
@@ -172,12 +172,12 @@ const ShoppingCart = () => {
                       <div className="swiper-slide">
                         <div className="tf-mini-cart-item line radius-16">
                           <div className="tf-mini-cart-image">
-                            <a href="product-detail.php">
+                            <a href="productdetail">
                               <img className="lazyload" data-src="images/product-10.jpg" src="images/product-10.jpg" alt="img-product" />
                             </a>
                           </div>
                           <div className="tf-mini-cart-info justify-content-center">
-                            <a className="title link text-md fw-medium" href="product-detail.php">ZZ Plant</a>
+                            <a className="title link text-md fw-medium" href="productdetail">ZZ Plant</a>
                             <p className="price-wrap text-sm fw-medium">
                               <span className="new-price text-primary">$145.00</span>
                               <span className="old-price text-decoration-line-through text-dark-1">$160.00</span>
@@ -194,7 +194,7 @@ const ShoppingCart = () => {
                             </a>
                           </div>
                           <div className="tf-mini-cart-info justify-content-center">
-                            <a className="title link text-md fw-medium" href="product-detail.php">Ficus 'Ruby'</a>
+                            <a className="title link text-md fw-medium" href="productdetail">Ficus 'Ruby'</a>
                             <p className="price-wrap text-sm fw-medium">
                               <span className="new-price text-primary">$125.00</span>
                             </p>
@@ -241,7 +241,7 @@ const ShoppingCart = () => {
                   </div>
                   <label htmlFor="CartDrawer-Form_agree" className="text-sm">
                     I agree with the
-                    <a href="term-and-condition.php" title="Terms of Service" className="fw-medium">terms and conditions</a>
+                    <a href="term-condition" title="Terms of Service" className="fw-medium">terms and conditions</a>
                   </label>
                 </div>
                 <div className="tf-mini-cart-view-checkout">

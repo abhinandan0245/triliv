@@ -9,7 +9,7 @@ const ReturnRefund = () => {
           <div className="box-title text-center">
             <h4 className="title">Return &amp; Refund</h4>
             <div className="breadcrumb-list">
-              <a className="breadcrumb-item" href="index.php">Home</a>
+              <a className="breadcrumb-item" href="/">Home</a>
               <div className="breadcrumb-item dot"><span /></div>
               <div className="breadcrumb-item current">Return &amp; Refund</div>
             </div>

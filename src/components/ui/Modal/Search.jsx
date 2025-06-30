@@ -139,7 +139,7 @@ const SearchModal = () => {
                       <div className="swiper-slide">
                         <div className="card-product">
                           <div className="card-product-wrapper asp-ratio-0">
-                            <a href="product-detail.php" className="product-img">
+                            <a href="productdetail" className="product-img">
                               <img 
                                 className="img-product lazyload" 
                                 data-src="images/product-1.jpg" 
@@ -188,7 +188,7 @@ const SearchModal = () => {
                             </div>
                           </div>
                           <div className="card-product-info">
-                            <a href="product-detail.php" className="name-product link fw-medium text-md">
+                            <a href="productdetail" className="name-product link fw-medium text-md">
                               Bird of Paradise
                             </a>
                             <p className="price-wrap fw-medium">
@@ -234,7 +234,7 @@ const SearchModal = () => {
                       <div className="swiper-slide">
                         <div className="card-product">
                           <div className="card-product-wrapper asp-ratio-0">
-                            <a href="product-detail.php" className="product-img">
+                            <a href="productdetail" className="product-img">
                               <img 
                                 className="img-product lazyload" 
                                 data-src="images/product-4.jpg" 
@@ -283,7 +283,7 @@ const SearchModal = () => {
                             </div>
                           </div>
                           <div className="card-product-info">
-                            <a href="product-detail.php" className="name-product link fw-medium text-md">
+                            <a href="productdetail" className="name-product link fw-medium text-md">
                               Ficus 'Ruby'
                             </a>
                             <p className="price-wrap fw-medium">
@@ -329,7 +329,7 @@ const SearchModal = () => {
                       <div className="swiper-slide">
                         <div className="card-product">
                           <div className="card-product-wrapper asp-ratio-0">
-                            <a href="product-detail.php" className="product-img">
+                            <a href="productdetail" className="product-img">
                               <img 
                                 className="img-product lazyload" 
                                 data-src="images/product-7.jpg" 
@@ -375,7 +375,7 @@ const SearchModal = () => {
                             </ul>
                           </div>
                           <div className="card-product-info">
-                            <a href="product-detail.php" className="name-product link fw-medium text-md">
+                            <a href="productdetail" className="name-product link fw-medium text-md">
                               Olive Tree
                             </a>
                             <p className="price-wrap fw-medium">
@@ -420,7 +420,7 @@ const SearchModal = () => {
                       <div className="swiper-slide">
                         <div className="card-product">
                           <div className="card-product-wrapper asp-ratio-0">
-                            <a href="product-detail.php" className="product-img">
+                            <a href="productdetail" className="product-img">
                               <img 
                                 className="img-product lazyload" 
                                 data-src="images/product-10.jpg" 
@@ -469,7 +469,7 @@ const SearchModal = () => {
                             </div>
                           </div>
                           <div className="card-product-info">
-                            <a href="product-detail.php" className="name-product link fw-medium text-md">
+                            <a href="productdetail" className="name-product link fw-medium text-md">
                               ZZ Plant
                             </a>
                             <p className="price-wrap fw-medium">

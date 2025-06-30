@@ -7,7 +7,7 @@ const CartTitle = () => {
         <div className="box-title text-center">
           <h4 className="title">Shopping Cart</h4>
           <div className="breadcrumb-list">
-            <a className="breadcrumb-item" href="index.php">Home</a>
+            <a className="breadcrumb-item" href="/">Home</a>
             <div className="breadcrumb-item dot"><span></span></div>
             <div className="breadcrumb-item current">Cart</div>
           </div>

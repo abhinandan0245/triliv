@@ -26,7 +26,7 @@ const FAQPage = () => {
                     <div className="box-title text-center">
                         <h4 className="title">Frequently Asked Questions</h4>
                         <div className="breadcrumb-list">
-                            <a className="breadcrumb-item" href="index.php">Home</a>
+                            <a className="breadcrumb-item" href="/">Home</a>
                             <div className="breadcrumb-item dot"><span></span></div>
                             <div className="breadcrumb-item current">FAQs</div>
                         </div>
@@ -52,7 +52,7 @@ const FAQPage = () => {
                                     a refund to be issued.
                                 </p>
                                 <div className="btn-group">
-                                    <a href="contact-us.php" className="tf-btn animate-btn">
+                                    <a href="contact" className="tf-btn animate-btn">
                                         Contact us
                                     </a>
                                     <a href="#" className="tf-btn btn-white animate-btn animate-dark">

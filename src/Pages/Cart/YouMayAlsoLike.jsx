@@ -140,7 +140,7 @@ const YouMayAlsoLike = () => {
                 <div className="swiper-slide" key={product.id}>
                   <div className="card-product style-2">
                     <div className="card-product-wrapper">
-                      <a href="product-detail.php" className="product-img">
+                      <a href="productdetail" className="product-img">
                         <img 
                           className="img-product lazyload"
                           data-src={product.mainImage}
@@ -156,7 +156,7 @@ const YouMayAlsoLike = () => {
                       </a>
                       <ul className="list-product-btn">
                         <li>
-                          <a href="view-cart.php" className="hover-tooltip box-icon">
+                          <a href="cart" className="hover-tooltip box-icon">
                             <span className="icon icon-cart2"></span>
                             <span className="tooltip">Add to Cart</span>
                           </a>
@@ -190,7 +190,7 @@ const YouMayAlsoLike = () => {
                       </ul>
                     </div>
                     <div className="card-product-info">
-                      <a href="product-detail.php" className="name-product link fw-medium text-md">
+                      <a href="productdetail" className="name-product link fw-medium text-md">
                         {product.name}
                       </a>
                       <p className="price-wrap fw-medium">

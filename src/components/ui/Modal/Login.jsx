@@ -93,7 +93,7 @@ const LoginPopup = ({ show, onClose, toggleRegister }) => {
           </form>
           <div className="other-login">
             <p className="text-sm text-center text-main-2">Or sign in with:</p>
-            <a href="account-page.php" className="w-100 text-md mb_8">
+            <a href="myaccount" className="w-100 text-md mb_8">
               <svg
                 className="icon"
                 width={32}

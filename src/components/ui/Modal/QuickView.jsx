@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-const QuickViewModal = () => {
+const QuickViewModal = ({ product, onClose }) => {
   const [currentColor, setCurrentColor] = useState('white');
   const [currentSize, setCurrentSize] = useState('small');
   const [quantity, setQuantity] = useState(1);
@@ -42,21 +42,18 @@ const QuickViewModal = () => {
           <div className="tf-product-media-wrap">
             <div dir="ltr" className="swiper tf-single-slide" ref={swiperRef}>
               <div className="swiper-wrapper">
-                <div className="swiper-slide" data-color="white">
-                  <div className="item">
-                    <img className="lazyload" data-src="images/product-1.jpg" src="images/product-1.jpg" alt="" />
+                {product.colors.map((color, index) => (
+                  <div className="swiper-slide" key={index} data-color={color.name.toLowerCase()}>
+                    <div className="item">
+                      <img 
+                        className="lazyload" 
+                        data-src={color.image} 
+                        src={color.image} 
+                        alt={product.name} 
+                      />
+                    </div>
                   </div>
-                </div>
-                <div className="swiper-slide" data-color="brown" data-size="medium">
-                  <div className="item">
-                    <img className="lazyload" data-src="images/product-2.jpg" src="images/product-2.jpg" alt="" />
-                  </div>
-                </div>
-                <div className="swiper-slide" data-color="black">
-                  <div className="item">
-                    <img className="lazyload" data-src="images/product-3.jpg" src="images/product-3.jpg" alt="" />
-                  </div>
-                </div>
+                ))}
               </div>
               <div className="swiper-button-prev nav-swiper arrow-1 nav-prev-cls single-slide-prev" />
               <div className="swiper-button-next nav-swiper arrow-1 nav-next-cls single-slide-next" />
@@ -65,10 +62,14 @@ const QuickViewModal = () => {
           <div className="tf-product-info-wrap">
             <div className="tf-product-info-inner">
               <div className="tf-product-heading">
-                <h6 className="product-name"><a href="product-detail.php" className="link">Bird of Paradise</a></h6>
+                <h6 className="product-name">
+                  <a href="productdetail" className="link">{product.name}</a>
+                </h6>
                 <div className="product-price">
-                  <h6 className="price-new price-on-sale">$130.00</h6>
-                  <h6 className="price-old">$150.00</h6>
+                  <h6 className="price-new price-on-sale">{product.priceNew}</h6>
+                  {product.priceOld && (
+                    <h6 className="price-old">{product.priceOld}</h6>
+                  )}
                 </div>
                 <p className="text">
                   A lush, vibrant indoor plant with broad, glossy leaves that add a touch of nature to any space. 
@@ -159,10 +160,10 @@ const QuickViewModal = () => {
                     Add to cart
                   </a>
                 </div>
-                <a href="checkout.php" className="tf-btn w-100 animate-btn paypal btn-primary">Buy It Now</a>
-                <a href="checkout.php" className="more-choose-payment link">More payment options</a>
+                <a href="checkout" className="tf-btn w-100 animate-btn paypal btn-primary">Buy It Now</a>
+                <a href="checkout" className="more-choose-payment link">More payment options</a>
               </div>
-              <a href="product-detail.php" className="view-details link">
+              <a href="productdetail" className="view-details link">
                 View full details <i className="icon icon-arrow-right" />
               </a>
             </div>

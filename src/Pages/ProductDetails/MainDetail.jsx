@@ -13,66 +13,81 @@ const MainDetail = () => {
   ]);
 
   // Image data structure
+// Complete image data structure with all variants
   const [allImages] = useState([
+    // Black variants
     { id: 1, color: 'black', size: 'small', thumb: 'images/women-black-1.jpg', main: 'images/women-black-1.jpg' },
     { id: 2, color: 'black', size: 'medium', thumb: 'images/women-black-2.jpg', main: 'images/women-black-2.jpg' },
     { id: 3, color: 'black', size: 'large', thumb: 'images/women-black-3.jpg', main: 'images/women-black-3.jpg' },
     { id: 4, color: 'black', size: 'extra large', thumb: 'images/women-black-4.jpg', main: 'images/women-black-4.jpg' },
+    
+    // Orange variants
     { id: 5, color: 'orange', size: 'small', thumb: 'images/fs-orange1.jpg', main: 'images/fs-orange1.jpg' },
     { id: 6, color: 'orange', size: 'medium', thumb: 'images/fs-orange2.jpg', main: 'images/fs-orange2.jpg' },
-    { id: 7, color: 'green', size: 'large', thumb: 'images/fs-green1.jpg', main: 'images/fs-green1.jpg' },
-    { id: 8, color: 'green', size: 'extra large', thumb: 'images/fs-green2.jpg', main: 'images/fs-green2.jpg' },
+    { id: 7, color: 'orange', size: 'large', thumb: 'images/fs-orange3.jpg', main: 'images/fs-orange3.jpg' },
+    { id: 8, color: 'orange', size: 'extra large', thumb: 'images/fs-orange4.jpg', main: 'images/fs-orange4.jpg' },
+    
+    // Green variants
+    { id: 9, color: 'green', size: 'small', thumb: 'images/fs-green1.jpg', main: 'images/fs-green1.jpg' },
+    { id: 10, color: 'green', size: 'medium', thumb: 'images/fs-green2.jpg', main: 'images/fs-green2.jpg' },
+    { id: 11, color: 'green', size: 'large', thumb: 'images/fs-green3.jpg', main: 'images/fs-green3.jpg' },
+    { id: 12, color: 'green', size: 'extra large', thumb: 'images/fs-green4.jpg', main: 'images/fs-green4.jpg' }
   ]);
 
   const [filteredImages, setFilteredImages] = useState([]);
+  const [allThumbnails, setAllThumbnails] = useState([]);
   const mainSwiperRef = useRef(null);
   const thumbsSwiperRef = useRef(null);
 
   // Filter images based on selected color and size
   useEffect(() => {
-    const filtered = allImages.filter(
+    setAllThumbnails(allImages);
+    const initialFiltered = allImages.filter(
       img => img.color === selectedColor && img.size === selectedSize
     );
-    setFilteredImages(filtered);
-  }, [selectedColor, selectedSize, allImages]);
+    setFilteredImages(initialFiltered);
+  }, [allImages, selectedColor, selectedSize]);
 
   // Initialize Swiper when filtered images change
   useEffect(() => {
-    if (filteredImages.length > 0) {
-      // Destroy existing Swiper instances if they exist
+    if (filteredImages.length > 0 && allThumbnails.length > 0) {
+      // Destroy existing instances
       if (thumbsSwiperRef.current) thumbsSwiperRef.current.destroy();
       if (mainSwiperRef.current) mainSwiperRef.current.destroy();
 
-      // Initialize thumbs swiper
+      // Initialize vertical thumbnail swiper
       thumbsSwiperRef.current = new Swiper('.tf-product-media-thumbs', {
         direction: 'vertical',
         slidesPerView: 4,
         spaceBetween: 10,
-        watchSlidesProgress: true,
-      });
-
-      // Initialize main swiper
-      mainSwiperRef.current = new Swiper('.tf-product-media-main', {
-        thumbs: {
-          swiper: thumbsSwiperRef.current
+        navigation: {
+          nextEl: '.thumbs-next',
+          prevEl: '.thumbs-prev',
         },
       });
 
-      // Navigation buttons
-      document.querySelector('.thumbs-next').addEventListener('click', () => {
+      // Initialize horizontal main image swiper
+      mainSwiperRef.current = new Swiper('.tf-product-media-main', {
+        thumbs: {
+          swiper: thumbsSwiperRef.current,
+        },
+      });
+
+      // Connect navigation buttons
+      document.querySelector('.thumbs-next')?.addEventListener('click', () => {
         mainSwiperRef.current.slideNext();
       });
-      document.querySelector('.thumbs-prev').addEventListener('click', () => {
+      document.querySelector('.thumbs-prev')?.addEventListener('click', () => {
         mainSwiperRef.current.slidePrev();
       });
     }
 
-    return () => {
-      // Cleanup on unmount
+     return () => {
+      // Cleanup
       if (thumbsSwiperRef.current) thumbsSwiperRef.current.destroy();
       if (mainSwiperRef.current) mainSwiperRef.current.destroy();
     };
-  }, [filteredImages]);
+  }, [filteredImages, allThumbnails]);
 
   const handleQuantityChange = (type) => {
     if (type === 'increase') {
@@ -257,8 +272,8 @@ const MainDetail = () => {
                       </div>
                       <a href="#shoppingCart" data-bs-toggle="offcanvas" className="tf-btn animate-btn btn-add-to-cart">Add to cart</a>
                     </div>
-                    <a href="checkout.php" className="tf-btn btn-primary w-100 animate-btn">Buy it now</a>
-                    <a href="checkout.php" className="more-choose-payment link">More payment options</a>
+                    <a href="checkout" className="tf-btn btn-primary w-100 animate-btn">Buy it now</a>
+                    <a href="checkout" className="more-choose-payment link">More payment options</a>
                   </div>
                   <div className="tf-product-extra-link">
                     <a href="javascript:void(0);" className="product-extra-icon link btn-add-wishlist">
@@ -336,7 +351,7 @@ const MainDetail = () => {
                               className="tf-check" 
                             />
                           </div>
-                          <a href="product-detail.php" className="bundle-image">
+                          <a href="productdetail" className="bundle-image">
                             <img src={item.id === 1 ? "images/women-black-1.jpg" : item.id === 2 ? "images/women-grey-3.jpg" : "images/women-black-6.jpg"} alt="img-product" />
                           </a>
                           <div className="bundle-info">

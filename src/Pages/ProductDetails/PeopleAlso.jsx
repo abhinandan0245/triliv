@@ -37,7 +37,7 @@ const PeopleAlsoBought = () => {
     // Cleanup Swiper instance when component unmounts
     return () => {
       if (swiper) {
-        swiper.destroy();
+        // swiper.destroy();
       }
     };
   }, []);
@@ -79,7 +79,7 @@ const PeopleAlsoBought = () => {
               <div className="swiper-slide">
                 <div className="card-product style-2 card-product-size">
                   <div className="card-product-wrapper">
-                    <a href="product-detail.php" className="product-img">
+                    <a href="productdetail" className="product-img">
                       <img className="img-product lazyload" data-src="images/product/product-10.jpg" src="images/product/product-10.jpg" alt="image-product" />
                       <img className="img-hover lazyload" data-src="images/product/product-4.jpg" src="images/product/product-4.jpg" alt="image-product" />
                     </a>
@@ -123,7 +123,7 @@ const PeopleAlsoBought = () => {
                     </div>
                   </div>
                   <div className="card-product-info">
-                    <a href="product-detail.php" className="name-product link fw-medium text-md">Breeze Soft Tee</a>
+                    <a href="productdetail" className="name-product link fw-medium text-md">Breeze Soft Tee</a>
                     <p className="price-wrap fw-medium">
                       <span className="price-new">$55.00</span>
                       <span className="price-old">$70.00</span>
@@ -153,7 +153,7 @@ const PeopleAlsoBought = () => {
               <div className="swiper-slide">
                 <div className="card-product style-2">
                   <div className="card-product-wrapper">
-                    <a href="product-detail.php" className="product-img">
+                    <a href="productdetail" className="product-img">
                       <img className="img-product lazyload" data-src="images/product/product-16.jpg" src="images/product/product-16.jpg" alt="image-product" />
                       <img className="img-hover lazyload" data-src="images/product/product-19.jpg" src="images/product/product-19.jpg" alt="image-product" />
                     </a>
@@ -189,7 +189,7 @@ const PeopleAlsoBought = () => {
                     </div>
                   </div>
                   <div className="card-product-info">
-                    <a href="product-detail.php" className="name-product link fw-medium text-md">Sunburst Graphic Tee</a>
+                    <a href="productdetail" className="name-product link fw-medium text-md">Sunburst Graphic Tee</a>
                     <p className="price-wrap fw-medium">
                       <span className="price-new">$115.00</span>
                     </p>
@@ -218,7 +218,7 @@ const PeopleAlsoBought = () => {
               <div className="swiper-slide">
                 <div className="card-product style-2">
                   <div className="card-product-wrapper">
-                    <a href="product-detail.php" className="product-img">
+                    <a href="productdetail" className="product-img">
                       <img className="img-product lazyload" data-src="images/product/product-32.jpg" src="images/product/product-32.jpg" alt="image-product" />
                       <img className="img-hover lazyload" data-src="images/product/product-42.jpg" src="images/product/product-42.jpg" alt="image-product" />
                     </a>
@@ -253,7 +253,7 @@ const PeopleAlsoBought = () => {
                     </div>
                   </div>
                   <div className="card-product-info">
-                    <a href="product-detail.php" className="name-product link fw-medium text-md">Long Sleeve T-Shirt</a>
+                    <a href="productdetail" className="name-product link fw-medium text-md">Long Sleeve T-Shirt</a>
                     <p className="price-wrap fw-medium">
                       <span className="price-new">$85.00</span>
                     </p>
@@ -277,7 +277,7 @@ const PeopleAlsoBought = () => {
               <div className="swiper-slide">
                 <div className="card-product style-2">
                   <div className="card-product-wrapper">
-                    <a href="product-detail.php" className="product-img">
+                    <a href="productdetail" className="product-img">
                       <img className="img-product lazyload" data-src="images/product/product-33.jpg" src="images/product/product-33.jpg" alt="image-product" />
                       <img className="img-hover lazyload" data-src="images/product/product-17.jpg" src="images/product/product-17.jpg" alt="image-product" />
                     </a>
@@ -313,7 +313,7 @@ const PeopleAlsoBought = () => {
                     </div>
                   </div>
                   <div className="card-product-info">
-                    <a href="product-detail.php" className="name-product link fw-medium text-md">Back Printed Crew Neck T-Shirt</a>
+                    <a href="productdetail" className="name-product link fw-medium text-md">Back Printed Crew Neck T-Shirt</a>
                     <p className="price-wrap fw-medium">
                       <span className="price-new">$130.00</span>
                     </p>
@@ -342,7 +342,7 @@ const PeopleAlsoBought = () => {
               <div className="swiper-slide">
                 <div className="card-product style-2">
                   <div className="card-product-wrapper">
-                    <a href="product-detail.php" className="product-img">
+                    <a href="productdetail" className="product-img">
                       <img className="img-product lazyload" data-src="images/fs-orange2.jpg" src="images/fs-orange2.jpg" alt="image-product" />
                       <img className="img-hover lazyload" data-src="images/fs-green2.jpg" src="images/fs-green2.jpg" alt="image-product" />
                     </a>
@@ -377,7 +377,7 @@ const PeopleAlsoBought = () => {
                     </div>
                   </div>
                   <div className="card-product-info">
-                    <a href="product-detail.php" className="name-product link fw-medium text-md">Puff Sleeve Shirred Blouse</a>
+                    <a href="productdetail" className="name-product link fw-medium text-md">Puff Sleeve Shirred Blouse</a>
                     <p className="price-wrap fw-medium">
                       <span className="price-new">$57.00</span>
                       <span className="price-old">$70.00</span>

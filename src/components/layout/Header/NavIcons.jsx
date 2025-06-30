@@ -13,7 +13,7 @@ const NavIcons = () => (
       </a>
     </li>
     <li className="nav-wishlist">
-      <a href="wish-list.php" className="nav-icon-item">
+      <a href="wish-list" className="nav-icon-item">
         <i className="icon icon-heart" />
         <span className="count-box">{wishlistCount}</span>
       </a>

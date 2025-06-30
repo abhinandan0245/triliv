@@ -17,7 +17,7 @@ const MainHeader = () => (
           </nav>
         </div>
         <div className="col-xl-2 col-md-4 col-6 text-xxl-center">
-          <a href="index.php" className="logo-header">
+          <a href="/" className="logo-header">
             <img src="images/logo1.png" alt="logo" className="logo" />
           </a>
         </div>

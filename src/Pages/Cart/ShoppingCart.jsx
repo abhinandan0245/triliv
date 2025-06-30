@@ -172,11 +172,11 @@ const Shopping = () => {
                       {cartItems.map(item => (
                         <tr key={item.id} className="tf-cart-item file-delete">
                           <td className="tf-cart-item_product">
-                            <a href="product-detail.php" className="img-box">
+                            <a href="productdetail" className="img-box">
                               <img src={item.image} alt="img-product" />
                             </a>
                             <div className="cart-info">
-                              <a href="product-detail.php" className="name text-md link fw-medium">{item.name}</a>
+                              <a href="productdetail" className="name text-md link fw-medium">{item.name}</a>
                               <div className="variants">{item.variant}</div>
                               <span 
                                 className="remove-cart link remove" 
@@ -375,7 +375,7 @@ const Shopping = () => {
                       onChange={(e) => setAgreeTerms(e.target.checked)}
                     />
                     <label htmlFor="check-agree" className="label text-dark-4">
-                      I agree with <a href="term-and-condition.php" className="text-dark-4 fw-medium text-underline link">term and conditions</a>
+                      I agree with <a href="term-condition" className="text-dark-4 fw-medium text-underline link">term and conditions</a>
                     </label>
                   </div>
                   <div className="checkout-btn">

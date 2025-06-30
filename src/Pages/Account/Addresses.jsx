@@ -151,7 +151,7 @@ const Addresses = () => {
           <div className="box-title text-center">
             <h4 className="title">Addresses</h4>
             <div className="breadcrumb-list">
-              <a className="breadcrumb-item" href="index.php">Home</a>
+              <a className="breadcrumb-item" href="/">Home</a>
               <div className="breadcrumb-item dot"><span /></div>
               <div className="breadcrumb-item current">Addresses</div>
             </div>
@@ -176,22 +176,22 @@ const Addresses = () => {
             <div className="sidebar-account-wrap sidebar-content-wrap sticky-top d-lg-block d-none">
               <ul className="my-account-nav">
                 <li>
-                  <a href="account-page.php" className="text-sm link fw-medium my-account-nav-item">Dashboard</a>
+                  <a href="myaccount" className="text-sm link fw-medium my-account-nav-item">Dashboard</a>
                 </li>
                 <li>
-                  <a href="account-orders.php" className="text-sm link fw-medium my-account-nav-item">My Orders</a>
+                  <a href="orders" className="text-sm link fw-medium my-account-nav-item">My Orders</a>
                 </li>
                 <li>
-                  <a href="wish-list.php" className="text-sm link fw-medium my-account-nav-item">My Wishlist</a>
+                  <a href="wish-list" className="text-sm link fw-medium my-account-nav-item">My Wishlist</a>
                 </li>
                 <li>
-                  <a href="account-addresses.php" className="text-sm link fw-medium my-account-nav-item active">Addresses</a>
+                  <a href="addresses" className="text-sm link fw-medium my-account-nav-item active">Addresses</a>
                 </li>
                 <li>
-                  <a href="account-details.php" className="text-sm link fw-medium my-account-nav-item">Account Details</a>
+                  <a href="accountdetails" className="text-sm link fw-medium my-account-nav-item">Account Details</a>
                 </li>
                 <li>
-                  <a href="index.php" className="text-sm link fw-medium my-account-nav-item ">Log Out</a>
+                  <a href="/" className="text-sm link fw-medium my-account-nav-item ">Log Out</a>
                 </li>
               </ul>
             </div>

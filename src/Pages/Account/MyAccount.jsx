@@ -182,7 +182,7 @@ const MyAccount = () => {
                       <p className="text-md">for all orders over $300.00</p>
                     </div>
                     <div className="banner-btn">
-                      <a href="/product" className="tf-btn animate-btn">
+                      <a href="shop" className="tf-btn animate-btn">
                         Shop Now
                       </a>
                     </div>
@@ -200,7 +200,7 @@ const MyAccount = () => {
                     </div>
                     <div className="banner-btn">
                       <a
-                        href="/product"
+                        href="/shop"
                         className="tf-btn btn-white animate-btn animate-dark"
                       >
                         Shop Now

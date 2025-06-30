@@ -191,7 +191,7 @@ const Footer = () => {
               <p>Copyright © {new Date().getFullYear()} by <span className="fw-medium">Triliv</span> All Rights Reserved.</p>
               <div className="box-right">
                 <a className="link" href="/privacypolicy">Privacy Policy</a>
-                <a className="link" href="/termscondition">Term of Use</a>
+                <a className="link" href="/term-condition">Term of Use</a>
               </div>
             </div>
           </div>

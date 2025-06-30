@@ -1,13 +1,18 @@
-import React, { useState , useEffect } from 'react';
-import QuickAddModal from '../../../components/ui/Modal/QuickAdd';
+import React, { useState, useEffect } from "react";
+import QuickAddModal from "../../../components/ui/Modal/QuickAdd";
+import QuickViewModal from "../../../components/ui/Modal/QuickView";
+import CompareModal from "../../../components/ui/Modal/CompareModal"; // Adjust the path as needed // Adjust the path as needed
 const FeaturedProducts = () => {
   // Initialize Swiper when component mounts
   const [showQuickAdd, setShowQuickAdd] = useState(false);
-const [selectedProduct, setSelectedProduct] = useState(null);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [showQuickView, setShowQuickView] = useState(false);
+  const [showCompare, setShowCompare] = useState(false);
+  const [comparedProducts, setComparedProducts] = useState([]);
   useEffect(() => {
     // Check if Swiper is available (you'll need to import Swiper in your project)
-    if (typeof window !== 'undefined' && window.Swiper) {
-      new window.Swiper('.tf-swiper.wrap-sw-over', {
+    if (typeof window !== "undefined" && window.Swiper) {
+      new window.Swiper(".tf-swiper.wrap-sw-over", {
         slidesPerView: 2,
         spaceBetween: 12,
         speed: 800,
@@ -16,25 +21,25 @@ const [selectedProduct, setSelectedProduct] = useState(null);
         slidesPerGroup: 2,
         navigation: {
           clickable: true,
-          nextEl: '.nav-next-product',
-          prevEl: '.nav-prev-product'
+          nextEl: ".nav-next-product",
+          prevEl: ".nav-prev-product",
         },
-        pagination: { 
-          el: '.sw-pagination-product', 
-          clickable: true 
+        pagination: {
+          el: ".sw-pagination-product",
+          clickable: true,
         },
         breakpoints: {
-          768: { 
-            slidesPerView: 3, 
-            spaceBetween: 12, 
-            slidesPerGroup: 3 
+          768: {
+            slidesPerView: 3,
+            spaceBetween: 12,
+            slidesPerGroup: 3,
           },
-          1200: { 
-            slidesPerView: 4, 
-            spaceBetween: 24, 
-            slidesPerGroup: 4
-          }
-        }
+          1200: {
+            slidesPerView: 4,
+            spaceBetween: 24,
+            slidesPerGroup: 4,
+          },
+        },
       });
     }
   }, []);
@@ -49,13 +54,13 @@ const [selectedProduct, setSelectedProduct] = useState(null);
       discount: "20% Off",
       images: {
         main: "images/product-1.jpg",
-        hover: "images/product-2.jpg"
+        hover: "images/product-2.jpg",
       },
       colors: [
         { name: "White", value: "bg-white", image: "images/product-1.jpg" },
         { name: "Brown", value: "bg-brown-9", image: "images/product-2.jpg" },
-        { name: "Black", value: "bg-dark", image: "images/product-3.jpg" }
-      ]
+        { name: "Black", value: "bg-dark", image: "images/product-3.jpg" },
+      ],
     },
     {
       id: 2,
@@ -65,13 +70,21 @@ const [selectedProduct, setSelectedProduct] = useState(null);
       discount: "20% Off",
       images: {
         main: "images/product-4.jpg",
-        hover: "images/product-5.jpg"
+        hover: "images/product-5.jpg",
       },
       colors: [
-        { name: "Beige", value: "bg-light-beige-2", image: "images/product-4.jpg" },
+        {
+          name: "Beige",
+          value: "bg-light-beige-2",
+          image: "images/product-4.jpg",
+        },
         { name: "Black", value: "bg-dark", image: "images/product-5.jpg" },
-        { name: "Taupe Brown", value: "bg-taupe-brown", image: "images/product-6.jpg" }
-      ]
+        {
+          name: "Taupe Brown",
+          value: "bg-taupe-brown",
+          image: "images/product-6.jpg",
+        },
+      ],
     },
     {
       id: 3,
@@ -79,13 +92,21 @@ const [selectedProduct, setSelectedProduct] = useState(null);
       priceNew: "$150.00",
       images: {
         main: "images/product-7.jpg",
-        hover: "images/product-8.jpg"
+        hover: "images/product-8.jpg",
       },
       colors: [
-        { name: "Reddish Brown", value: "bg-reddish-brown", image: "images/product-7.jpg" },
+        {
+          name: "Reddish Brown",
+          value: "bg-reddish-brown",
+          image: "images/product-7.jpg",
+        },
         { name: "Blue", value: "bg-blue-2", image: "images/product-8.jpg" },
-        { name: "Terra Cotta", value: "bg-terra-cotta", image: "images/product-9.jpg" }
-      ]
+        {
+          name: "Terra Cotta",
+          value: "bg-terra-cotta",
+          image: "images/product-9.jpg",
+        },
+      ],
     },
     {
       id: 4,
@@ -95,12 +116,12 @@ const [selectedProduct, setSelectedProduct] = useState(null);
       discount: "20% Off",
       images: {
         main: "images/product-10.jpg",
-        hover: "images/product-11.jpg"
+        hover: "images/product-11.jpg",
       },
       colors: [
         { name: "Black", value: "bg-dark-6", image: "images/product-10.jpg" },
-        { name: "Beige", value: "bg-beige-2", image: "images/product-11.jpg" }
-      ]
+        { name: "Beige", value: "bg-beige-2", image: "images/product-11.jpg" },
+      ],
     },
     {
       id: 5,
@@ -110,23 +131,23 @@ const [selectedProduct, setSelectedProduct] = useState(null);
       discount: "20% Off",
       images: {
         main: "images/product-1.jpg",
-        hover: "images/product-2.jpg"
+        hover: "images/product-2.jpg",
       },
       colors: [
         { name: "White", value: "bg-white", image: "images/product-1.jpg" },
         { name: "Brown", value: "bg-brown-9", image: "images/product-2.jpg" },
-        { name: "Black", value: "bg-dark", image: "images/product-3.jpg" }
-      ]
-    }
+        { name: "Black", value: "bg-dark", image: "images/product-3.jpg" },
+      ],
+    },
   ];
 
   // Quick add handler
   const handleQuickAdd = (e, productId) => {
-  e.preventDefault();
-  const product = products.find(p => p.id === productId);
-  setSelectedProduct(product);
-  setShowQuickAdd(true);
-};
+    e.preventDefault();
+    const product = products.find((p) => p.id === productId);
+    setSelectedProduct(product);
+    setShowQuickAdd(true);
+  };
 
   // Wishlist handler
   const handleWishlist = (e, productId) => {
@@ -138,22 +159,34 @@ const [selectedProduct, setSelectedProduct] = useState(null);
   // Quick view handler
   const handleQuickView = (e, productId) => {
     e.preventDefault();
-    // Implement quick view logic here
-    console.log(`Quick view product ${productId}`);
+    const product = products.find((p) => p.id === productId);
+    setSelectedProduct(product);
+    setShowQuickView(true); // We'll add this state next
   };
 
   // Compare handler
   const handleCompare = (e, productId) => {
     e.preventDefault();
-    // Implement compare logic here
-    console.log(`Add product ${productId} to compare`);
+    const product = products.find((p) => p.id === productId);
+
+    setComparedProducts((prev) => {
+      // Check if product is already in comparison
+      if (prev.some((p) => p.id === productId)) {
+        return prev; // Don't add duplicates
+      }
+      return [...prev, product]; // Add new product
+    });
+
+    setShowCompare(true);
   };
 
   return (
     <section className="flat-spacing-2 bg-gradient-2">
       <div className="container">
         <div className="flat-title wow fadeInUp">
-          <h3 className="title letter-0 text-start font-7">Featured Products</h3>
+          <h3 className="title letter-0 text-start font-7">
+            Featured Products
+          </h3>
         </div>
         <div className="fl-control-sw2 wrap-pos-nav sw-over-product wow fadeInUp">
           <div dir="ltr" className="swiper tf-swiper wrap-sw-over">
@@ -163,23 +196,23 @@ const [selectedProduct, setSelectedProduct] = useState(null);
                   <div className="card-product">
                     <div className="card-product-wrapper asp-ratio-0">
                       <a href="productdetail" className="product-img">
-                        <img 
-                          className="img-product lazyload" 
-                          data-src={product.images.main} 
-                          src={product.images.main} 
-                          alt="image-product" 
+                        <img
+                          className="img-product lazyload"
+                          data-src={product.images.main}
+                          src={product.images.main}
+                          alt="image-product"
                         />
-                        <img 
-                          className="img-hover lazyload" 
-                          data-src={product.images.hover} 
-                          src={product.images.hover} 
-                          alt="image-product" 
+                        <img
+                          className="img-hover lazyload"
+                          data-src={product.images.hover}
+                          src={product.images.hover}
+                          alt="image-product"
                         />
                       </a>
                       <ul className="list-product-btn">
                         <li>
-                          <a 
-                            href="#quickadd" 
+                          <a
+                            href="#quickadd"
                             onClick={(e) => handleQuickAdd(e, product.id)}
                             className="hover-tooltip tooltip-left box-icon"
                           >
@@ -188,8 +221,8 @@ const [selectedProduct, setSelectedProduct] = useState(null);
                           </a>
                         </li>
                         <li className="wishlist">
-                          <a 
-                            href="javascript:void(0);" 
+                          <a
+                            href="javascript:void(0);"
                             onClick={(e) => handleWishlist(e, product.id)}
                             className="hover-tooltip tooltip-left box-icon"
                           >
@@ -198,8 +231,8 @@ const [selectedProduct, setSelectedProduct] = useState(null);
                           </a>
                         </li>
                         <li>
-                          <a 
-                            href="#quickView" 
+                          <a
+                            href="#quickView"
                             onClick={(e) => handleQuickView(e, product.id)}
                             className="hover-tooltip tooltip-left box-icon quickview"
                           >
@@ -208,8 +241,8 @@ const [selectedProduct, setSelectedProduct] = useState(null);
                           </a>
                         </li>
                         <li className="compare">
-                          <a 
-                            href="#compare" 
+                          <a
+                            href="#compare"
                             onClick={(e) => handleCompare(e, product.id)}
                             className="hover-tooltip tooltip-left box-icon"
                           >
@@ -220,16 +253,25 @@ const [selectedProduct, setSelectedProduct] = useState(null);
                       </ul>
                       {product.discount && (
                         <div className="on-sale-wrap">
-                          <span className="on-sale-item">{product.discount}</span>
+                          <span className="on-sale-item">
+                            {product.discount}
+                          </span>
                         </div>
                       )}
                     </div>
                     <div className="card-product-info">
-                      <a href="" className="name-product link fw-medium text-md">
+                      <a
+                        href=""
+                        className="name-product link fw-medium text-md"
+                      >
                         {product.name}
                       </a>
                       <p className="price-wrap fw-medium">
-                        <span className={`price-new text-xl ${product.priceOld ? 'text-primary' : ''}`}>
+                        <span
+                          className={`price-new text-xl ${
+                            product.priceOld ? "text-primary" : ""
+                          }`}
+                        >
                           {product.priceNew}
                         </span>
                         {product.priceOld && (
@@ -238,17 +280,23 @@ const [selectedProduct, setSelectedProduct] = useState(null);
                       </p>
                       <ul className="list-color-product style-2">
                         {product.colors.map((color, index) => (
-                          <li 
+                          <li
                             key={index}
-                            className={`list-color-item hover-tooltip tooltip-bot ${index === 0 ? 'active' : ''} ${index === 0 && product.id === 1 ? 'line' : ''} color-swatch`}
+                            className={`list-color-item hover-tooltip tooltip-bot ${
+                              index === 0 ? "active" : ""
+                            } ${
+                              index === 0 && product.id === 1 ? "line" : ""
+                            } color-swatch`}
                           >
-                            <span className="tooltip color-filter">{color.name}</span>
+                            <span className="tooltip color-filter">
+                              {color.name}
+                            </span>
                             <span className={`swatch-value ${color.value}`} />
-                            <img 
-                              className="lazyload" 
-                              data-src={color.image} 
-                              src={color.image} 
-                              alt="image-product" 
+                            <img
+                              className="lazyload"
+                              data-src={color.image}
+                              src={color.image}
+                              alt="image-product"
                             />
                           </li>
                         ))}
@@ -265,9 +313,24 @@ const [selectedProduct, setSelectedProduct] = useState(null);
         </div>
       </div>
       {showQuickAdd && selectedProduct && (
-  <QuickAddModal 
-    product={selectedProduct}
-    onClose={() => setShowQuickAdd(false)}
+        <QuickAddModal
+          product={selectedProduct}
+          onClose={() => setShowQuickAdd(false)}
+        />
+      )}
+
+      {showQuickView && selectedProduct && (
+        <QuickViewModal
+          product={selectedProduct}
+          onClose={() => setShowQuickView(false)}
+        />
+      )}
+
+{showCompare && (
+  <CompareModal 
+    products={comparedProducts}
+    onClose={() => setShowCompare(false)}
+    onClearAll={(updatedProducts) => setComparedProducts(updatedProducts || [])}
   />
 )}
     </section>

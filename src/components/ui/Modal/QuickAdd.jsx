@@ -34,7 +34,7 @@ const QuickAddModal = ({ product, onClose }) => {
                 />
               </div>
               <div className="content-box">
-                <a href="product-detail.php" className="name-product link text-lg">
+                <a href="productdetail" className="name-product link text-lg">
                   {product.name}
                 </a>
                 <div className="price-show-badge">
@@ -116,7 +116,7 @@ const QuickAddModal = ({ product, onClose }) => {
               >
                 Add to cart
               </a>
-              <a href="wish-list.php" className="box-icon">
+              <a href="wish-list" className="box-icon">
                 <i className="icon icon-heart" />
               </a>
               <a href="javascript:void(0);" className="box-icon btn-compare">

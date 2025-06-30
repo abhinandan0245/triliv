@@ -1,10 +1,13 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
+import Swiper from 'swiper';
+import 'swiper/swiper-bundle.css';
 
 const RecentlyViewed = () => {
+  const swiperRef = useRef(null);
+
   useEffect(() => {
     // Initialize Swiper when component mounts
-    // Note: You'll need to import Swiper and its dependencies
-    const swiper = new Swiper('.tf-swiper.wrap-sw-over', {
+    swiperRef.current = new Swiper('.tf-swiper.wrap-sw-over', {
       slidesPerView: 2,
       spaceBetween: 12,
       speed: 800,
@@ -36,8 +39,8 @@ const RecentlyViewed = () => {
 
     // Clean up on unmount
     return () => {
-      if (swiper) {
-        swiper.destroy();
+      if (swiperRef.current && swiperRef.current.destroy) {
+        swiperRef.current.destroy(true, true);
       }
     };
   }, []);
@@ -125,18 +128,18 @@ const RecentlyViewed = () => {
                 <div className="swiper-slide" key={product.id}>
                   <div className={`card-product style-2 ${product.sizes ? 'card-product-size' : ''}`}>
                     <div className="card-product-wrapper">
-                      <a href="product-detail.php" className="product-img">
+                      <a href="productdetail" className="product-img">
                         <img 
                           className="img-product lazyload" 
                           data-src={product.mainImage} 
                           src={product.mainImage} 
-                          alt="image-product" 
+                          alt={product.name} 
                         />
                         <img 
                           className="img-hover lazyload" 
                           data-src={product.hoverImage} 
                           src={product.hoverImage} 
-                          alt="image-product" 
+                          alt={product.name} 
                         />
                       </a>
                       <ul className="list-product-btn">
@@ -147,7 +150,7 @@ const RecentlyViewed = () => {
                           </a>
                         </li>
                         <li className="wishlist">
-                          <a href="javascript:void(0);" className="box-icon hover-tooltip">
+                          <a href="#!" className="box-icon hover-tooltip">
                             <span className="icon icon-heart2" />
                             <span className="tooltip">Add to Wishlist</span>
                           </a>
@@ -205,7 +208,7 @@ const RecentlyViewed = () => {
                     </div>
                     
                     <div className="card-product-info">
-                      <a href="product-detail.php" className="name-product link fw-medium text-md">
+                      <a href="productdetail" className="name-product link fw-medium text-md">
                         {product.name}
                       </a>
                       <p className="price-wrap fw-medium">
@@ -226,7 +229,7 @@ const RecentlyViewed = () => {
                               className="lazyload" 
                               data-src={color.image} 
                               src={color.image} 
-                              alt="image-product" 
+                              alt={color.name} 
                             />
                           </li>
                         ))}

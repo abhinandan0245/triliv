@@ -24,13 +24,13 @@ const BreadcrumbP = ({ currentPage }) => {
       <div className="container">
         <div className="breadcrumb-wrap">
           <div className="breadcrumb-list">
-            <a className="breadcrumb-item" href="index.php">Home</a>
+            <a className="breadcrumb-item" href="/">Home</a>
             <div className="breadcrumb-item dot"><span /></div>
             <div className="breadcrumb-item current">Linen Blend Pants</div>
           </div>
           <div className="breadcrumb-prev-next">
             <a href="#" className="breadcrumb-prev"><i className="icon icon-arr-left"></i></a>
-            <a href="product.php" className="breadcrumb-back"><i className="icon icon-shop"></i></a>
+            <a href="product" className="breadcrumb-back"><i className="icon icon-shop"></i></a>
             <a href="#" className="breadcrumb-next"><i className="icon icon-arr-right2"></i></a>
           </div>
         </div>

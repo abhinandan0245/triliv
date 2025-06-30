@@ -1,15 +1,16 @@
 import BreadcrumbP from "./Breadcrumb";
-import MainDetail from "./vastDetail/MainDetail";
+import MainDetail from "./MainDetail";
 import ProductDescription from "./ProductDescription";
 import PeopleAlsoBought from "./PeopleAlso";
+import RecentlyViewed from "./RecentlyViewed"; 
 const ProductDetail = () => {
     return(
      <>
      <BreadcrumbP/>
      <MainDetail/>
      <ProductDescription/>
-     {/* <PeopleAlsoBought/> */}
-    {/* <RecentlyViewed/> */}
+     <PeopleAlsoBought/>
+    <RecentlyViewed/>
      </>
     );
 
