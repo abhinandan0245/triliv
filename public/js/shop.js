@@ -43,6 +43,11 @@
   var filterProducts = function () {
     const priceSlider = document.getElementById("price-value-range");
 
+    if (!priceSlider || !priceSlider.dataset) {
+    console.warn("Price slider element not found or has no dataset.");
+    return;
+  }
+
     const minPrice = parseInt(priceSlider.dataset.min, 10) || 0;
     const maxPrice = parseInt(priceSlider.dataset.max, 10) || 500;
 

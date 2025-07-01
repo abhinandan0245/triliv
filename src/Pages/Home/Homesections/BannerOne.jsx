@@ -24,7 +24,7 @@ const BannerOne = () => {
               loading="lazy"
             />
           </div>
-          <div className="content-with-text wow fadeInUp">
+          <div className="content-with-text wow animate__animated animate__fadeInUp" data-wow-delay="0.2s">
             <div className="box-title-content">
               <h2 className="title fw-semibold font-7">Refresh Your Space with Greenery</h2>
               <p className="desc text-main text-md">Discover a range of indoor plants that breathe life into

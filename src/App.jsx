@@ -1,4 +1,9 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import WOW from "wowjs";
+import "animate.css";
+import { useEffect } from "react"; // Add this if not already present
+
+
+import { Routes, Route } from "react-router-dom";
 import Homepage from "./pages/Home/HomePage";
 import Footer from "./components/layout/Footer/Footer";
 import Shop from "./pages/Shop/Shop";
@@ -26,8 +31,21 @@ import Addresses from "./pages/Account/Addresses";
 import AccountDetail from "./pages/Account/AcoountDetail";
 
 function App() {
+   useEffect(() => {
+    if (typeof window !== "undefined" && typeof MutationObserver !== "undefined") {
+      const wow = new WOW.WOW({
+        live: false,
+      });
+      wow.init();
+      wow.sync(); // optional, only if you're dynamically loading new content
+    } else {
+      console.warn("WOW.js or MutationObserver not supported in this environment.");
+    }
+  }, []);
+
+
   return (
-  
+     
       <div className="app">
         <Header />
         <main className="main-content">
@@ -47,7 +65,7 @@ function App() {
             <Route path="/cart" element={<Cart/>} />
             
             
-            <Route path="/" element={< QuickAddModal/>} />
+            <Route path="/addmodal" element={< QuickAddModal/>} />
             <Route path="/checkout" element={<CheckoutPage/>} />
             <Route path="/register" element={< RegisterPopup/>} />
             <Route path="/login" element={< LoginPopup/>} />
