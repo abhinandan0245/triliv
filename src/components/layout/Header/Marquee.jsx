@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 const Marquee = () => (
   <div className="overflow-hidden">
@@ -9,15 +9,21 @@ const Marquee = () => (
             <div className="marquee-child-item">
               <p>Return extended to 60 days</p>
             </div>
-            <div className="marquee-child-item"><span className="dot" /></div>
+            <div className="marquee-child-item">
+              <span className="dot" />
+            </div>
             <div className="marquee-child-item">
               <p>Life-time Guarantes</p>
             </div>
-            <div className="marquee-child-item"><span className="dot" /></div>
+            <div className="marquee-child-item">
+              <span className="dot" />
+            </div>
             <div className="marquee-child-item">
               <p>Limited-Time Offer</p>
             </div>
-            <div className="marquee-child-item"><span className="dot" /></div>
+            <div className="marquee-child-item">
+              <span className="dot" />
+            </div>
           </React.Fragment>
         ))}
       </div>

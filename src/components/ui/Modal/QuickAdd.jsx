@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 const QuickAddModal = ({ product, onClose }) => {
   const [quantity, setQuantity] = useState(1);
-    const [selectedColor, setSelectedColor] = useState(product.colors[0].name);
+  const [selectedColor, setSelectedColor] = useState(product.colors[0].name);
 
   const handleQuantityChange = (type) => {
-    if (type === 'minus' && quantity > 1) {
+    if (type === "minus" && quantity > 1) {
       setQuantity(quantity - 1);
-    } else if (type === 'plus') {
+    } else if (type === "plus") {
       setQuantity(quantity + 1);
     }
   };
@@ -17,20 +17,20 @@ const QuickAddModal = ({ product, onClose }) => {
   };
 
   return (
-      <div className="modal fade modalCentered popup-quickadd show modal-backdrop fade show" style={{ display: 'block' }}>
+    <div
+      className="modal fade modalCentered popup-quickadd show modal-backdrop fade show"
+      style={{ display: "block" }}
+    >
       <div className="modal-dialog modal-dialog-centered">
         <div className="modal-content">
-          <span 
-            className="icon-close icon-close-popup" 
-            onClick={onClose}
-          />
+          <span className="icon-close icon-close-popup" onClick={onClose} />
           <div className="main-product-quickadd card-product">
             <div className="item-product-info">
               <div className="product-img">
-                <img 
-                  className="img-product lazyload" 
-                  src={product.images.main} 
-                  alt={product.name} 
+                <img
+                  className="img-product lazyload"
+                  src={product.images.main}
+                  alt={product.name}
                 />
               </div>
               <div className="content-box">
@@ -57,17 +57,19 @@ const QuickAddModal = ({ product, onClose }) => {
                 </div>
                 <ul className="list-color-product">
                   {product.colors.map((color, index) => (
-                    <li 
+                    <li
                       key={index}
-                      className={`list-color-item color-swatch hover-tooltip tooltip-bot ${selectedColor === color.name ? 'active' : ''}`}
+                      className={`list-color-item color-swatch hover-tooltip tooltip-bot ${
+                        selectedColor === color.name ? "active" : ""
+                      }`}
                       onClick={() => handleColorSelect(color.name)}
                     >
                       <span className="tooltip color-label">{color.name}</span>
                       <span className={`swatch-value ${color.value}`} />
-                      <img 
-                        className="lazyload" 
-                        src={color.image} 
-                        alt={color.name} 
+                      <img
+                        className="lazyload"
+                        src={color.image}
+                        alt={color.name}
                       />
                     </li>
                   ))}
@@ -77,16 +79,16 @@ const QuickAddModal = ({ product, onClose }) => {
             <div className="item-product-quantity">
               <div className="label text-md">Quantity</div>
               <div className="wg-quantity">
-                <button 
-                  className="btn-quantity minus-btn" 
-                  onClick={() => handleQuantityChange('minus')}
+                <button
+                  className="btn-quantity minus-btn"
+                  onClick={() => handleQuantityChange("minus")}
                 >
                   -
                 </button>
-                <input 
-                  className="quantity-product font-4" 
-                  type="text" 
-                  name="number" 
+                <input
+                  className="quantity-product font-4"
+                  type="text"
+                  name="number"
                   value={quantity}
                   onChange={(e) => {
                     const value = parseInt(e.target.value);
@@ -95,23 +97,25 @@ const QuickAddModal = ({ product, onClose }) => {
                     }
                   }}
                 />
-                <button 
-                  className="btn-quantity plus-btn" 
-                  onClick={() => handleQuantityChange('plus')}
+                <button
+                  className="btn-quantity plus-btn"
+                  onClick={() => handleQuantityChange("plus")}
                 >
                   +
                 </button>
               </div>
             </div>
             <div className="item-product-group-btn">
-              <a 
-                href="#shoppingCart" 
-                data-bs-toggle="offcanvas" 
+              <a
+                href="#shoppingCart"
+                data-bs-toggle="offcanvas"
                 className="tf-btn animate-btn atc"
                 onClick={(e) => {
                   e.preventDefault();
                   // Add to cart logic here
-                  console.log(`Added ${quantity} ${selectedColor} items to cart`);
+                  console.log(
+                    `Added ${quantity} ${selectedColor} items to cart`
+                  );
                 }}
               >
                 Add to cart
@@ -122,12 +126,14 @@ const QuickAddModal = ({ product, onClose }) => {
               <a href="javascript:void(0);" className="box-icon btn-compare">
                 <i className="icon icon-compare" />
               </a>
-              <a 
-                href="/checkout" 
+              <a
+                href="/checkout"
                 className="tf-btn btn-primary animate-btn w-100"
                 onClick={(e) => {
                   // Buy now logic here
-                  console.log(`Proceeding to checkout with ${quantity} ${selectedColor} items`);
+                  console.log(
+                    `Proceeding to checkout with ${quantity} ${selectedColor} items`
+                  );
                 }}
               >
                 Buy It Now

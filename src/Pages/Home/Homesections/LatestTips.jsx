@@ -1,14 +1,14 @@
-import React, { useRef } from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination } from 'swiper/modules';
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
+import React, { useRef } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
 
 // Import images
-import plantTip1 from '../../../../public/images/plant-tip-1.jpg';
-import plantTip2 from '../../../../public/images/plant-tip-2.jpg';
-import plantTip3 from '../../../../public/images/plant-tip-3.jpg';
+import plantTip1 from "../../../../public/images/plant-tip-1.jpg";
+import plantTip2 from "../../../../public/images/plant-tip-2.jpg";
+import plantTip3 from "../../../../public/images/plant-tip-3.jpg";
 
 const LatestTips = () => {
   const prevRef = useRef(null);
@@ -20,26 +20,26 @@ const LatestTips = () => {
       id: 1,
       title: "Top 5 Low-Maintenance Plants for Beginners",
       image: plantTip1,
-      alt: "Low-maintenance plants"
+      alt: "Low-maintenance plants",
     },
     {
       id: 2,
       title: "How to Choose the Perfect Plant for Your Home",
       image: plantTip2,
-      alt: "Choosing perfect plant"
+      alt: "Choosing perfect plant",
     },
     {
       id: 3,
       title: "The Health Benefits of Indoor Plants: More Than Just Decor",
       image: plantTip3,
-      alt: "Health benefits of plants"
+      alt: "Health benefits of plants",
     },
     {
       id: 4,
       title: "Seasonal Style Guide: Trends to Watch for This Year",
       image: plantTip1,
-      alt: "Seasonal plant trends"
-    }
+      alt: "Seasonal plant trends",
+    },
   ];
 
   return (
@@ -69,13 +69,13 @@ const LatestTips = () => {
               577: {
                 slidesPerView: 2,
                 spaceBetween: 12,
-                slidesPerGroup: 2
+                slidesPerGroup: 2,
               },
               1200: {
                 slidesPerView: 3,
                 spaceBetween: 24,
-                slidesPerGroup: 4
-              }
+                slidesPerGroup: 4,
+              },
             }}
             onInit={(swiper) => {
               swiper.params.navigation.prevEl = prevRef.current;
@@ -92,16 +92,26 @@ const LatestTips = () => {
                   <div className="blog-item-v2 border-0 bg-white hover-img">
                     <div className="entry-image hover-img">
                       <a href="notfound" className="image-box img-style">
-                        <img src={tip.image} data-src={tip.image} alt={tip.alt} />
+                        <img
+                          src={tip.image}
+                          data-src={tip.image}
+                          alt={tip.alt}
+                        />
                       </a>
                     </div>
                     <div className="entry-content">
                       <div className="info-box">
-                        <a href="notfound" className="title fw-medium link text-xl text-line-clamp-2">
+                        <a
+                          href="notfound"
+                          className="title fw-medium link text-xl text-line-clamp-2"
+                        >
                           {tip.title}
                         </a>
                       </div>
-                      <a href="notfound" className="btn-readmore text-green-2 link">
+                      <a
+                        href="notfound"
+                        className="btn-readmore text-green-2 link"
+                      >
                         Read more <i className="icon icon-arr-right" />
                       </a>
                     </div>
@@ -109,12 +119,21 @@ const LatestTips = () => {
                 </SwiperSlide>
               ))}
             </div>
-            
-            <div ref={paginationRef} className="d-flex d-xl-none sw-dot-default sw-pagination-new justify-content-center"></div>
+
+            <div
+              ref={paginationRef}
+              className="d-flex d-xl-none sw-dot-default sw-pagination-new justify-content-center"
+            ></div>
           </Swiper>
-          
-          <div className="d-none d-xl-flex swiper-button-next nav-swiper nav-next-new "  ref={nextRef} />
-          <div className="d-none d-xl-flex swiper-button-prev nav-swiper nav-prev-new" ref={prevRef} />
+
+          <div
+            className="d-none d-xl-flex swiper-button-next nav-swiper nav-next-new "
+            ref={nextRef}
+          />
+          <div
+            className="d-none d-xl-flex swiper-button-prev nav-swiper nav-prev-new"
+            ref={prevRef}
+          />
         </div>
       </div>
     </section>

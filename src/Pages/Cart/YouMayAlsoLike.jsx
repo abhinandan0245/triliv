@@ -1,15 +1,12 @@
-import React, { useEffect, useRef } from 'react';
-import Swiper from 'swiper';
-import 'swiper/swiper-bundle.css';
-
+import React, { useEffect, useRef } from "react";
+import Swiper from "swiper";
+import "swiper/swiper-bundle.css";
 
 const YouMayAlsoLike = () => {
   const swiperRef = useRef(null);
   const swiperInstance = useRef(null);
 
   useEffect(() => {
-  
-
     // Initialize Swiper
     swiperInstance.current = new Swiper(swiperRef.current, {
       slidesPerView: 2,
@@ -19,11 +16,11 @@ const YouMayAlsoLike = () => {
       observeParents: true,
       slidesPerGroup: 2,
       navigation: {
-        nextEl: '.nav-next-also',
-        prevEl: '.nav-prev-also',
+        nextEl: ".nav-next-also",
+        prevEl: ".nav-prev-also",
       },
       pagination: {
-        el: '.sw-pagination-also',
+        el: ".sw-pagination-also",
         clickable: true,
       },
       breakpoints: {
@@ -57,10 +54,24 @@ const YouMayAlsoLike = () => {
       mainImage: "images/product/product-36.jpg",
       hoverImage: "images/product/product-4.jpg",
       colors: [
-        { name: "Beige", class: "bg-beige", image: "images/product/product-36.jpg", active: true },
-        { name: "Black", class: "bg-dark", image: "images/product/product-9.jpg" },
-        { name: "White", class: "bg-white", image: "images/product/product-4.jpg", line: true }
-      ]
+        {
+          name: "Beige",
+          class: "bg-beige",
+          image: "images/product/product-36.jpg",
+          active: true,
+        },
+        {
+          name: "Black",
+          class: "bg-dark",
+          image: "images/product/product-9.jpg",
+        },
+        {
+          name: "White",
+          class: "bg-white",
+          image: "images/product/product-4.jpg",
+          line: true,
+        },
+      ],
     },
     {
       id: 2,
@@ -70,10 +81,23 @@ const YouMayAlsoLike = () => {
       mainImage: "images/product/product-37.jpg",
       hoverImage: "images/product/product-7.jpg",
       colors: [
-        { name: "Red", class: "bg-red", image: "images/product/product-37.jpg", active: true },
-        { name: "Beige", class: "bg-beige", image: "images/product/product-7.jpg" },
-        { name: "Grey", class: "bg-grey-4", image: "images/product/product-2.jpg" }
-      ]
+        {
+          name: "Red",
+          class: "bg-red",
+          image: "images/product/product-37.jpg",
+          active: true,
+        },
+        {
+          name: "Beige",
+          class: "bg-beige",
+          image: "images/product/product-7.jpg",
+        },
+        {
+          name: "Grey",
+          class: "bg-grey-4",
+          image: "images/product/product-2.jpg",
+        },
+      ],
     },
     {
       id: 3,
@@ -83,9 +107,19 @@ const YouMayAlsoLike = () => {
       mainImage: "images/product/product-38.jpg",
       hoverImage: "images/product/product-29.jpg",
       colors: [
-        { name: "Black", class: "bg-dark", image: "images/product/product-38.jpg", active: true },
-        { name: "White", class: "bg-white", image: "images/product/product-29.jpg", line: true }
-      ]
+        {
+          name: "Black",
+          class: "bg-dark",
+          image: "images/product/product-38.jpg",
+          active: true,
+        },
+        {
+          name: "White",
+          class: "bg-white",
+          image: "images/product/product-29.jpg",
+          line: true,
+        },
+      ],
     },
     {
       id: 4,
@@ -95,9 +129,18 @@ const YouMayAlsoLike = () => {
       mainImage: "images/product/product-39.jpg",
       hoverImage: "images/product/product-27.jpg",
       colors: [
-        { name: "Blue", class: "bg-light-blue", image: "images/product/product-39.jpg", active: true },
-        { name: "Light Purple", class: "bg-light-purple-3", image: "images/product/product-27.jpg" }
-      ]
+        {
+          name: "Blue",
+          class: "bg-light-blue",
+          image: "images/product/product-39.jpg",
+          active: true,
+        },
+        {
+          name: "Light Purple",
+          class: "bg-light-purple-3",
+          image: "images/product/product-27.jpg",
+        },
+      ],
     },
     {
       id: 5,
@@ -107,9 +150,18 @@ const YouMayAlsoLike = () => {
       mainImage: "images/product/product-13.jpg",
       hoverImage: "images/product/product-14.jpg",
       colors: [
-        { name: "Black", class: "bg-dark", image: "images/product/product-13.jpg", active: true },
-        { name: "Purple", class: "bg-purple-3", image: "images/product/product-14.jpg" }
-      ]
+        {
+          name: "Black",
+          class: "bg-dark",
+          image: "images/product/product-13.jpg",
+          active: true,
+        },
+        {
+          name: "Purple",
+          class: "bg-purple-3",
+          image: "images/product/product-14.jpg",
+        },
+      ],
     },
     {
       id: 6,
@@ -119,11 +171,17 @@ const YouMayAlsoLike = () => {
       mainImage: "images/product/product-26.jpg",
       hoverImage: "images/product/product-26.jpg",
       colors: [
-        { name: "White", class: "bg-white", image: "images/product/product-26.jpg", active: true, line: true },
+        {
+          name: "White",
+          class: "bg-white",
+          image: "images/product/product-26.jpg",
+          active: true,
+          line: true,
+        },
         { name: "Grey", class: "bg-grey-4", image: "images/women-grey-1.jpg" },
-        { name: "Black", class: "bg-dark", image: "images/women-black-6.jpg" }
-      ]
-    }
+        { name: "Black", class: "bg-dark", image: "images/women-black-6.jpg" },
+      ],
+    },
   ];
 
   return (
@@ -133,20 +191,24 @@ const YouMayAlsoLike = () => {
           <h4 className="title">You May Also Like</h4>
         </div>
         <div className="fl-control-sw wrap-pos-nav sw-over-product">
-          <div dir="ltr" className="swiper tf-swiper wrap-sw-over" ref={swiperRef}>
+          <div
+            dir="ltr"
+            className="swiper tf-swiper wrap-sw-over"
+            ref={swiperRef}
+          >
             <div className="swiper-wrapper">
               {products.map((product) => (
                 <div className="swiper-slide" key={product.id}>
                   <div className="card-product style-2">
                     <div className="card-product-wrapper">
                       <a href="productdetail" className="product-img">
-                        <img 
+                        <img
                           className="img-product lazyload"
                           data-src={product.mainImage}
                           src={product.mainImage}
                           alt="image-product"
                         />
-                        <img 
+                        <img
                           className="img-hover lazyload"
                           data-src={product.hoverImage}
                           src={product.hoverImage}
@@ -161,14 +223,17 @@ const YouMayAlsoLike = () => {
                           </a>
                         </li>
                         <li className="wishlist">
-                          <a href="javascript:void(0);" className="hover-tooltip box-icon">
+                          <a
+                            href="javascript:void(0);"
+                            className="hover-tooltip box-icon"
+                          >
                             <span className="icon icon-heart2"></span>
                             <span className="tooltip">Add to Wishlist</span>
                           </a>
                         </li>
                         <li>
-                          <a 
-                            href="#quickView" 
+                          <a
+                            href="#quickView"
                             data-bs-toggle="modal"
                             className="hover-tooltip box-icon quickview"
                           >
@@ -177,8 +242,8 @@ const YouMayAlsoLike = () => {
                           </a>
                         </li>
                         <li className="compare">
-                          <a 
-                            href="#compare" 
+                          <a
+                            href="#compare"
                             data-bs-toggle="modal"
                             className="hover-tooltip box-icon"
                           >
@@ -189,7 +254,10 @@ const YouMayAlsoLike = () => {
                       </ul>
                     </div>
                     <div className="card-product-info">
-                      <a href="productdetail" className="name-product link fw-medium text-md">
+                      <a
+                        href="productdetail"
+                        className="name-product link fw-medium text-md"
+                      >
                         {product.name}
                       </a>
                       <p className="price-wrap fw-medium">
@@ -198,14 +266,20 @@ const YouMayAlsoLike = () => {
                       </p>
                       <ul className="list-color-product">
                         {product.colors.map((color, index) => (
-                          <li 
+                          <li
                             key={index}
-                            className={`list-color-item hover-tooltip tooltip-bot color-swatch ${color.active ? 'active' : ''} ${color.line ? 'line' : ''}`}
+                            className={`list-color-item hover-tooltip tooltip-bot color-swatch ${
+                              color.active ? "active" : ""
+                            } ${color.line ? "line" : ""}`}
                           >
-                            <span className="tooltip color-filter">{color.name}</span>
-                            <span className={`swatch-value ${color.class}`}></span>
-                            <img 
-                              className="lazyload" 
+                            <span className="tooltip color-filter">
+                              {color.name}
+                            </span>
+                            <span
+                              className={`swatch-value ${color.class}`}
+                            ></span>
+                            <img
+                              className="lazyload"
                               data-src={color.image}
                               src={color.image}
                               alt="image-product"

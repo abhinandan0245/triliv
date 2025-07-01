@@ -18,7 +18,7 @@ const ShopGram = () => {
     <section className="flat-spacing-28">
       <div className="container">
         {/* Title - matches your image reference */}
-        <div className="flat-title "data-aos="fade-up">
+        <div className="flat-title " data-aos="fade-up">
           <h3 className="title fw-semibold font-7 letter-0">Shop by @Triliv</h3>
         </div>
 
@@ -62,10 +62,7 @@ const ShopGram = () => {
                       loading="lazy"
                     />
                   </div>
-                  <a
-                    href="productdetail"
-                    className="box-icon hover-tooltip"
-                  >
+                  <a href="productdetail" className="box-icon hover-tooltip">
                     <span className="icon icon-cart2">
                       <span
                         className="tooltip "

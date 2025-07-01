@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from 'react-router-dom';
-
+import { useNavigate } from "react-router-dom";
 
 const RegisterPopup = ({ show, onClose }) => {
   const [formData, setFormData] = useState({
@@ -11,13 +10,13 @@ const RegisterPopup = ({ show, onClose }) => {
     confirmPassword: "",
   });
 
-const navigate = useNavigate();
- 
-const handleRegisterClick = () => {
-    onClose();  // Close the popup
-    navigate('/myaccount');  // Navigate to MyAccount
+  const navigate = useNavigate();
+
+  const handleRegisterClick = () => {
+    onClose(); // Close the popup
+    navigate("/myaccount"); // Navigate to MyAccount
   };
-   
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -101,7 +100,7 @@ const handleRegisterClick = () => {
               <button
                 className="subscribe-button tf-btn animate-btn d-inline-flex bg-dark-2 w-100"
                 type="submit"
-                 onClick={handleRegisterClick}
+                onClick={handleRegisterClick}
               >
                 Register
               </button>

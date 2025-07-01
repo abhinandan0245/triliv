@@ -2,16 +2,13 @@ import CartTitle from "./CartTitle";
 import Shopping from "./ShoppingCart";
 import YouMayAlsoLike from "./YouMayAlsoLike";
 
-
-
 function Cart() {
-    return(
+  return (
     <>
-      <CartTitle/>
-      <Shopping/>
-      <YouMayAlsoLike/>
+      <CartTitle />
+      <Shopping />
+      <YouMayAlsoLike />
     </>
-    );
-
+  );
 }
 export default Cart;

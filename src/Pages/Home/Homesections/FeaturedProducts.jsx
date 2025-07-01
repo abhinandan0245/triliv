@@ -193,7 +193,10 @@ const FeaturedProducts = () => {
             Featured Products
           </h3>
         </div>
-        <div className="fl-control-sw2 wrap-pos-nav sw-over-product "data-aos="fade-up">
+        <div
+          className="fl-control-sw2 wrap-pos-nav sw-over-product "
+          data-aos="fade-up"
+        >
           <div dir="ltr" className="swiper tf-swiper wrap-sw-over">
             <div className="swiper-wrapper">
               {products.map((product) => (
@@ -323,7 +326,7 @@ const FeaturedProducts = () => {
           onClose={() => setShowQuickAdd(false)}
         />
       )}
-      
+
       {showQuickView && quickViewProduct && (
         <QuickViewModal
           product={quickViewProduct}

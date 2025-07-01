@@ -1,39 +1,39 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 const CheckoutPage = () => {
   // Form state management
   const [formData, setFormData] = useState({
-    firstname: '',
-    lastname: '',
-    country: '',
-    address: '',
-    apartment: '',
-    city: '',
-    state: '',
-    zipcode: '',
-    phone: '',
-    emailPhone: '',
-    shippingMethod: 'expship', // Default to express shipping
-    paymentMethod: 'credit-card', // Default to credit card
-    cardNumber: '',
-    expiryDate: '',
-    securityCode: '',
-    cardName: '',
-    useShippingAsBilling: true
+    firstname: "",
+    lastname: "",
+    country: "",
+    address: "",
+    apartment: "",
+    city: "",
+    state: "",
+    zipcode: "",
+    phone: "",
+    emailPhone: "",
+    shippingMethod: "expship", // Default to express shipping
+    paymentMethod: "credit-card", // Default to credit card
+    cardNumber: "",
+    expiryDate: "",
+    securityCode: "",
+    cardName: "",
+    useShippingAsBilling: true,
   });
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value
+      [name]: type === "checkbox" ? checked : value,
     }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     // Handle form submission logic here
-    console.log('Form submitted:', formData);
+    console.log("Form submitted:", formData);
     // You would typically send this data to your backend
   };
 
@@ -45,15 +45,19 @@ const CheckoutPage = () => {
           <div className="box-title text-center">
             <h4 className="title">Checkout</h4>
             <div className="breadcrumb-list">
-              <a className="breadcrumb-item" href="/">Home</a>
-              <div className="breadcrumb-item dot"><span /></div>
+              <a className="breadcrumb-item" href="/">
+                Home
+              </a>
+              <div className="breadcrumb-item dot">
+                <span />
+              </div>
               <div className="breadcrumb-item current">Checkout</div>
             </div>
           </div>
         </div>
       </section>
       {/* /Title Page */}
-      
+
       {/* Cart Section */}
       <div className="flat-spacing-13">
         <div className="container">
@@ -64,86 +68,98 @@ const CheckoutPage = () => {
                   <div className="title text-lg fw-medium">Checkout</div>
                   <div className="grid-2 mb_16">
                     <div className="tf-field style-2 style-3">
-                      <input 
-                        className="tf-field-input tf-input" 
-                        id="firstname" 
-                        placeholder=" " 
-                        type="text" 
-                        name="firstname" 
+                      <input
+                        className="tf-field-input tf-input"
+                        id="firstname"
+                        placeholder=" "
+                        type="text"
+                        name="firstname"
                         value={formData.firstname}
                         onChange={handleChange}
                         required
                       />
-                      <label className="tf-field-label" htmlFor="firstname">First name</label>
+                      <label className="tf-field-label" htmlFor="firstname">
+                        First name
+                      </label>
                     </div>
                     <div className="tf-field style-2 style-3">
-                      <input 
-                        className="tf-field-input tf-input" 
-                        id="lastname" 
-                        placeholder=" " 
-                        type="text" 
-                        name="lastname" 
+                      <input
+                        className="tf-field-input tf-input"
+                        id="lastname"
+                        placeholder=" "
+                        type="text"
+                        name="lastname"
                         value={formData.lastname}
                         onChange={handleChange}
                         required
                       />
-                      <label className="tf-field-label" htmlFor="lastname">Last name</label>
+                      <label className="tf-field-label" htmlFor="lastname">
+                        Last name
+                      </label>
                     </div>
                   </div>
                   <fieldset className="tf-field style-2 style-3 mb_16">
-                    <input 
-                      className="tf-field-input tf-input" 
-                      id="country" 
-                      type="text" 
-                      name="country" 
-                      placeholder=" " 
+                    <input
+                      className="tf-field-input tf-input"
+                      id="country"
+                      type="text"
+                      name="country"
+                      placeholder=" "
                       value={formData.country}
                       onChange={handleChange}
                       required
                     />
-                    <label className="tf-field-label" htmlFor="country">Country</label>
+                    <label className="tf-field-label" htmlFor="country">
+                      Country
+                    </label>
                   </fieldset>
                   <fieldset className="tf-field style-2 style-3 mb_16">
-                    <input 
-                      className="tf-field-input tf-input" 
-                      id="address" 
-                      type="text" 
-                      name="address" 
+                    <input
+                      className="tf-field-input tf-input"
+                      id="address"
+                      type="text"
+                      name="address"
                       placeholder=" "
                       value={formData.address}
                       onChange={handleChange}
                       required
                     />
-                    <label className="tf-field-label" htmlFor="address">Address</label>
+                    <label className="tf-field-label" htmlFor="address">
+                      Address
+                    </label>
                   </fieldset>
                   <fieldset className="tf-field style-2 style-3 mb_16">
-                    <input 
-                      type="text" 
-                      className="tf-field-input tf-input" 
-                      name="apartment" 
+                    <input
+                      type="text"
+                      className="tf-field-input tf-input"
+                      name="apartment"
                       placeholder=" "
                       value={formData.apartment}
                       onChange={handleChange}
                     />
-                    <label className="tf-field-label" htmlFor="apartment">Apartment, suite, etc (optional)</label>
+                    <label className="tf-field-label" htmlFor="apartment">
+                      Apartment, suite, etc (optional)
+                    </label>
                   </fieldset>
                   <div className="grid-3 mb_16">
                     <fieldset className="tf-field style-2 style-3">
-                      <input 
-                        className="tf-field-input tf-input" 
-                        id="city" 
-                        type="text" 
-                        name="city" 
+                      <input
+                        className="tf-field-input tf-input"
+                        id="city"
+                        type="text"
+                        name="city"
                         placeholder=" "
                         value={formData.city}
                         onChange={handleChange}
                         required
                       />
-                      <label className="tf-field-label" htmlFor="city">City</label>
+                      <label className="tf-field-label" htmlFor="city">
+                        City
+                      </label>
                     </fieldset>
                     <div className="tf-select select-square">
-                      <select 
-                        name="state" 
+                      <select
+                        name="state"
                         id="state"
                         value={formData.state}
                         onChange={handleChange}
@@ -159,84 +175,100 @@ const CheckoutPage = () => {
                       </select>
                     </div>
                     <fieldset className="tf-field style-2 style-3">
-                      <input 
-                        className="tf-field-input tf-input" 
-                        id="code" 
-                        type="text" 
-                        name="zipcode" 
+                      <input
+                        className="tf-field-input tf-input"
+                        id="code"
+                        type="text"
+                        name="zipcode"
                         placeholder=" "
                         value={formData.zipcode}
                         onChange={handleChange}
                         required
                       />
-                      <label className="tf-field-label" htmlFor="code">Zipcode/Postal</label>
+                      <label className="tf-field-label" htmlFor="code">
+                        Zipcode/Postal
+                      </label>
                     </fieldset>
                   </div>
                   <fieldset className="tf-field style-2 style-3 mb_16">
-                    <input 
-                      className="tf-field-input tf-input" 
-                      id="phone" 
-                      type="text" 
-                      name="phone" 
+                    <input
+                      className="tf-field-input tf-input"
+                      id="phone"
+                      type="text"
+                      name="phone"
                       placeholder=" "
                       value={formData.phone}
                       onChange={handleChange}
                       required
                     />
-                    <label className="tf-field-label" htmlFor="phone">Phone</label>
+                    <label className="tf-field-label" htmlFor="phone">
+                      Phone
+                    </label>
                   </fieldset>
                 </div>
                 <div className="box-ip-contact">
                   <div className="title">
                     <div className="text-lg fw-medium">Contact Information</div>
-                    <a href="#login" data-bs-toggle="offcanvas" className="text-sm link">Log in</a>
+                    <a
+                      href="#login"
+                      data-bs-toggle="offcanvas"
+                      className="text-sm link"
+                    >
+                      Log in
+                    </a>
                   </div>
                   <fieldset className="tf-field style-2 style-3">
-                    <input 
-                      className="tf-field-input tf-input" 
-                      id="email/phone" 
-                      placeholder=" " 
-                      type="text" 
-                      name="emailPhone" 
+                    <input
+                      className="tf-field-input tf-input"
+                      id="email/phone"
+                      placeholder=" "
+                      type="text"
+                      name="emailPhone"
                       value={formData.emailPhone}
                       onChange={handleChange}
                       required
                     />
-                    <label className="tf-field-label" htmlFor="email/phone">Email or phone number</label>
+                    <label className="tf-field-label" htmlFor="email/phone">
+                      Email or phone number
+                    </label>
                   </fieldset>
                 </div>
                 <div className="box-ip-shipping">
                   <div className="title text-lg fw-medium">Shipping Method</div>
                   <fieldset className="mb_16">
                     <label htmlFor="freeship" className="check-ship">
-                      <input 
-                        type="radio" 
-                        id="freeship" 
-                        className="tf-check-rounded" 
-                        name="shippingMethod" 
+                      <input
+                        type="radio"
+                        id="freeship"
+                        className="tf-check-rounded"
+                        name="shippingMethod"
                         value="freeship"
-                        checked={formData.shippingMethod === 'freeship'}
+                        checked={formData.shippingMethod === "freeship"}
                         onChange={handleChange}
                       />
                       <span className="text text-sm">
-                        <span>Free Shipping (Estimate in 7/10 - 10/10/2025)</span>
+                        <span>
+                          Free Shipping (Estimate in 7/10 - 10/10/2025)
+                        </span>
                         <span className="price">$00.00</span>
                       </span>
                     </label>
                   </fieldset>
                   <fieldset>
                     <label htmlFor="expship" className="check-ship">
-                      <input 
-                        type="radio" 
-                        id="expship" 
-                        className="tf-check-rounded" 
-                        name="shippingMethod" 
+                      <input
+                        type="radio"
+                        id="expship"
+                        className="tf-check-rounded"
+                        name="shippingMethod"
                         value="expship"
-                        checked={formData.shippingMethod === 'expship'}
+                        checked={formData.shippingMethod === "expship"}
                         onChange={handleChange}
                       />
                       <span className="text text-sm">
-                        <span>Express Shipping (Estimate in 4/10 - 5/10/2025)</span>
+                        <span>
+                          Express Shipping (Estimate in 4/10 - 5/10/2025)
+                        </span>
                         <span className="price">$10.00</span>
                       </span>
                     </label>
@@ -245,134 +277,206 @@ const CheckoutPage = () => {
                 <div className="box-ip-payment">
                   <div className="title">
                     <div className="text-lg fw-medium mb_4">Payment</div>
-                    <p className="text-sm text-main">All transactions are secure and encrypted.</p>
+                    <p className="text-sm text-main">
+                      All transactions are secure and encrypted.
+                    </p>
                   </div>
                   <fieldset className="mb_12">
                     <label htmlFor="bank-transfer" className="check-payment">
-                      <input 
-                        type="radio" 
-                        id="bank-transfer" 
-                        className="tf-check-rounded" 
-                        name="paymentMethod" 
+                      <input
+                        type="radio"
+                        id="bank-transfer"
+                        className="tf-check-rounded"
+                        name="paymentMethod"
                         value="bank-transfer"
-                        checked={formData.paymentMethod === 'bank-transfer'}
+                        checked={formData.paymentMethod === "bank-transfer"}
                         onChange={handleChange}
                       />
-                      <span className="text-payment text-sm">Direct bank transfer</span>
+                      <span className="text-payment text-sm">
+                        Direct bank transfer
+                      </span>
                     </label>
                   </fieldset>
-                  <p className="mb_16 text-main">Make your payment directly into our bank account. Please use
-                    your Order ID as the payment reference.Your order will not be shipped until the
-                    funds have cleared in our account.</p>
+                  <p className="mb_16 text-main">
+                    Make your payment directly into our bank account. Please use
+                    your Order ID as the payment reference.Your order will not
+                    be shipped until the funds have cleared in our account.
+                  </p>
                   <div className="payment-method-box" id="payment-method-box">
                     <div className="payment-item mb_16">
-                      <label htmlFor="delivery" className="payment-header collapsed" data-bs-toggle="collapse" data-bs-target="#delivery-payment" aria-controls="delivery-payment">
-                        <input 
-                          type="radio" 
-                          name="paymentMethod" 
-                          className="tf-check-rounded" 
-                          id="delivery" 
+                      <label
+                        htmlFor="delivery"
+                        className="payment-header collapsed"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#delivery-payment"
+                        aria-controls="delivery-payment"
+                      >
+                        <input
+                          type="radio"
+                          name="paymentMethod"
+                          className="tf-check-rounded"
+                          id="delivery"
                           value="delivery"
-                          checked={formData.paymentMethod === 'delivery'}
+                          checked={formData.paymentMethod === "delivery"}
                           onChange={handleChange}
                         />
-                        <span className="pay-title text-sm">Cash on delivery</span>
+                        <span className="pay-title text-sm">
+                          Cash on delivery
+                        </span>
                       </label>
-                      <div id="delivery-payment" className="collapse" data-bs-parent="#payment-method-box" />
+                      <div
+                        id="delivery-payment"
+                        className="collapse"
+                        data-bs-parent="#payment-method-box"
+                      />
                     </div>
                     <div className="payment-item mb_16">
-                      <label htmlFor="credit-card" className="payment-header" data-bs-toggle="collapse" data-bs-target="#credit-card-payment" aria-controls="credit-card-payment">
-                        <input 
-                          type="radio" 
-                          name="paymentMethod" 
-                          className="tf-check-rounded" 
-                          id="credit-card" 
+                      <label
+                        htmlFor="credit-card"
+                        className="payment-header"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#credit-card-payment"
+                        aria-controls="credit-card-payment"
+                      >
+                        <input
+                          type="radio"
+                          name="paymentMethod"
+                          className="tf-check-rounded"
+                          id="credit-card"
                           value="credit-card"
-                          checked={formData.paymentMethod === 'credit-card'}
+                          checked={formData.paymentMethod === "credit-card"}
                           onChange={handleChange}
                         />
                         <span className="pay-title text-sm">Credit Card</span>
                       </label>
-                      <div id="credit-card-payment" className="collapse show" data-bs-parent="#payment-method-box">
+                      <div
+                        id="credit-card-payment"
+                        className="collapse show"
+                        data-bs-parent="#payment-method-box"
+                      >
                         <div className="payment-body">
                           <fieldset className="ip-card mb_16">
-                            <input 
-                              type="text" 
-                              className="style-2" 
-                              placeholder="Card number" 
+                            <input
+                              type="text"
+                              className="style-2"
+                              placeholder="Card number"
                               name="cardNumber"
                               value={formData.cardNumber}
                               onChange={handleChange}
-                              required={formData.paymentMethod === 'credit-card'}
+                              required={
+                                formData.paymentMethod === "credit-card"
+                              }
                             />
-                            <img className="card-logo" width={41} height={12} src="images/visa-2.png" alt="card" />
+                            <img
+                              className="card-logo"
+                              width={41}
+                              height={12}
+                              src="images/visa-2.png"
+                              alt="card"
+                            />
                           </fieldset>
                           <div className="grid-2 mb_16">
-                            <input 
-                              type="text" 
-                              className="style-2" 
-                              placeholder="Expiration date (MM/YY)" 
+                            <input
+                              type="text"
+                              className="style-2"
+                              placeholder="Expiration date (MM/YY)"
                               name="expiryDate"
                               value={formData.expiryDate}
                               onChange={handleChange}
-                              required={formData.paymentMethod === 'credit-card'}
+                              required={
+                                formData.paymentMethod === "credit-card"
+                              }
                             />
-                            <input 
-                              type="text" 
-                              className="style-2" 
-                              placeholder="Sercurity code" 
+                            <input
+                              type="text"
+                              className="style-2"
+                              placeholder="Sercurity code"
                               name="securityCode"
                               value={formData.securityCode}
                               onChange={handleChange}
-                              required={formData.paymentMethod === 'credit-card'}
+                              required={
+                                formData.paymentMethod === "credit-card"
+                              }
                             />
                           </div>
                           <fieldset className="mb_16">
-                            <input 
-                              type="text" 
-                              className="style-2" 
-                              placeholder="Name on card" 
+                            <input
+                              type="text"
+                              className="style-2"
+                              placeholder="Name on card"
                               name="cardName"
                               value={formData.cardName}
                               onChange={handleChange}
-                              required={formData.paymentMethod === 'credit-card'}
+                              required={
+                                formData.paymentMethod === "credit-card"
+                              }
                             />
                           </fieldset>
                           <div className="cb-ship">
-                            <input 
-                              type="checkbox" 
-                              className="tf-check" 
-                              id="checkShip" 
+                            <input
+                              type="checkbox"
+                              className="tf-check"
+                              id="checkShip"
                               name="useShippingAsBilling"
                               checked={formData.useShippingAsBilling}
                               onChange={handleChange}
                             />
-                            <label htmlFor="checkShip" className="text-sm text-main">Use shipping
-                              address as billing address</label>
+                            <label
+                              htmlFor="checkShip"
+                              className="text-sm text-main"
+                            >
+                              Use shipping address as billing address
+                            </label>
                           </div>
                         </div>
                       </div>
                     </div>
                     <div className="payment-item paypal-payment mb_16">
-                      <label htmlFor="paypal" className="payment-header collapsed" data-bs-toggle="collapse" data-bs-target="#paypal-payment" aria-controls="paypal-payment">
-                        <input 
-                          type="radio" 
-                          name="paymentMethod" 
-                          className="tf-check-rounded" 
-                          id="paypal" 
+                      <label
+                        htmlFor="paypal"
+                        className="payment-header collapsed"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#paypal-payment"
+                        aria-controls="paypal-payment"
+                      >
+                        <input
+                          type="radio"
+                          name="paymentMethod"
+                          className="tf-check-rounded"
+                          id="paypal"
                           value="paypal"
-                          checked={formData.paymentMethod === 'paypal'}
+                          checked={formData.paymentMethod === "paypal"}
                           onChange={handleChange}
                         />
-                        <span className="pay-title text-sm">PayPal<img className="card-logo" width={78} height={20} src="images/paypal-2.png" alt="apple" /></span>
+                        <span className="pay-title text-sm">
+                          PayPal
+                          <img
+                            className="card-logo"
+                            width={78}
+                            height={20}
+                            src="images/paypal-2.png"
+                            alt="apple"
+                          />
+                        </span>
                       </label>
-                      <div id="paypal-payment" className="collapse" data-bs-parent="#payment-method-box">
-                      </div>
+                      <div
+                        id="paypal-payment"
+                        className="collapse"
+                        data-bs-parent="#payment-method-box"
+                      ></div>
                     </div>
                   </div>
-                  <p className="text-dark-6 text-sm">Your personal data will be used to process your order,
-                    support your experience throughout this website, and for other purposes described in
-                    our <a href="privacypolicy" className="fw-medium text-decoration-underline link text-sm">privacy policy.</a></p>
+                  <p className="text-dark-6 text-sm">
+                    Your personal data will be used to process your order,
+                    support your experience throughout this website, and for
+                    other purposes described in our{" "}
+                    <a
+                      href="privacypolicy"
+                      className="fw-medium text-decoration-underline link text-sm"
+                    >
+                      privacy policy.
+                    </a>
+                  </p>
                 </div>
               </form>
             </div>
@@ -388,7 +492,9 @@ const CheckoutPage = () => {
                       </figure>
                       <div className="content">
                         <div className="info">
-                          <p className="name text-sm fw-medium">Loose Fit Tee</p>
+                          <p className="name text-sm fw-medium">
+                            Loose Fit Tee
+                          </p>
                           <span className="variant">White / L</span>
                         </div>
                         <span className="price text-sm fw-medium">$120.00</span>
@@ -401,7 +507,9 @@ const CheckoutPage = () => {
                       </figure>
                       <div className="content">
                         <div className="info">
-                          <p className="name text-sm fw-medium">Bow-Tie T-Shirt</p>
+                          <p className="name text-sm fw-medium">
+                            Bow-Tie T-Shirt
+                          </p>
                           <span className="variant">Black / L</span>
                         </div>
                         <span className="price text-sm fw-medium">$120.00</span>
@@ -414,7 +522,9 @@ const CheckoutPage = () => {
                       </figure>
                       <div className="content">
                         <div className="info">
-                          <p className="name text-sm fw-medium">Loose Fit Tee</p>
+                          <p className="name text-sm fw-medium">
+                            Loose Fit Tee
+                          </p>
                           <span className="variant">White / L</span>
                         </div>
                         <span className="price text-sm fw-medium">$130.00</span>
@@ -428,7 +538,9 @@ const CheckoutPage = () => {
                     </li>
                     <li className="total-item text-sm d-flex justify-content-between">
                       <span>Discount:</span>
-                      <span className="price-discount fw-medium">-$48.00 USD</span>
+                      <span className="price-discount fw-medium">
+                        -$48.00 USD
+                      </span>
                     </li>
                     <li className="total-item text-sm d-flex justify-content-between">
                       <span>Shipping:</span>
@@ -444,8 +556,8 @@ const CheckoutPage = () => {
                     <span className="total-price-order">$380.00 USD</span>
                   </div>
                   <div className="btn-order">
-                    <button 
-                      type="submit" 
+                    <button
+                      type="submit"
                       className="tf-btn btn-dark2 animate-btn w-100 text-transform-none"
                       onClick={handleSubmit}
                     >

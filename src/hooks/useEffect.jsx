@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import AOS from 'aos';
+import React, { useEffect } from "react";
+import AOS from "aos";
 
 const App = () => {
   useEffect(() => {

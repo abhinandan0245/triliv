@@ -16,9 +16,9 @@ const LoginPopup = ({ show, onClose, toggleRegister }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle login logic here
+    
     console.log("Login form submitted:", formData);
-    // You would typically make an API call here
+   
   };
 
   return (

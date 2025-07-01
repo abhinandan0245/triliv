@@ -1,9 +1,13 @@
-import React from 'react';
-import SocialIcons from './SocialIcons';
-import Marquee from './Marquee';
+import React from "react";
+import SocialIcons from "./SocialIcons";
+import Marquee from "./Marquee";
 
 const TopBar = ({ isHomePage }) => (
-  <div className={`tf-topbar ${isHomePage ? "bg-light-blue" : "bg-dark-5"} topbar-bg`}>
+  <div
+    className={`tf-topbar ${
+      isHomePage ? "bg-light-blue" : "bg-dark-5"
+    } topbar-bg`}
+  >
     <div className="container">
       <div className="topbar-wraper">
         {isHomePage && (

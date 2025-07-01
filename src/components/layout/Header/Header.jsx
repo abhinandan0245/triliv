@@ -13,16 +13,16 @@ const Header = () => {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [showRegister, setShowRegister] = useState(false);
 
-   const [showLogin, setShowLogin] = useState(false); // 👈 Add this state
+  const [showLogin, setShowLogin] = useState(false); 
 
   // Toggle login popup
   const toggleLogin = () => {
     setShowLogin(!showLogin);
   };
-   const toggleRegister = () => {
-  setShowRegister(!showRegister);
-};
- 
+  const toggleRegister = () => {
+    setShowRegister(!showRegister);
+  };
+
   // TopBar announcements data
   const announcements = [
     "Return extended to 60 days",
@@ -42,7 +42,7 @@ const Header = () => {
         <div className="container">
           <div className="row wrapper-header align-items-center">
             {/* Mobile Menu (Same for both) */}
-           <div className="col-md-4 col-3 d-xl-none">
+            <div className="col-md-4 col-3 d-xl-none">
               <a
                 className="mobile-menu"
                 onClick={() => setShowMobileMenu(true)}
@@ -144,7 +144,6 @@ const Header = () => {
                     href="#login"
                     data-bs-toggle="offcanvas"
                     className="nav-icon-item"
-                    
                   >
                     <i className="icon icon-user"></i>
                   </a>
@@ -172,34 +171,35 @@ const Header = () => {
         </div>
       </header>
       <SearchModal />
-      <LoginPopup 
-      show={showLogin} 
-      toggleRegister={toggleRegister} 
-       onClose={() => setShowLogin(false)}
-       /> 
-          
-<RegisterPopup 
-  show={showRegister} 
-  onClose={() => setShowRegister(false)}
-/>
-      <ShoppingCart />
-       <MobileMenu 
-        show={showMobileMenu} 
-        handleClose={() => setShowMobileMenu(false)} 
-        toggleLogin={toggleLogin}
-      // ✅ Pass the function
+      <LoginPopup
+        show={showLogin}
+        toggleRegister={toggleRegister}
+        onClose={() => setShowLogin(false)}
       />
- 
-    {/* Backdrop for any open modal */}
-{(showLogin || showRegister || showMobileMenu) && (
-  <div className="modal-backdrop" onClick={() => {
-    setShowLogin(false);
-    setShowRegister(false);
-    setShowMobileMenu(false);
-  }}></div>
-)}
 
+      <RegisterPopup
+        show={showRegister}
+        onClose={() => setShowRegister(false)}
+      />
+      <ShoppingCart />
+      <MobileMenu
+        show={showMobileMenu}
+        handleClose={() => setShowMobileMenu(false)}
+        toggleLogin={toggleLogin}
+  
+      />
 
+      {/* Backdrop for any open modal */}
+      {(showLogin || showRegister || showMobileMenu) && (
+        <div
+          className="modal-backdrop"
+          onClick={() => {
+            setShowLogin(false);
+            setShowRegister(false);
+            setShowMobileMenu(false);
+          }}
+        ></div>
+      )}
     </>
   );
 };

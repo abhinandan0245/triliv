@@ -3,16 +3,15 @@ import Product from "./Product";
 import ShopDescription from "./ShopDescription";
 import SubProduct from "./SubProduct";
 
-
 const Shop = () => {
-    return (
-        <>
-        <CollectionTitle/>
-        <SubProduct/>
-        <Product/>
-        <ShopDescription/>
-        </>
-    );
-}
+  return (
+    <>
+      <CollectionTitle />
+      <SubProduct />
+      <Product />
+      <ShopDescription />
+    </>
+  );
+};
 
 export default Shop;

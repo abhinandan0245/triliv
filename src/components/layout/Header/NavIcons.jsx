@@ -1,9 +1,11 @@
-
 const NavIcons = () => (
-  
   <ul className="nav-icon d-flex justify-content-end align-items-center">
     <li className="nav-search">
-      <a href="D:\Coding\React\Intern-Vidhaalay\Triliv\src\components\ui\Modal\Search.jsx" data-bs-toggle="modal" className="nav-icon-item">
+      <a
+        href="D:\Coding\React\Intern-Vidhaalay\Triliv\src\components\ui\Modal\Search.jsx"
+        data-bs-toggle="modal"
+        className="nav-icon-item"
+      >
         <i className="icon icon-search" />
       </a>
     </li>
@@ -18,8 +20,12 @@ const NavIcons = () => (
         <span className="count-box">{wishlistCount}</span>
       </a>
     </li>
-    <li className={`nav-cart ${isHomePage ? 'pl' : ''}`}>
-      <a href="#shoppingCart" data-bs-toggle="offcanvas" className="nav-icon-item">
+    <li className={`nav-cart ${isHomePage ? "pl" : ""}`}>
+      <a
+        href="#shoppingCart"
+        data-bs-toggle="offcanvas"
+        className="nav-icon-item"
+      >
         <i className="icon icon-cart" />
         <span className="count-box">{isHomePage ? 2 : cartCount}</span>
       </a>
