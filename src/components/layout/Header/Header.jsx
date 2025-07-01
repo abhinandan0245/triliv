@@ -186,9 +186,20 @@ const Header = () => {
        <MobileMenu 
         show={showMobileMenu} 
         handleClose={() => setShowMobileMenu(false)} 
-        toggleLogin={toggleLogin} // ✅ Pass the function
+        toggleLogin={toggleLogin}
+      // ✅ Pass the function
       />
  
+    {/* Backdrop for any open modal */}
+{(showLogin || showRegister || showMobileMenu) && (
+  <div className="modal-backdrop" onClick={() => {
+    setShowLogin(false);
+    setShowRegister(false);
+    setShowMobileMenu(false);
+  }}></div>
+)}
+
+
     </>
   );
 };

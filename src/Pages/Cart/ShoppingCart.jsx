@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
- // Swiper styles
+ 
 
 // Import images (adjust paths as needed)
 import product1 from '../../../public/images/product/product-1.jpg';
@@ -57,16 +57,8 @@ const Shopping = () => {
   const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
   const total = subtotal + (giftWrap ? 10 : 0);
 
-  // Initialize Swiper and WOW.js
+  // Initialize Swiper and 
   useEffect(() => {
-    // Initialize WOW.js for animations
-    new WOW({
-      boxClass: 'wow',
-      animateClass: 'animated',
-      offset: 0,
-      mobile: true,
-      live: true
-    }).init();
 
     // Initialize all Swiper instances
     const swipers = document.querySelectorAll('.tf-swiper');
@@ -260,7 +252,7 @@ const Shopping = () => {
                     />
                   </div>
                 </form>
-                <div className="fl-iconbox wow fadeInUp">
+                <div className="fl-iconbox " data-aos="fade-up">
                   <div dir="ltr" className="swiper tf-swiper sw-auto" data-swiper='{
                     "slidesPerView": 1,
                     "spaceBetween": 12,

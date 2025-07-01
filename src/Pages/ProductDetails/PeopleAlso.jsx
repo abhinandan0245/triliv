@@ -69,10 +69,10 @@ const PeopleAlsoBought = () => {
   return (
     <section>
       <div className="container">
-        <div className="flat-title wow fadeInUp">
+        <div className="flat-title"data-aos="fade-up">
           <h4 className="title">People Also Bought</h4>
         </div>
-        <div className="fl-control-sw2 wrap-pos-nav sw-over-product wow fadeInUp">
+        <div className="fl-control-sw2 wrap-pos-nav sw-over-product "data-aos="fade-up">
           <div dir="ltr" className="swiper tf-swiper wrap-sw-over">
             <div className="swiper-wrapper">
               {/* Item 1 */}

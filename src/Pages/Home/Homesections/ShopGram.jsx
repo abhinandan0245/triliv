@@ -18,7 +18,7 @@ const ShopGram = () => {
     <section className="flat-spacing-28">
       <div className="container">
         {/* Title - matches your image reference */}
-        <div className="flat-title wow fadeInUp">
+        <div className="flat-title "data-aos="fade-up">
           <h3 className="title fw-semibold font-7 letter-0">Shop by @Triliv</h3>
         </div>
 
@@ -47,7 +47,8 @@ const ShopGram = () => {
               },
             }}
             centeredSlidesBounds={false}
-            className="tf-swiper wow fadeInUp"
+            className="tf-swiper"
+            data-aos="fade-up"
           >
             {galleryItems.map((item) => (
               <SwiperSlide key={item.id}>

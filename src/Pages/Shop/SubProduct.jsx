@@ -88,7 +88,7 @@ const SubProduct = () => {
     <div className="flat-spacing-4">
       <div className="container">
         <div className="fl-control-sw pos1">
-          <div dir="ltr" className="swiper tf-swiper hover-sw-nav wow fadeInUp">
+          <div dir="ltr" className="swiper tf-swiper hover-sw-nav"data-aos="fade-up">
             <div className="swiper-wrapper">
               {collectionItems.map((item) => (
                 <div className="swiper-slide" key={item.id}>

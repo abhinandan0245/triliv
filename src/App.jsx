@@ -1,6 +1,6 @@
-import WOW from "wowjs";
-import "animate.css";
-import { useEffect } from "react"; // Add this if not already present
+import React, { useEffect } from "react";
+import AOS from "aos";
+import "aos/dist/aos.css";  
 
 
 import { Routes, Route } from "react-router-dom";
@@ -20,7 +20,7 @@ import ReturnRefund from "./pages/Policies/ReturnRefund";
 import Shipping from "./pages/Policies/Shipping";
 import QuickAddModal from "./components/ui/Modal/QuickAdd";
 import CheckoutPage from "./pages/Cart/CheckoutPage";
-import Register from "./components/ui/Modal/Register";
+
 import LoginPopup from "./components/ui/Modal/Login";
 import Toolbar from "./components/ui/Modal/Toolbar"; 
 import Cart from "./pages/Cart/CartPage";
@@ -31,19 +31,14 @@ import Addresses from "./pages/Account/Addresses";
 import AccountDetail from "./pages/Account/AcoountDetail";
 
 function App() {
-   useEffect(() => {
-    if (typeof window !== "undefined" && typeof MutationObserver !== "undefined") {
-      const wow = new WOW.WOW({
-        live: false,
-      });
-      wow.init();
-      wow.sync(); // optional, only if you're dynamically loading new content
-    } else {
-      console.warn("WOW.js or MutationObserver not supported in this environment.");
-    }
+    useEffect(() => {
+    AOS.init({
+      duration: 800,
+      easing: 'ease-in-out', // Default easing
+      once: true, // Animations trigger only once
+      mirror: false, // Don't animate on scroll back
+    });
   }, []);
-
-
   return (
      
       <div className="app">

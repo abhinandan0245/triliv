@@ -45,10 +45,10 @@ const LatestTips = () => {
   return (
     <section className="flat-spacing-2 bg-light-green-10">
       <div className="container">
-        <div className="flat-title wow fadeInUp">
+        <div className="flat-title" data-aos="fade-up">
           <h3 className="title fw-semibold font-7">Latest Tips & Trends</h3>
         </div>
-        <div className="fl-control-sw2 wow fadeInUp">
+        <div className="fl-control-sw2 " data-aos="fade-up">
           <Swiper
             modules={[Navigation, Pagination]}
             spaceBetween={12}

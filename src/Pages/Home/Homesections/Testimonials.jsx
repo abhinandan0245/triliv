@@ -48,7 +48,7 @@ const Testimonials = () => {
           >
             {testimonials.map((testimonial) => (
               <SwiperSlide key={testimonial.id}>
-                <div className="wg-testimonial-3 text-center wow fadeInUp">
+                <div className="wg-testimonial-3 text-center "data-aos="fade-up">
                   <div className="box-top">
                     <i className="icon icon-leaf text-white fs-42" />
                     <p className="text-md text-white">HAPPY CUSTOMERS</p>

@@ -188,12 +188,12 @@ const FeaturedProducts = () => {
   return (
     <section className="flat-spacing-2 bg-gradient-2">
       <div className="container">
-        <div className="flat-title wow fadeInUp">
+        <div className="flat-title " data-aos="fade-up">
           <h3 className="title letter-0 text-start font-7">
             Featured Products
           </h3>
         </div>
-        <div className="fl-control-sw2 wrap-pos-nav sw-over-product wow fadeInUp">
+        <div className="fl-control-sw2 wrap-pos-nav sw-over-product "data-aos="fade-up">
           <div dir="ltr" className="swiper tf-swiper wrap-sw-over">
             <div className="swiper-wrapper">
               {products.map((product) => (

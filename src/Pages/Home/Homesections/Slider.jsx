@@ -1,12 +1,10 @@
 import React, { useEffect, useRef } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay, Pagination, EffectFade } from 'swiper/modules';
+import { Autoplay, Pagination } from 'swiper/modules'; // Removed EffectFade
 import 'swiper/css';
-import 'swiper/css/effect-fade';
 import 'swiper/css/pagination';
 
-
-const Slider= () => {
+const Slider = () => {
   const swiperRef = useRef(null);
 
   const slides = [
@@ -57,9 +55,7 @@ const Slider= () => {
     slidesPerView: 1,
     loop: true,
     spaceBetween: 0,
-    speed: 1000,
-    effect: 'fade',
-    fadeEffect: { crossFade: true },
+    speed: 600, // slightly faster
     pagination: {
       clickable: true,
       el: '.sw-pagination-slider',
@@ -119,8 +115,8 @@ const Slider= () => {
         
         <Swiper
           {...swiperConfig}
-          modules={[Autoplay, Pagination, EffectFade]}
-          className="swiper-wrapper "
+          modules={[Autoplay, Pagination]} // Removed EffectFade
+          className="swiper-wrapper"
           ref={swiperRef}
         >
           {slides.map((slide, index) => (

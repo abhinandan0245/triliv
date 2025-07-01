@@ -131,6 +131,7 @@ const ShoppingCart = () => {
                     </div>
                   </div>
                 </div>
+                
                 <div className="tf-minicart-recommendations">
                   <div className="tf-minicart-recommendations-heading d-flex justify-content-between align-items-end">
                     <div className="tf-minicart-recommendations-title text-md fw-medium">You may also like</div>

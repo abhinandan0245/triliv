@@ -1,11 +1,17 @@
-// import { useEffect } from 'react';
-// import Swiper from 'swiper';
+import React, { useEffect } from 'react';
+import AOS from 'aos';
 
-// useEffect(() => {
-//   new Swiper('.tf-swiper', {
-//     // Your Swiper configuration here
+const App = () => {
+  useEffect(() => {
+    AOS.init({
+      duration: 800,
+      once: true,
+    });
+  }, []);
 
-//   });
-//    new WOW().init();
-// }, []);
-
+  return (
+    <div className="your-content" data-aos="fade-up">
+      Content here
+    </div>
+  );
+};

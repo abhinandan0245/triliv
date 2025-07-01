@@ -60,7 +60,7 @@ const ShopDescription = () => {
       
       <div className="flat-spacing-5 line-top flat-wrap-iconbox">
         <div className="container">
-          <div className="wow fadeInUp">
+          <div className=""data-aos="fade-up">
             <Swiper
               modules={[Pagination]}
               spaceBetween={12}

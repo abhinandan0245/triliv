@@ -4824,8 +4824,8 @@ button.animate-btn::after,
 }
 
 .nav-swiper {
-  background-color: var(--white);
-  border-radius: 999px;
+  
+  border-radius:90% ;
   -webkit-transition: all 0.3s ease-in-out;
   -moz-transition: all 0.3s ease-in-out;
   -ms-transition: all 0.3s ease-in-out;
@@ -4836,12 +4836,12 @@ button.animate-btn::after,
   justify-content: center;
   width: 44px;
   height: 44px;
-  border: 1px solid var(--line);
+
   color: var(--dark);
   cursor: pointer;
 }
 .nav-swiper::after {
-  font-size: 12px;
+  font-size: 2px;
   color: var(--dark);
   font-weight: 600;
   -webkit-transition: all 0.3s ease-in-out;
@@ -4851,15 +4851,16 @@ button.animate-btn::after,
   transition: all 0.3s ease-in-out;
 }
 .nav-swiper:hover {
-  background-color: var(--rgba-dark-2);
-  border-color: var(--rgba-dark-2);
+  background-color: var(--backdrop-);
+ 
 }
 .nav-swiper:hover::after {
   color: var(--white);
 }
 .nav-swiper.style-1 {
-  width: 48px;
+  width: 18px;
   height: 48px;
+ 
   border: 0 !important;
   background-color: transparent !important;
 }
@@ -4868,13 +4869,13 @@ button.animate-btn::after,
 }
 .nav-swiper.style-1.swiper-button-prev::after {
   font-family: "icomoon";
-  font-size: 18px;
+  font-size: 2px;
   content: "\e904";
   font-weight: 400;
 }
 .nav-swiper.style-1.swiper-button-next::after {
   font-family: "icomoon";
-  font-size: 18px;
+  font-size: px;
   content: "\e904";
   font-weight: 400;
 }
@@ -4882,8 +4883,7 @@ button.animate-btn::after,
   color: var(--primary) !important;
 }
 .nav-swiper.swiper-button-disabled {
-  background-color: rgba(0, 0, 0, 0.4);
-  border-color: transparent;
+
   cursor: text;
 }
 .nav-swiper.arrow-1.swiper-button-prev {

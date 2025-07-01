@@ -62,11 +62,11 @@ const ShopNow = () => {
   return (
     <section>
       <div className="container">
-        <div className="flat-title wow fadeInUp">
+        <div className="flat-title "data-aos="fade-up">
           <h3 className="title font-7">Shop By Collections</h3>
         </div>
       </div>
-      <div className="slider-layout-right wow fadeInUp">
+      <div className="slider-layout-right "data-aos="fade-up">
         <div 
           dir="ltr" 
           className="swiper tf-swiper tf-sw-right wrap-sw-over" 

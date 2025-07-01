@@ -1,15 +1,14 @@
 import React, { useEffect, useRef } from 'react';
 import Swiper from 'swiper';
 import 'swiper/swiper-bundle.css';
-import { WOW } from 'wowjs';
+
 
 const YouMayAlsoLike = () => {
   const swiperRef = useRef(null);
   const swiperInstance = useRef(null);
 
   useEffect(() => {
-    // Initialize WOW.js
-    new WOW().init();
+  
 
     // Initialize Swiper
     swiperInstance.current = new Swiper(swiperRef.current, {
@@ -130,7 +129,7 @@ const YouMayAlsoLike = () => {
   return (
     <section className="flat-spacing pt-0">
       <div className="container">
-        <div className="flat-title wow fadeInUp mb_5">
+        <div className="flat-title  mb_5" data-aos="fade-up">
           <h4 className="title">You May Also Like</h4>
         </div>
         <div className="fl-control-sw wrap-pos-nav sw-over-product">

@@ -60,7 +60,8 @@ const IconBoxCarousel = () => {
               el: '.sw-pagination-iconbox'
             }}
             modules={[Pagination]}
-            className="tf-swiper wow fadeInUp"
+            className="tf-swiper"
+             data-aos="fade-up"
           >
             {iconBoxes.map((box, index) => (
               <SwiperSlide key={index}>
