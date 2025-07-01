@@ -1,23 +1,49 @@
 import React, { useState, useRef, useEffect } from 'react';
+import Swiper from 'swiper';
+import 'swiper/css';
 
 const QuickViewModal = ({ product, onClose }) => {
   const [currentColor, setCurrentColor] = useState('white');
   const [currentSize, setCurrentSize] = useState('small');
   const [quantity, setQuantity] = useState(1);
   const swiperRef = useRef(null);
+  const swiperInstance = useRef(null);
 
-  // This would be replaced with actual Swiper initialization in a real implementation
+  // Initialize Swiper
   useEffect(() => {
-    // Initialize Swiper here if needed
-    // This is just a placeholder - you'll need proper Swiper initialization
-    if (swiperRef.current) {
-      console.log('Swiper would be initialized here');
+    if (swiperRef.current && !swiperInstance.current) {
+      swiperInstance.current = new Swiper(swiperRef.current, {
+        slidesPerView: 1,
+        spaceBetween: 10,
+        navigation: {
+          nextEl: '.single-slide-next',
+          prevEl: '.single-slide-prev',
+        },
+      });
     }
+
+    return () => {
+      if (swiperInstance.current) {
+        swiperInstance.current.destroy();
+        swiperInstance.current = null;
+      }
+    };
   }, []);
+
+  // Update Swiper when color changes
+  useEffect(() => {
+    if (swiperInstance.current && product) {
+      const slideIndex = product.colors.findIndex(
+        color => color.name.toLowerCase() === currentColor.toLowerCase()
+      );
+      if (slideIndex !== -1) {
+        swiperInstance.current.slideTo(slideIndex);
+      }
+    }
+  }, [currentColor, product]);
 
   const handleColorChange = (color) => {
     setCurrentColor(color);
-    // Here you would also update the Swiper slide to show the correct image
   };
 
   const handleSizeChange = (size) => {
@@ -34,22 +60,32 @@ const QuickViewModal = ({ product, onClose }) => {
     }
   };
 
+  if (!product) return null;
+
   return (
-    <div className="modal fade modalCentered modal-quick-view" id="quickView">
+    <div className="modal fade modalCentered modal-quick-view show modal-backdrop fade show" style={{ display: 'block', paddingRight: '17px' }}>
       <div className="modal-dialog modal-dialog-centered">
         <div className="modal-content">
-          <span className="icon-close icon-close-popup" data-bs-dismiss="modal" />
+          <span 
+            className="icon-close icon-close-popup" 
+            onClick={onClose}
+            style={{ cursor: 'pointer' }}
+          />
           <div className="tf-product-media-wrap">
             <div dir="ltr" className="swiper tf-single-slide" ref={swiperRef}>
               <div className="swiper-wrapper">
                 {product.colors.map((color, index) => (
-                  <div className="swiper-slide" key={index} data-color={color.name.toLowerCase()}>
+                  <div 
+                    className="swiper-slide" 
+                    key={index}
+                    data-color={color.name.toLowerCase()}
+                  >
                     <div className="item">
                       <img 
                         className="lazyload" 
                         data-src={color.image} 
                         src={color.image} 
-                        alt={product.name} 
+                        alt="" 
                       />
                     </div>
                   </div>
@@ -62,14 +98,10 @@ const QuickViewModal = ({ product, onClose }) => {
           <div className="tf-product-info-wrap">
             <div className="tf-product-info-inner">
               <div className="tf-product-heading">
-                <h6 className="product-name">
-                  <a href="productdetail" className="link">{product.name}</a>
-                </h6>
+                <h6 className="product-name"><a href="productdetail" className="link">{product.name}</a></h6>
                 <div className="product-price">
                   <h6 className="price-new price-on-sale">{product.priceNew}</h6>
-                  {product.priceOld && (
-                    <h6 className="price-old">{product.priceOld}</h6>
-                  )}
+                  {product.priceOld && <h6 className="price-old">{product.priceOld}</h6>}
                 </div>
                 <p className="text">
                   A lush, vibrant indoor plant with broad, glossy leaves that add a touch of nature to any space. 
@@ -84,30 +116,17 @@ const QuickViewModal = ({ product, onClose }) => {
                     </span>
                   </div>
                   <div className="variant-picker-values">
-                    <div 
-                      className={`hover-tooltip color-btn ${currentColor === 'white' ? 'active' : ''}`} 
-                      data-color="white"
-                      onClick={() => handleColorChange('white')}
-                    >
-                      <span className="check-color bg-white" />
-                      <span className="tooltip">White</span>
-                    </div>
-                    <div 
-                      className={`hover-tooltip color-btn ${currentColor === 'brown' ? 'active' : ''}`} 
-                      data-color="brown"
-                      onClick={() => handleColorChange('brown')}
-                    >
-                      <span className="check-color bg-brown-9" />
-                      <span className="tooltip">Brown</span>
-                    </div>
-                    <div 
-                      className={`hover-tooltip color-btn ${currentColor === 'black' ? 'active' : ''}`} 
-                      data-color="black"
-                      onClick={() => handleColorChange('black')}
-                    >
-                      <span className="check-color bg-dark" />
-                      <span className="tooltip">Black</span>
-                    </div>
+                    {product.colors.map((color, index) => (
+                      <div 
+                        key={index}
+                        className={`hover-tooltip color-btn ${currentColor === color.name.toLowerCase() ? 'active' : ''}`}
+                        data-color={color.name.toLowerCase()}
+                        onClick={() => handleColorChange(color.name.toLowerCase())}
+                      >
+                        <span className={`check-color ${color.value}`} />
+                        <span className="tooltip">{color.name}</span>
+                      </div>
+                    ))}
                   </div>
                 </div>
                 <div className="variant-picker-item variant-size">

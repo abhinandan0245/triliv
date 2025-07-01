@@ -17,7 +17,7 @@ const QuickAddModal = ({ product, onClose }) => {
   };
 
   return (
-      <div className="modal fade modalCentered popup-quickadd show" style={{ display: 'block' }}>
+      <div className="modal fade modalCentered popup-quickadd show modal-backdrop fade show" style={{ display: 'block' }}>
       <div className="modal-dialog modal-dialog-centered">
         <div className="modal-content">
           <span 

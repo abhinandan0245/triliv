@@ -7,6 +7,8 @@ const FeaturedProducts = () => {
   const [showQuickAdd, setShowQuickAdd] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [showQuickView, setShowQuickView] = useState(false);
+  const [quickViewProduct, setQuickViewProduct] = useState(null);
+
   const [showCompare, setShowCompare] = useState(false);
   const [comparedProducts, setComparedProducts] = useState([]);
   useEffect(() => {
@@ -160,8 +162,11 @@ const FeaturedProducts = () => {
   const handleQuickView = (e, productId) => {
     e.preventDefault();
     const product = products.find((p) => p.id === productId);
-    setSelectedProduct(product);
-    setShowQuickView(true); // We'll add this state next
+    setQuickViewProduct(product);
+    setShowQuickView(true);
+
+    // Optional: Prevent body scrolling when modal is open
+    document.body.style.overflow = "hidden";
   };
 
   // Compare handler
@@ -318,21 +323,25 @@ const FeaturedProducts = () => {
           onClose={() => setShowQuickAdd(false)}
         />
       )}
-
-      {showQuickView && selectedProduct && (
+      
+      {showQuickView && quickViewProduct && (
         <QuickViewModal
-          product={selectedProduct}
-          onClose={() => setShowQuickView(false)}
+          product={quickViewProduct}
+          onClose={() => {
+            setShowQuickView(false);
+            document.body.style.overflow = ""; // Re-enable scrolling
+          }}
         />
       )}
-
-{showCompare && (
-  <CompareModal 
-    products={comparedProducts}
-    onClose={() => setShowCompare(false)}
-    onClearAll={(updatedProducts) => setComparedProducts(updatedProducts || [])}
-  />
-)}
+      {showCompare && (
+        <CompareModal
+          products={comparedProducts}
+          onClose={() => setShowCompare(false)}
+          onClearAll={(updatedProducts) =>
+            setComparedProducts(updatedProducts || [])
+          }
+        />
+      )}
     </section>
   );
 };

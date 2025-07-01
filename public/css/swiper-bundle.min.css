@@ -45,6 +45,7 @@
   height: 100%;
   z-index: 1;
   display: flex;
+  justify-content: center;
   transition-property: transform;
   transition-timing-function: var(
     --swiper-wrapper-transition-timing-function,

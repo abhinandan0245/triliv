@@ -46,7 +46,7 @@ const IconBoxCarousel = () => {
   ];
 
   return (
-    <div className="flat-spacing-26">
+    <div className="flat-spacing-26 ">
       <div className="container">
         <div className="flat-wrapper-iconbox">
           <h3 className="title letter-0 font-7 fw-semibold">Why Shop With Us?</h3>
@@ -64,7 +64,7 @@ const IconBoxCarousel = () => {
           >
             {iconBoxes.map((box, index) => (
               <SwiperSlide key={index}>
-                <div className="tf-icon-box style-3 justify-content-center justify-content-lg-start">
+                <div className="tf-icon-box style-3 justify-content-lg-start ">
                   <div className="box-icon">
                     {box.icon}
                   </div>
