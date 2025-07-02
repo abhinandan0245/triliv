@@ -29,6 +29,7 @@ import MyAccount from "./pages/Account/MyAccount";
 import Orders from "./pages/Account/Orders";
 import Addresses from "./pages/Account/Addresses";
 import AccountDetail from "./pages/Account/AcoountDetail";
+import OrderSuccess from "./pages/System/ThankYou";
 
 function App() {
     useEffect(() => {
@@ -68,9 +69,9 @@ function App() {
             <Route path="/addresses" element={<Addresses/>} />
             <Route path="/orders" element={<Orders/>} />
             <Route path="/accountdetails" element={<AccountDetail/>} />
+            <Route path="/thankyou" element={<OrderSuccess/>} />
 
 
-            
           </Routes>
         </main>
         <Toolbar/>

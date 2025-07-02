@@ -224,7 +224,9 @@ const MyAccount = () => {
         </div>
       </div>
       {/* /Main Content */}
+      
     </div>
+
   );
 };
 

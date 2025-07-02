@@ -92,21 +92,38 @@ const IconBoxCarousel = () => {
             Why Shop With Us?
           </h3>
 
-          <Swiper
-            slidesPerView={2}
-            slidesPerGroup={2} // Show 2 slides at a time and group them
-            spaceBetween={24}
-            pagination={{
-              clickable: true,
-              el: ".sw-pagination-iconbox",
-            }}
+         <Swiper
+  slidesPerView={1}
+  spaceBetween={12}
+  speed={800}
+  breakpoints={{
+    575: {
+      slidesPerView: 1,
+      spaceBetween: 24,
+      slidesPerGroup: 1
+    },
+    992: {
+      slidesPerView: 2,
+      spaceBetween: 24,
+      slidesPerGroup: 2
+    },
+    1400: {
+      slidesPerView: 4,
+      spaceBetween: 80,
+      slidesPerGroup: 1
+    }
+  }}
+  pagination={{
+    clickable: true,
+    el: ".sw-pagination-iconbox",
+  }}
             modules={[Pagination]}
             className="tf-swiper"
             data-aos="fade-up"
           >
             {iconBoxes.map((box, index) => (
               <SwiperSlide key={index}>
-                <div className="tf-icon-box style-3 justify-content-lg-start ">
+                <div className="tf-icon-box style-3 justify-content-center justify-content-lg-start ">
                   <div className="box-icon">{box.icon}</div>
                   <div className="content">
                     <div className="title fw-bold font-7">{box.title}</div>

@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";  // Correct import
 
 const CheckoutPage = () => {
+    const navigate = useNavigate(); 
   // Form state management
   const [formData, setFormData] = useState({
     firstname: "",
@@ -30,12 +32,14 @@ const CheckoutPage = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+ const handleSubmit = (e) => {
     e.preventDefault();
     // Handle form submission logic here
     console.log("Form submitted:", formData);
-    // You would typically send this data to your backend
+    // Navigate to success page after submission
+    navigate('/thankyou');
   };
+
 
   return (
     <div>

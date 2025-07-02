@@ -154,7 +154,6 @@ const FeaturedProducts = () => {
   // Wishlist handler
   const handleWishlist = (e, productId) => {
     e.preventDefault();
-    // Implement wishlist logic here
     console.log(`Add product ${productId} to wishlist`);
   };
 

@@ -1,11 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
 import Swiper from "swiper";
 import "swiper/swiper-bundle.css";
+import CompareModal from "../../components/ui/Modal/CompareModal"; // Adjust the path as needed
 
 const MainDetail = () => {
   const [quantity, setQuantity] = useState(1);
   const [selectedColor, setSelectedColor] = useState("black");
   const [selectedSize, setSelectedSize] = useState("small");
+  const [showCompare, setShowCompare] = useState(false);
+  const [comparedProducts, setComparedProducts] = useState([]);
   const [bundleItems, setBundleItems] = useState([
     {
       id: 1,
@@ -126,6 +129,25 @@ const MainDetail = () => {
       main: "images/fs-green4.jpg",
     },
   ]);
+
+  const handleCompare = (e) => {
+    e.preventDefault();
+    // Add current product to compared products
+    const currentProduct = {
+      id: 1, // You might want to use a real product ID here
+      name: "Linen Blend Pants",
+      priceNew: "$60.00",
+      priceOld: "$80.00",
+      images: {
+        main: filteredImages[0]?.main || "images/women-black-1.jpg",
+        hover: "images/women-black-2.jpg", // You might want to add a hover image
+      },
+      variant: `${selectedColor} / ${selectedSize}`,
+    };
+
+    setComparedProducts([currentProduct]);
+    setShowCompare(true);
+  };
 
   const [filteredImages, setFilteredImages] = useState([]);
   const [allThumbnails, setAllThumbnails] = useState([]);
@@ -523,7 +545,7 @@ const MainDetail = () => {
                     </a>
                     <a
                       href="#compare"
-                      data-bs-toggle="modal"
+                      onClick={handleCompare}
                       className="product-extra-icon link"
                     >
                       <i className="icon icon-compare2" />
@@ -753,7 +775,7 @@ const MainDetail = () => {
                     data-bs-toggle="offcanvas"
                     className="tf-btn animate-btn d-inline-flex justify-content-center"
                   >
-                    Add to cart
+                    Add to cartadd
                   </a>
                 </div>
               </form>
@@ -761,6 +783,15 @@ const MainDetail = () => {
           </div>
         </div>
       </div>
+      {showCompare && (
+        <CompareModal
+          products={comparedProducts}
+          onClose={() => setShowCompare(false)}
+          onClearAll={(updatedProducts) =>
+            setComparedProducts(updatedProducts || [])
+          }
+        />
+      )}
     </section>
   );
 };

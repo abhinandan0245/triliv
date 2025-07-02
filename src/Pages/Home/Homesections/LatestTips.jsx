@@ -48,7 +48,7 @@ const LatestTips = () => {
         <div className="flat-title" data-aos="fade-up">
           <h3 className="title fw-semibold font-7">Latest Tips & Trends</h3>
         </div>
-        <div className="fl-control-sw2 " data-aos="fade-up">
+        <div className="fl-control-sw2" data-aos="fade-up">
           <Swiper
             modules={[Navigation, Pagination]}
             spaceBetween={12}
@@ -60,10 +60,13 @@ const LatestTips = () => {
             navigation={{
               prevEl: prevRef.current,
               nextEl: nextRef.current,
+              disabledClass: "swiper-button-disabled",
             }}
             pagination={{
               el: paginationRef.current,
               clickable: true,
+              bulletClass: "swiper-pagination-bullet",
+              bulletActiveClass: "swiper-pagination-bullet-active",
             }}
             breakpoints={{
               577: {
@@ -74,60 +77,65 @@ const LatestTips = () => {
               1200: {
                 slidesPerView: 3,
                 spaceBetween: 24,
-                slidesPerGroup: 4,
+                slidesPerGroup: 3,
               },
             }}
             onInit={(swiper) => {
+              // We need to reassign navigation elements after init
               swiper.params.navigation.prevEl = prevRef.current;
               swiper.params.navigation.nextEl = nextRef.current;
               swiper.navigation.init();
               swiper.navigation.update();
+              
+              // Reassign pagination element
+              swiper.params.pagination.el = paginationRef.current;
+              swiper.pagination.init();
+              swiper.pagination.update();
             }}
             className="tf-swiper"
             dir="ltr"
           >
-            <div className="swiper-wrapper">
-              {tips.map((tip) => (
-                <SwiperSlide key={tip.id} className="swiper-slide">
-                  <div className="blog-item-v2 border-0 bg-white hover-img">
-                    <div className="entry-image hover-img">
-                      <a href="notfound" className="image-box img-style">
-                        <img
-                          src={tip.image}
-                          data-src={tip.image}
-                          alt={tip.alt}
-                        />
-                      </a>
-                    </div>
-                    <div className="entry-content">
-                      <div className="info-box">
-                        <a
-                          href="notfound"
-                          className="title fw-medium link text-xl text-line-clamp-2"
-                        >
-                          {tip.title}
-                        </a>
-                      </div>
+            {tips.map((tip) => (
+              <SwiperSlide key={tip.id}>
+                <div className="blog-item-v2 border-0 bg-white hover-img">
+                  <div className="entry-image hover-img">
+                    <a href="notfound" className="image-box img-style">
+                      <img
+                        src={tip.image}
+                        data-src={tip.image}
+                        alt={tip.alt}
+                        className="swiper-lazy"
+                      />
+                    </a>
+                  </div>
+                  <div className="entry-content">
+                    <div className="info-box">
                       <a
                         href="notfound"
-                        className="btn-readmore text-green-2 link"
+                        className="title fw-medium link text-xl text-line-clamp-2"
                       >
-                        Read more <i className="icon icon-arr-right" />
+                        {tip.title}
                       </a>
                     </div>
+                    <a
+                      href="notfound"
+                      className="btn-readmore text-green-2 link"
+                    >
+                      Read more <i className="icon icon-arr-right" />
+                    </a>
                   </div>
-                </SwiperSlide>
-              ))}
-            </div>
-
+                </div>
+              </SwiperSlide>
+            ))}
+            
             <div
               ref={paginationRef}
               className="d-flex d-xl-none sw-dot-default sw-pagination-new justify-content-center"
-            ></div>
+            />
           </Swiper>
 
           <div
-            className="d-none d-xl-flex swiper-button-next nav-swiper nav-next-new "
+            className="d-none d-xl-flex swiper-button-next nav-swiper nav-next-new"
             ref={nextRef}
           />
           <div

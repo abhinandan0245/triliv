@@ -24,27 +24,32 @@ const ShopGram = () => {
 
         {/* Swiper component with responsive settings */}
         <div dir="ltr">
-          <Swiper
-            modules={[Pagination]}
-            spaceBetween={10}
-            speed={800}
-            slidesPerView={2}
-            slidesPerGroup={2}
-            pagination={{
-              el: ".sw-pagination-gallery",
-              clickable: true,
-            }}
-            breakpoints={{
-              768: {
-                // Tablet
-                slidesPerView: 3,
-                slidesPerGroup: 3,
-              },
-              1200: {
-                // Desktop
-                slidesPerView: 5,
-                slidesPerGroup: 5,
-              },
+         <Swiper
+  modules={[Pagination]}
+  spaceBetween={12}  // Match ShopNow's spacing
+  speed={800}
+  slidesPerView={2.2}  // Partial slide
+  slidesPerGroup={2}
+  pagination={{
+    el: ".sw-pagination-gallery",
+    clickable: true,
+  }}
+  breakpoints={{
+    768: {
+      slidesPerView: 2.7,  // Partial slide
+      spaceBetween: 12,
+      slidesPerGroup: 2,
+    },
+    992: {
+      slidesPerView: 3.7,  // Partial slide
+      spaceBetween: 24,
+      slidesPerGroup: 3,
+    },
+    1200: {
+      slidesPerView: 4.7,  // Partial slide
+      spaceBetween: 24,
+      slidesPerGroup: 4,
+    },
             }}
             centeredSlidesBounds={false}
             className="tf-swiper"

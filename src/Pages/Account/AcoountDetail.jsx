@@ -54,11 +54,7 @@ const AccountDetail = () => {
       <div className="flat-spacing-13">
         <div className="container-7">
           {/* sidebar-account */}
-          <div className="btn-sidebar-mb d-lg-none">
-            <button data-bs-toggle="offcanvas" data-bs-target="#mbAccount">
-              <i className="icon icon-sidebar"></i>
-            </button>
-          </div>
+          <SidebarAccount activeItem="account-detail" />
           {/* /sidebar-account */}
 
           {/* Section-acount */}

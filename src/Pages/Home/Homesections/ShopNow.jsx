@@ -2,24 +2,23 @@ import React, { useEffect } from "react";
 
 const ShopNow = () => {
   useEffect(() => {
-    // Initialize Swiper here if needed
-    // const swiper = new Swiper(".tf-swiper", {
-    //   slidesPerView: 2,
-    //   spaceBetween: 12,
-    //   speed: 800,
-    //   observer: true,
-    //   observeParents: true,
-    //   slidesPerGroup: 2,
-    //   pagination: {
-    //     el: ".sw-pagination-cls",
-    //     clickable: true,
-    //   },
-    //   breakpoints: {
-    //     768: { slidesPerView: 2.7, spaceBetween: 12, slidesPerGroup: 2 },
-    //     992: { slidesPerView: 3.7, spaceBetween: 24, slidesPerGroup: 3 },
-    //     1200: { slidesPerView: 4.7, spaceBetween: 24, slidesPerGroup: 3 },
-    //   },
-    // });
+    const swiper = new Swiper(".tf-swiper", {
+      slidesPerView: 2,
+      spaceBetween: 12,
+      speed: 800,
+      observer: true,
+      observeParents: true,
+      slidesPerGroup: 2,
+      pagination: {
+        el: ".sw-pagination-cls",
+        clickable: true,
+      },
+      breakpoints: {
+        768: { slidesPerView: 2.7, spaceBetween: 12, slidesPerGroup: 2 },
+        992: { slidesPerView: 3.7, spaceBetween: 24, slidesPerGroup: 3 },
+        1200: { slidesPerView: 4.7, spaceBetween: 24, slidesPerGroup: 3 }, // <-- Critical for partial slide
+      },
+    });
   }, []);
 
   const collections = [
@@ -77,7 +76,7 @@ const ShopNow = () => {
             breakpoints: {
               768: { slidesPerView: 2.7, spaceBetween: 12, slidesPerGroup: 2 },
               992: { slidesPerView: 3.7, spaceBetween: 24, slidesPerGroup: 3 },
-              1200: { slidesPerView: 4.7, spaceBetween: 24, slidesPerGroup: 3 },
+              1200: { slidesPerView: 4.7, spaceBetween: 24, slidesPerGroup: 3 }, // <-- 4.7 ensures partial visibility
             },
           })}
         >
@@ -103,7 +102,7 @@ const ShopNow = () => {
                     >
                       {collection.title}
                     </a>
-                    <a href={collection.link} className="tf-btn btn-line-dark">
+                    <a href={collection.link} className=" tf-btn btn-line-dark">
                       <span className="text-xs">Shop Now</span>
                       <i className="icon icon-arrow-top-left fs-7" />
                     </a>

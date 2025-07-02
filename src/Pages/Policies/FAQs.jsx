@@ -18,7 +18,7 @@ const FAQPage = () => {
 
   return (
     <>
-      <Header />
+    
 
       {/* Title Page */}
       <section className="tf-page-title">
@@ -507,7 +507,7 @@ const FAQPage = () => {
       </section>
       {/* /FAQ */}
 
-      <Footer />
+      
     </>
   );
 };
