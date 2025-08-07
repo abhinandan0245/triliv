@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from "react";
 
 // Import images (adjust paths as needed)
-import product1 from "../../../public/images/product/product-1.jpg";
-import product34 from "../../../public/images/product/product-34.jpg";
-import product35 from "../../../public/images/product/product-35.jpg";
-import avt1 from "../../../public/images/avt-1.png";
-import blogAuthor2 from "../../../public/images/blog-author-2.jpg";
-import blogAuthor3 from "../../../public/images/blog-author-3.jpg";
-import visa from "../../../public/images/Visa.png";
-import dinersClub from "../../../public/images/DinersClub.png";
-import mastercard from "../../../public/images/Mastercard.png";
-import stripe from "../../../public/images/Stripe.png";
+import product1 from "@/assets/images/product/product-1.jpg";
+import product34 from "@/assets/images/product/product-34.jpg";
+import product35 from "@/assets/images/product/product-35.jpg";
+import avt1 from "@/assets/images/avt-1.png";
+import blogAuthor2 from "@/assets/images/blog-author-2.jpg";
+import blogAuthor3 from "@/assets/images/blog-author-3.jpg";
+import visa from "@/assets/images/Visa.png";
+import dinersClub from "@/assets/images/DinersClub.png";
+import mastercard from "@/assets/images/Mastercard.png";
+import stripe from "@/assets/images/Stripe.png";
 
 const Shopping = () => {
   // State for cart items

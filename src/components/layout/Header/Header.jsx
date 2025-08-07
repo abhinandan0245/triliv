@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import TopBar from "./TopBar";
 import SearchModal from "../../ui/Modal/Search";
 import LoginPopup from "../../ui/Modal/Login";
@@ -7,20 +7,57 @@ import { Link } from "react-router-dom";
 import ShoppingCart from "../../ui/Modal/ShoppingCart";
 import MobileMenu from "../../ui/Modal/MobileMenu";
 import RegisterPopup from "../../ui/Modal/Register";
+import logo1 from "@/assets/images/logo2.png"
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../../redux/slice/authSlice";
+import { IoIosLogOut } from "react-icons/io";
+import { toast } from "react-toastify";
+import { useGetAllCategoriesQuery } from "../../../services/category/categoryApi";
+import { LuLogOut } from "react-icons/lu";
+import ResetPasswordPopup from "../../ui/Modal/ResetPassword";
+import VerifyOtpAndResetPasswordPopup from "../../ui/Modal/VerifyOtpAndResetPasswordPopup";
 const Header = () => {
   const location = useLocation();
   const isHomePage = location.pathname === "/";
   const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const [showLogin, setShowLogin] = useState(false);
+   const [showReset, setShowReset] = useState(false);
   const [showRegister, setShowRegister] = useState(false);
 
-  const [showLogin, setShowLogin] = useState(false); 
+  // const [showResetPopup, setShowResetPopup] = useState(false);
+const [showVerifyPopup, setShowVerifyPopup] = useState(false);
+const [emailForReset, setEmailForReset] = useState("");
 
-  // Toggle login popup
-  const toggleLogin = () => {
-    setShowLogin(!showLogin);
+  const navigate = useNavigate();
+
+  const openLogin = () => {
+    setShowRegister(false);
+    setShowLogin(true);
   };
-  const toggleRegister = () => {
-    setShowRegister(!showRegister);
+
+  const openRegister = () => {
+    setShowLogin(false);
+    setShowRegister(true);
+  };
+
+      const openReset = () => {
+    setShowReset(true);
+    setShowLogin(false);
+    setEmailForReset(""); // Reset email when opening
+  };
+
+  const openVerifyPopup = (email) => {
+    setShowVerifyPopup(true);
+    setShowReset(false);
+    setEmailForReset(email);
+  };
+
+  const closeAll = () => {
+    setShowLogin(false);
+    setShowRegister(false);
+    setShowReset(false);
+    setShowVerifyPopup(false);
+    setEmailForReset("");
   };
 
   // TopBar announcements data
@@ -29,6 +66,24 @@ const Header = () => {
     "Life-time Guarantees",
     "Limited-Time Offer",
   ];
+
+    const dispatch = useDispatch();
+ const { isAuthenticated, user } = useSelector((state) => state.auth);
+
+
+  const handleLogout = () => {
+    dispatch(logout());
+     toast.success("Logged out successfully");
+  navigate("/"); 
+  };
+
+
+  // categoiry api inegtration 
+
+   const { data: categories, isLoading, error } = useGetAllCategoriesQuery();
+
+  if (isLoading) return <p>Loading...</p>;
+  if (error) return <p>Error loading categories</p>;
 
   return (
     <>
@@ -63,11 +118,23 @@ const Header = () => {
                           Home<i className="icon"></i>
                         </Link>
                       </li>
-                      <li className="menu-item">
-                        <Link to="/shop" className="item-link">
-                          Shop<i className="icon"></i>
-                        </Link>
-                      </li>
+                      <li className="menu-item dropdown">
+          <Link to="/shop" className="item-link">Shop</Link><i className="icon"></i>
+  <ul className="submenu">
+    {isLoading ? (
+      <li>Loading...</li>
+    ) : (
+      categories.map((cat) => (
+        <li key={cat.id}>
+          <Link to={`/shop/category/${cat.slug}`} className="item-link">
+            {cat.name}
+          </Link>
+        </li>
+      ))
+    )}
+  </ul>
+</li>
+
                       <li className="menu-item">
                         <Link to="/aboutus" className="item-link">
                           Our Story<i className="icon"></i>
@@ -83,7 +150,7 @@ const Header = () => {
                 </div>
                 <div className="col-xl-2 col-md-4 col-6 text-xxl-center">
                   <a href="/" className="logo-header">
-                    <img src="/images/logo1.png" alt="logo" className="logo" />
+                    <img src={logo1} alt="logo" className="logo" />
                   </a>
                 </div>
               </>
@@ -91,7 +158,7 @@ const Header = () => {
               <>
                 <div className="col-xl-2 col-md-4 col-6">
                   <Link to="/" className="logo-header">
-                    <img src="/images/logo1.png" alt="logo" className="logo" />
+                    <img src={logo1} alt="logo" className="logo" />
                   </Link>
                 </div>
                 <div className="col-xl-8 d-none d-xl-block">
@@ -102,11 +169,22 @@ const Header = () => {
                           Home<i className="icon"></i>
                         </Link>
                       </li>
-                      <li className="menu-item">
-                        <Link to="/shop" className="item-link">
-                          Shop<i className="icon"></i>
-                        </Link>
-                      </li>
+                     <li className="menu-item dropdown">
+          <Link to="/shop" className="item-link">Shop</Link><i className="icon"></i>
+  <ul className="submenu">
+    {isLoading ? (
+      <li>Loading...</li>
+    ) : (
+      categories.map((cat) => (
+        <li key={cat.id}>
+          <Link to={`/shop/category/${cat.slug}`} className="item-link">
+            {cat.name}
+          </Link>
+        </li>
+      ))
+    )}
+  </ul>
+</li>
                       <li className="menu-item">
                         <Link to="/aboutus" className="item-link">
                           Our Story<i className="icon"></i>
@@ -139,32 +217,89 @@ const Header = () => {
                     <i className="icon icon-search"></i>
                   </a>
                 </li>
-                <li className="nav-account">
+                {/* <li className="nav-account">
                   <a
+                  onClick={openLogin}
                     href="#login"
                     data-bs-toggle="offcanvas"
                     className="nav-icon-item"
+                    
                   >
                     <i className="icon icon-user"></i>
                   </a>
-                </li>
-                <li className="nav-wishlist">
-                  <Link to="/wish-list" className="nav-icon-item">
-                    <i className="icon icon-heart"></i>
-                    <span className="count-box">0</span>
-                  </Link>
-                </li>
+                </li> */}
 
-                <li className={`nav-cart ${isHomePage ? "pl" : ""}`}>
-                  <a
-                    href="#shoppingCart"
+      <li className="nav-account dropdown-wrapper">
+  {isAuthenticated ? (
+    <>
+    <Link to="/myaccount" className="nav-icon-item ">
+   <span className="fs-6">Hello,{user?.name || "My Account"}</span> <i className="icon icon-user"></i>
+  </Link>
+  <ul className="account-dropdown">
+    <li>
+      <Link to="/accountdetails" className="dropdown-link">
+        <i className="icon icon-user"></i> My Profile
+      </Link>
+    </li>
+    <li>
+      <button onClick={handleLogout} className="logout-btn">
+        {/* <i className="icon icon-log"></i>  */}
+        <LuLogOut/>
+        Logout
+      </button>
+    </li>
+  </ul>
+    </>
+  ):(
+ <a
+                  onClick={openLogin}
+                    href="#login"
                     data-bs-toggle="offcanvas"
                     className="nav-icon-item"
+                    
                   >
-                    <i className="icon icon-cart"></i>
-                    <span className="count-box">{isHomePage ? "2" : "0"}</span>
+                    <i className="icon icon-user"></i>
                   </a>
-                </li>
+  )}
+</li>
+
+
+               <li className="nav-wishlist">
+  {isAuthenticated ? (
+    <Link to="/wish-list" className="nav-icon-item">
+      <i className="icon icon-heart"></i>
+      <span className="count-box">0</span>
+    </Link>
+  ) : (
+    <a
+      className="nav-icon-item"
+      style={{ background: "none", border: "none" }}
+      onClick={() => {
+        toast.info("Please log in to access your wishlist");
+        openLogin();
+      }}
+    >
+      <i className="icon icon-heart"></i>
+      <span className="count-box">0</span>
+    </a>
+  )}
+</li>
+
+<li className={`nav-cart ${isHomePage ? "pl" : ""}`}>
+  
+    <a
+      href="#shoppingCart"
+      data-bs-toggle="offcanvas"
+      className="nav-icon-item"
+    >
+      <i className="icon icon-cart"></i>
+      <span className="count-box">{isHomePage ? "2" : "0"}</span>
+    </a>
+ 
+    
+  
+</li>
+
               </ul>
             </div>
           </div>
@@ -173,28 +308,43 @@ const Header = () => {
       <SearchModal />
       <LoginPopup
         show={showLogin}
-        toggleRegister={toggleRegister}
-        onClose={() => setShowLogin(false)}
+        onClose={closeAll}
+        toggleRegister={openRegister}  openResetPopup={openReset} // new prop to trigger reset
+      />
+       <ResetPasswordPopup
+        show={showReset}
+        onClose={closeAll}
+        onSuccess={openVerifyPopup} // Pass email through this callback
+      />
+
+      <VerifyOtpAndResetPasswordPopup
+        show={showVerifyPopup}
+        onClose={closeAll}
+        email={emailForReset}
       />
 
       <RegisterPopup
         show={showRegister}
-        onClose={() => setShowRegister(false)}
-      />
+        onClose={closeAll}
+        toggleLogin={openLogin}
+      />  
+     
       <ShoppingCart />
       <MobileMenu
         show={showMobileMenu}
         handleClose={() => setShowMobileMenu(false)}
-        toggleLogin={toggleLogin}
+        toggleLogin={openLogin}
   
       />
 
       {/* Backdrop for any open modal */}
-      {(showLogin || showRegister || showMobileMenu) && (
+      {(showLogin || showRegister || showReset || showVerifyPopup || showMobileMenu) && (
         <div
           className="modal-backdrop"
           onClick={() => {
             setShowLogin(false);
+            setShowReset(false);
+            setShowVerifyPopup(false);
             setShowRegister(false);
             setShowMobileMenu(false);
           }}

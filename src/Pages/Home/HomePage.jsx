@@ -18,9 +18,9 @@ const Homepage = () => {
       <FeaturedProducts />
       <BannerTwo />
       <ShopNow />
-      <Testimonials />
-      <LatestTips />
-      <ShopGram />
+      {/* <Testimonials /> */}
+      {/* <LatestTips /> */}
+      {/* <ShopGram /> */}
       {/* <Footer/> */}
     </>
   );

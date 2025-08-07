@@ -3,15 +3,20 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
+import gallery1 from "@/assets/images/gallery-1.jpg";
+import gallery2 from "@/assets/images/gallery-2.jpg";
+import gallery3 from "@/assets/images/gallery-3.jpg";
+import gallery4 from "@/assets/images/gallery-4.jpg";
+import gallery5 from "@/assets/images/gallery-5.jpg";
 
 const ShopGram = () => {
   // Gallery items data
   const galleryItems = [
-    { id: 1, image: "images/gallery-1.jpg" },
-    { id: 2, image: "images/gallery-2.jpg" },
-    { id: 3, image: "images/gallery-3.jpg" },
-    { id: 4, image: "images/gallery-4.jpg" },
-    { id: 5, image: "images/gallery-5.jpg" },
+    { id: 1, image: gallery1 },
+    { id: 2, image: gallery2 },
+    { id: 3, image: gallery3 },
+    { id: 4, image: gallery4 },
+    { id: 5, image: gallery5 },
   ];
 
   return (

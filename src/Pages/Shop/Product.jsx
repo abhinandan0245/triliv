@@ -1,538 +1,26 @@
 import React, { useState } from "react";
+import { useGetAllProductsQuery } from "../../services/products/productApi";
+import { useGetAllCategoriesQuery } from "../../services/category/categoryApi";
+import { Link, useParams } from "react-router-dom";
 
 const Product = () => {
   const [layout, setLayout] = useState("tf-col-4");
   const [sortValue, setSortValue] = useState("best-selling");
+  // const [selectedCategory, setSelectedCategory] = useState(null);
 
-  // Product data
-  const productsList = [
-    {
-      id: 1,
-      name: "Graphic Printed Pure Cotton T-shirt",
-      priceNew: "$50.00",
-      priceOld: "$70.00",
-      discount: "20% Off",
-      availability: "In stock",
-      brand: "Vineta",
-      description:
-        "Product Specifications Care for fiber: 30% more recycled polyester. We label garments manufactured using environmentally friendly technologies and raw materials with the Join Life label.",
-      colors: [
-        {
-          name: "Yellow",
-          value: "bg-light-orange-2",
-          img: "images/product/product-16.jpg",
-        },
-        {
-          name: "Black",
-          value: "bg-dark",
-          img: "images/product/product-9.jpg",
-        },
-        {
-          name: "Grey",
-          value: "bg-grey-4",
-          img: "images/product/product-7.jpg",
-        },
-      ],
-      sizes: ["S", "M", "L", "XL"],
-      mainImage: "images/product/product-16.jpg",
-      hoverImage: "images/product/product-9.jpg",
-    },
-    {
-      id: 2,
-      name: "Graphic Printed Drop Shoulder Sleeves",
-      priceNew: "$80.00",
-      priceOld: "",
-      discount: "",
-      availability: "In stock",
-      brand: "Vineta",
-      description:
-        "Product Specifications Care for fiber: 30% more recycled polyester. We label garments manufactured using environmentally friendly technologies and raw materials with the Join Life label.",
-      colors: [
-        {
-          name: "White",
-          value: "bg-white",
-          line: true,
-          img: "images/product/product-17.jpg",
-        },
-        {
-          name: "Dark Green",
-          value: "bg-dark-green",
-          img: "images/product/product-21.jpg",
-        },
-        {
-          name: "Grey",
-          value: "bg-grey-4",
-          img: "images/product/product-19.jpg",
-        },
-      ],
-      sizes: ["S", "M", "L", "XL"],
-      mainImage: "images/product/product-17.jpg",
-      hoverImage: "images/product/product-19.jpg",
-    },
-    // Add all other products following the same structure
-    // I'm showing 2 examples here, but you would include all 16 products
-  ];
+   const { categorySlug } = useParams();
+  const { data: categories } = useGetAllCategoriesQuery();
+  
+  // Find the selected category
+  const selectedCategory = categories?.find(cat => cat.slug === categorySlug);
 
-  const productsGrid = [
-    {
-      id: 1,
-      name: "Loose Fit Tee",
-      priceNew: "$120.00",
-      priceOld: "$150.00",
-      discount: "20% Off",
-      availability: "In stock",
-      brand: "Vineta",
-      colors: [
-        {
-          name: "Grey",
-          value: "bg-grey-4",
-          img: "images/product/product-19.jpg",
-        },
-        {
-          name: "Black",
-          value: "bg-dark",
-          img: "images/product/product-9.jpg",
-        },
-        {
-          name: "White",
-          value: "bg-white",
-          line: true,
-          img: "images/product/product-4.jpg",
-        },
-      ],
-      sizes: ["XS", "S", "M", "L", "XL", "2XL"],
-      mainImage: "images/product/product-19.jpg",
-      hoverImage: "images/women-grey-2.jpg",
-    },
-    {
-      id: 2,
-      name: "Regular Fit Pima Cotton Polo Shirt",
-      priceNew: "$130.00",
-      priceOld: "",
-      discount: "",
-      availability: "Out of stock",
-      brand: "Zotac",
-      colors: [],
-      sizes: [],
-      mainImage: "images/product/product-2.jpg",
-      hoverImage: "images/product/product-2.jpg",
-    },
-    // Add all other grid products following the same structure
-    // I'm showing 2 examples here, but you would include all 16 products
+ // Fetch products with category filter if a category is selected
+  const { data: products, isLoading, error } = useGetAllProductsQuery(
+    selectedCategory ? { categoryId: selectedCategory.id } : {}
+  );
 
-    // Product 3
-    {
-      id: 3,
-      name: "Long Regular Fit Tee",
-      priceNew: "$60.00",
-      priceOld: "$70.00",
-      discount: "",
-      availability: "In stock",
-      brand: "Vineta",
-      colors: [
-        {
-          name: "Yellow",
-          value: "bg-yellow",
-          img: "images/product/product-3.jpg",
-        },
-        {
-          name: "Grey",
-          value: "bg-grey-4",
-          img: "images/product/product-6.jpg",
-        },
-        {
-          name: "White",
-          value: "bg-white",
-          line: true,
-          img: "images/product/product-4.jpg",
-        },
-      ],
-      sizes: ["S", "M", "L", "XL"],
-      mainImage: "images/product/product-3.jpg",
-      hoverImage: "images/product/product-4.jpg",
-      hasCountdown: true,
-      countdownTime: 1007500,
-    },
-
-    // Product 4
-    {
-      id: 4,
-      name: "Regular Fit Pima Cotton Polo Shirt",
-      priceNew: "$80.00",
-      priceOld: "$100.00",
-      discount: "",
-      availability: "In stock",
-      brand: "Vineta",
-      colors: [
-        {
-          name: "White",
-          value: "bg-white",
-          line: true,
-          img: "images/product/product-17.jpg",
-        },
-        {
-          name: "Light Orange",
-          value: "bg-light-orange",
-          img: "images/product/product-16.jpg",
-        },
-        {
-          name: "Light Grey",
-          value: "bg-grey-4",
-          img: "images/product/product-5.jpg",
-        },
-      ],
-      sizes: ["S", "M", "L"],
-      mainImage: "images/product/product-17.jpg",
-      hoverImage: "images/product/product-1.jpg",
-    },
-
-    // Product 5
-    {
-      id: 5,
-      name: "Midi Knit Dress",
-      priceNew: "$40.00",
-      priceOld: "$60.00",
-      discount: "",
-      availability: "In stock",
-      brand: "Vineta",
-      colors: [
-        {
-          name: "Beige",
-          value: "bg-beige",
-          img: "images/product/product-25.jpg",
-        },
-        {
-          name: "Black",
-          value: "bg-dark",
-          img: "images/product/product-22.jpg",
-        },
-        { name: "Grey", value: "bg-grey-4", img: "images/women-grey-2.jpg" },
-      ],
-      sizes: ["XS", "M", "XL"],
-      mainImage: "images/product/product-25.jpg",
-      hoverImage: "images/product/product-24.jpg",
-    },
-
-    // Product 6
-    {
-      id: 6,
-      name: "Oversized Fit Tee",
-      priceNew: "$60.00",
-      priceOld: "$180.00",
-      discount: "",
-      availability: "In stock",
-      brand: "Vineta",
-      colors: [
-        {
-          name: "White",
-          value: "bg-white",
-          line: true,
-          img: "images/product/product-6.jpg",
-        },
-        {
-          name: "Dark Green",
-          value: "bg-dark-green",
-          img: "images/product/product-21.jpg",
-        },
-      ],
-      sizes: ["XS", "S", "M", "L"],
-      mainImage: "images/product/product-6.jpg",
-      hoverImage: "images/product/product-21.jpg",
-    },
-
-    // Product 7
-    {
-      id: 7,
-      name: "Puff Sleeve Shirred Blouse",
-      priceNew: "$57.00",
-      priceOld: "$60.00",
-      discount: "",
-      availability: "In stock",
-      brand: "Zotac",
-      colors: [
-        {
-          name: "Yellow",
-          value: "bg-yellow-2",
-          img: "images/women-yellow-2.jpg",
-        },
-        {
-          name: "Light Orange",
-          value: "bg-light-orange-2",
-          img: "images/product/product-28.jpg",
-        },
-        {
-          name: "Beige",
-          value: "bg-beige",
-          img: "images/product/product-7.jpg",
-        },
-      ],
-      sizes: [],
-      mainImage: "images/women-yellow-2.jpg",
-      hoverImage: "images/product/product-28.jpg",
-    },
-
-    // Product 8
-    {
-      id: 8,
-      name: "Printed T-shirt",
-      priceNew: "$120.00",
-      priceOld: "$140.00",
-      discount: "",
-      availability: "In stock",
-      brand: "Zotac",
-      colors: [
-        {
-          name: "White",
-          value: "bg-white",
-          line: true,
-          img: "images/product/product-26.jpg",
-        },
-        { name: "Grey", value: "bg-grey-4", img: "images/women-grey-1.jpg" },
-        { name: "Black", value: "bg-dark", img: "images/women-black-6.jpg" },
-      ],
-      sizes: ["S", "M", "L"],
-      mainImage: "images/product/product-26.jpg",
-      hoverImage: "images/product/product-26.jpg",
-    },
-
-    // Product 9
-    {
-      id: 9,
-      name: "Basic Sports T-Shirt Crew Neck Ribbed",
-      priceNew: "80.00",
-      priceOld: "$100.00",
-      discount: "",
-      availability: "In stock",
-      brand: "Zotac",
-      colors: [
-        {
-          name: "Light Purple",
-          value: "bg-light-purple-3",
-          img: "images/product/product-27.jpg",
-        },
-        {
-          name: "Light Grey",
-          value: "bg-grey-4",
-          img: "images/product/product-11.jpg",
-        },
-        {
-          name: "Light Orange",
-          value: "bg-light-orange",
-          img: "images/product/product-12.jpg",
-        },
-      ],
-      sizes: ["M", "L", "XL"],
-      mainImage: "images/product/product-27.jpg",
-      hoverImage: "images/product/product-23.jpg",
-    },
-
-    // Product 10
-    {
-      id: 10,
-      name: "Regular Fit Fine Knit Polo Shirt",
-      priceNew: "$130.00",
-      priceOld: "$130.00",
-      discount: "",
-      availability: "In stock",
-      brand: "Zotac",
-      colors: [
-        {
-          name: "Light Blue",
-          value: "bg-light-blue-2",
-          img: "images/product/product-10.jpg",
-        },
-        {
-          name: "Black",
-          value: "bg-dark",
-          img: "images/product/product-13.jpg",
-        },
-        {
-          name: "Purple",
-          value: "bg-light-purple",
-          img: "images/product/product-14.jpg",
-        },
-      ],
-      sizes: [],
-      mainImage: "images/product/product-10.jpg",
-      hoverImage: "images/product/product-20.jpg",
-    },
-
-    // Product 11
-    {
-      id: 11,
-      name: "Crop College T-Shirt",
-      priceNew: "$80.00",
-      priceOld: "$100.00",
-      discount: "",
-      availability: "In stock",
-      brand: "Vineta",
-      colors: [
-        {
-          name: "Dark Green",
-          value: "bg-dark-green",
-          img: "images/product/product-21.jpg",
-        },
-        { name: "Black", value: "bg-dark", img: "images/women-black-3.jpg" },
-        {
-          name: "Light Purple",
-          value: "bg-light-purple-3",
-          img: "images/product/product-23.jpg",
-        },
-      ],
-      sizes: [],
-      mainImage: "images/product/product-21.jpg",
-      hoverImage: "images/women-black-3.jpg",
-    },
-
-    // Product 12
-    {
-      id: 12,
-      name: "Bow-Tie T-Shirt",
-      priceNew: "$120.00",
-      priceOld: "$140.00",
-      discount: "",
-      availability: "In stock",
-      brand: "Vineta",
-      colors: [
-        {
-          name: "Black",
-          value: "bg-dark",
-          img: "images/product/product-22.jpg",
-        },
-        {
-          name: "Beige",
-          value: "bg-beige",
-          img: "images/product/product-5.jpg",
-        },
-        {
-          name: "White",
-          value: "bg-white",
-          line: true,
-          img: "images/product/product-1.jpg",
-        },
-      ],
-      sizes: ["XS", "S", "M", "L", "XL", "2XL"],
-      mainImage: "images/product/product-22.jpg",
-      hoverImage: "images/product/product-5.jpg",
-    },
-
-    // Product 13
-    {
-      id: 13,
-      name: "COOLMAX® Loose Fit Tee",
-      priceNew: "$60.00",
-      priceOld: "$80.00",
-      discount: "",
-      availability: "In stock",
-      brand: "Vineta",
-      colors: [
-        {
-          name: "Black",
-          value: "bg-dark",
-          img: "images/product/product-13.jpg",
-        },
-        {
-          name: "Light Purple",
-          value: "bg-purple-3",
-          img: "images/product/product-14.jpg",
-        },
-      ],
-      sizes: ["L", "XL", "2XL"],
-      mainImage: "images/product/product-13.jpg",
-      hoverImage: "images/product/product-14.jpg",
-    },
-
-    // Product 14
-    {
-      id: 14,
-      name: "Long Sleeve T-Shirt",
-      priceNew: "$100.00",
-      priceOld: "$120.00",
-      discount: "",
-      availability: "In stock",
-      brand: "Vineta",
-      colors: [
-        {
-          name: "Black",
-          value: "bg-dark",
-          img: "images/product/product-20.jpg",
-        },
-        {
-          name: "Light Orange",
-          value: "bg-light-orange",
-          img: "images/product/product-16.jpg",
-        },
-        {
-          name: "White",
-          value: "bg-white",
-          line: true,
-          img: "images/product/product-1.jpg",
-        },
-      ],
-      sizes: ["XS", "S", "M", "L", "XL", "2XL"],
-      mainImage: "images/product/product-20.jpg",
-      hoverImage: "images/product/product-9.jpg",
-    },
-
-    // Product 15
-    {
-      id: 15,
-      name: "Muscle Fit Polo Shirt",
-      priceNew: "$100.00",
-      priceOld: "$120.00",
-      discount: "",
-      availability: "Out of stock",
-      brand: "Zotac",
-      colors: [
-        {
-          name: "Beige",
-          value: "bg-beige",
-          img: "images/product/product-7.jpg",
-        },
-        {
-          name: "White",
-          value: "bg-white",
-          line: true,
-          img: "images/product/product-11.jpg",
-        },
-        {
-          name: "Light Orange",
-          value: "bg-light-orange",
-          img: "images/product/product-18.jpg",
-        },
-      ],
-      sizes: ["S", "M", "L", "XL", "2XL"],
-      mainImage: "images/product/product-7.jpg",
-      hoverImage: "images/product/product-11.jpg",
-    },
-
-    // Product 16
-    {
-      id: 16,
-      name: "Graphic Printed Drop Shoulder Sleeves",
-      priceNew: "$80.00",
-      priceOld: "$100.00",
-      discount: "",
-      availability: "Out of stock",
-      brand: "Zotac",
-      colors: [
-        {
-          name: "White",
-          value: "bg-white",
-          line: true,
-          img: "images/product/product-17.jpg",
-        },
-        {
-          name: "Light Purple",
-          value: "bg-light-purple-3",
-          img: "images/product/product-23.jpg",
-        },
-      ],
-      sizes: [],
-      mainImage: "images/product/product-17.jpg",
-      hoverImage: "images/product/product-26.jpg",
-    },
-  ];
+  if (isLoading) return <p>Loading...</p>;
+  if (error) return <p>Error fetching products</p>;
 
   const handleSortChange = (value) => {
     setSortValue(value);
@@ -542,6 +30,79 @@ const Product = () => {
   const handleLayoutChange = (value) => {
     setLayout(value);
   };
+
+
+
+// Process products to include images and pricing
+const processedProducts = products.map(product => {
+  // Safely parse priceVariants (handles both string and array formats)
+  let priceVariants = [];
+  try {
+    priceVariants = typeof product.priceVariants === 'string' 
+      ? JSON.parse(product.priceVariants) 
+      : Array.isArray(product.priceVariants) 
+        ? product.priceVariants 
+        : [];
+  } catch (e) {
+    console.error('Error parsing priceVariants:', e);
+    priceVariants = [];
+  }
+
+  // Safely parse sizes (handles malformed JSON strings)
+  let sizes = [];
+  try {
+    sizes = typeof product.sizes === 'string' 
+      ? JSON.parse(product.sizes.replace(/'/g, '"')) 
+      : Array.isArray(product.sizes) 
+        ? product.sizes 
+        : [];
+  } catch (e) {
+    console.error('Error parsing sizes:', e);
+    sizes = [];
+  }
+
+  // Get default price variant with proper fallbacks
+  const defaultVariant = priceVariants[0] || {
+    size: sizes[0] || '',
+    originalPrice: product.originalPrice || 0,
+    discountPercentage: product.discountPercentage || 0,
+    discountAmount: product.discountAmount || 0,
+    price: product.price || product.originalPrice || 0
+  };
+
+  // Calculate prices with proper number conversion
+  const originalPrice = Number(defaultVariant.originalPrice) || 0;
+  const finalPrice = Number(defaultVariant.price) || originalPrice;
+  const hasDiscount = originalPrice > finalPrice;
+
+  // Calculate discount display
+  let discountDisplay = null;
+  if (defaultVariant.discountPercentage > 0) {
+    discountDisplay = `${defaultVariant.discountPercentage}% OFF`;
+  } else if (defaultVariant.discountAmount > 0) {
+    discountDisplay = `₹${defaultVariant.discountAmount} OFF`;
+  } else if (hasDiscount) {
+    const discountValue = Math.round((originalPrice - finalPrice) / originalPrice * 100);
+    discountDisplay = `${discountValue}% OFF`;
+  }
+
+  // Image handling with fallbacks
+  const defaultImage = product.imageVariants?.[0]?.imageUrl || '';
+  const hoverImage = product.imageVariants?.[1]?.imageUrl || defaultImage;
+
+  return {
+    ...product,
+    mainImage: defaultImage,
+    hoverImage: hoverImage,
+    priceNew: `₹${finalPrice.toFixed(2)}`,
+    priceOld: `₹${originalPrice.toFixed(2)}`,
+    discount: discountDisplay,
+    sizes: sizes,
+    priceVariants: priceVariants,
+    defaultVariant: defaultVariant
+  };
+});
+
 
   return (
     <section className="flat-spacing-24 pt-0">
@@ -691,13 +252,13 @@ const Product = () => {
             id="listLayout"
             style={{ display: layout === "list" ? "block" : "none" }}
           >
-            {productsList.map((product) => (
+            {processedProducts.map((product) => (
               <div
-                key={product.id}
+                key={product.productId}
                 className={`card-product style-list ${
-                  product.availability === "Out of stock" ? "out-of-stock" : ""
+                  product.stock === 0 ? "out-of-stock" : ""
                 }`}
-                data-availability={product.availability}
+                data-availability={product.stock === 0 ? "Out of stock" : "In stock"}
                 data-brand={product.brand}
               >
                 <div className="card-product-wrapper">
@@ -706,13 +267,13 @@ const Product = () => {
                       className="img-product lazyload"
                       data-src={product.mainImage}
                       src={product.mainImage}
-                      alt="image-product"
+                      alt={product.title}
                     />
                     <img
                       className="img-hover lazyload"
                       data-src={product.hoverImage}
                       src={product.hoverImage}
-                      alt="image-product"
+                      alt={product.title}
                     />
                   </a>
                   {product.discount && (
@@ -724,10 +285,10 @@ const Product = () => {
                 <div className="card-product-info">
                   <div className="info-list">
                     <a
-                      href="/productdetail"
+                      href="/productdetails"
                       className="name-product link fw-medium text-md"
                     >
-                      {product.name}
+                      {product.title}
                     </a>
                     <p className="price-wrap fw-medium text-md">
                       <span className="price-new">{product.priceNew}</span>
@@ -738,30 +299,24 @@ const Product = () => {
                     <p className="desc text-sm text-main text-line-clamp-2">
                       {product.description}
                     </p>
-                    {product.colors.length > 0 && (
+                    {product.colors && product.colors.length > 0 && (
                       <ul className="list-color-product">
                         {product.colors.map((color, index) => (
                           <li
                             key={index}
                             className={`list-color-item color-swatch hover-tooltip ${
                               index === 0 ? "active" : ""
-                            } ${color.line ? "line" : ""}`}
+                            }`}
                           >
                             <span className="tooltip color-filter">
-                              {color.name}
+                              {color}
                             </span>
-                            <span className={`swatch-value ${color.value}`} />
-                            <img
-                              className="lazyload"
-                              data-src={color.img}
-                              src={color.img}
-                              alt="image-product"
-                            />
+                            <span className={`swatch-value bg-${color.toLowerCase()}`} />
                           </li>
                         ))}
                       </ul>
                     )}
-                    {product.sizes.length > 0 && (
+                    {product.sizes && product.sizes.length > 0 && (
                       <ul className="size-box">
                         {product.sizes.map((size, index) => (
                           <li key={index} className="size-item text-xs">
@@ -836,32 +391,30 @@ const Product = () => {
             id="gridLayout"
             style={{ display: layout !== "list" ? "grid" : "none" }}
           >
-            {productsGrid.map((product) => (
+            {processedProducts.map((product) => (
               <div
-                key={product.id}
+                key={product.productId}
                 className={`card-product grid style-1 ${
-                  product.sizes.length > 0 ? "card-product-size" : ""
-                } ${
-                  product.availability === "Out of stock" ? "out-of-stock" : ""
-                }`}
-                data-availability={product.availability}
+                  product.sizes?.length > 0 ? "card-product-size" : ""
+                } ${product.stock === 0 ? "out-of-stock" : ""}`}
+                data-availability={product.stock === 0 ? "Out of stock" : "In stock"}
                 data-brand={product.brand}
               >
                 <div className="card-product-wrapper">
-                  <a href="/productdetail" className="product-img">
+                  <Link to={`/productdetail/${product.id}`} className="product-img">
                     <img
                       className="img-product lazyload"
                       data-src={product.mainImage}
                       src={product.mainImage}
-                      alt="image-product"
+                      alt={product.title}
                     />
                     <img
                       className="img-hover lazyload"
                       data-src={product.hoverImage}
                       src={product.hoverImage}
-                      alt="image-product"
+                      alt={product.title}
                     />
-                  </a>
+                  </Link>
                   {product.discount && (
                     <div className="on-sale-wrap">
                       <span className="on-sale-item">{product.discount}</span>
@@ -909,7 +462,7 @@ const Product = () => {
                       </a>
                     </li>
                   </ul>
-                  {product.sizes.length > 0 && (
+                  {product.sizes?.length > 0 && (
                     <ul className="size-box">
                       {product.sizes.map((size, index) => (
                         <li
@@ -927,7 +480,7 @@ const Product = () => {
                     href="/productdetail"
                     className="name-product link fw-medium text-md"
                   >
-                    {product.name}
+                    {product.title}
                   </a>
                   <p className="price-wrap fw-medium">
                     <span className="price-new">{product.priceNew}</span>
@@ -935,25 +488,19 @@ const Product = () => {
                       <span className="price-old">{product.priceOld}</span>
                     )}
                   </p>
-                  {product.colors.length > 0 && (
+                  {product.colors && product.colors.length > 0 && (
                     <ul className="list-color-product">
                       {product.colors.map((color, index) => (
                         <li
                           key={index}
                           className={`list-color-item color-swatch hover-tooltip tooltip-bot ${
                             index === 0 ? "active" : ""
-                          } ${color.line ? "line" : ""}`}
+                          }`}
                         >
                           <span className="tooltip color-filter">
-                            {color.name}
+                            {color}
                           </span>
-                          <span className={`swatch-value ${color.value}`} />
-                          <img
-                            className="lazyload"
-                            data-src={color.img}
-                            src={color.img}
-                            alt="image-product"
-                          />
+                          <span className={`swatch-value bg-${color.toLowerCase()}`} />
                         </li>
                       ))}
                     </ul>

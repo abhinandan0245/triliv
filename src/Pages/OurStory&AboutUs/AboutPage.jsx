@@ -7,6 +7,9 @@ import "swiper/css/pagination";
 // Import required modules
 import { Pagination } from "swiper/modules";
 
+import prod1 from "@/assets/images/about-2.jpg"
+import about from "@/assets/images/about.jpg"
+
 const AboutPage = () => {
   useEffect(() => {
     // You can add any additional Swiper initialization or other effects here
@@ -35,8 +38,8 @@ const AboutPage = () => {
           </div>
           <div className="image radius-16 overflow-hidden banner-about">
             <img
-              src="images/about.jpg"
-              data-src="images/about.jpg"
+              src={about}
+              data-src={about}
               alt="Vineta Fashion"
               className="w-100 h-100 object-fit-cover lazyload"
             />
@@ -90,8 +93,8 @@ const AboutPage = () => {
             <div className="col-xl-5 col-md-6">
               <div className="image radius-16 overflow-hidden w-100 h-100">
                 <img
-                  src="images/about-2.jpg"
-                  data-src="images/about-2.jpg"
+                  src={prod1}
+                  data-src={prod1}
                   alt="Vineta Collection"
                   className="lazyload w-100 h-100 object-fit-cover"
                 />

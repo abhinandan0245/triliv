@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import Swiper from "swiper";
 import "swiper/swiper-bundle.css";
+import prod5 from "@/assets/images/product/product-5.jpg"
 
 const RecentlyViewed = () => {
   const swiperRef = useRef(null);
@@ -50,8 +51,8 @@ const RecentlyViewed = () => {
     {
       id: 1,
       name: "Turtleneck T-shirt",
-      mainImage: "images/product/product-5.jpg",
-      hoverImage: "images/product/product-22.jpg",
+      mainImage: prod5,
+      hoverImage: prod5,
       priceNew: "$80.00",
       priceOld: "$100.00",
       discount: "20% Off",
@@ -60,47 +61,47 @@ const RecentlyViewed = () => {
         {
           name: "Grey",
           value: "bg-grey-4",
-          image: "images/product/product-5.jpg",
+          image: prod5,
           active: true,
         },
         {
           name: "Black",
           value: "bg-dark",
-          image: "images/product/product-22.jpg",
+          image: prod5,
         },
         {
           name: "Orange",
           value: "bg-light-orange-2",
-          image: "images/product/product-40.jpg",
+          image: prod5,
         },
       ],
     },
     {
       id: 2,
       name: "Loose Fit Tee",
-      mainImage: "images/product/product-12.jpg",
-      hoverImage: "images/product/product-39.jpg",
+      mainImage: prod5,
+      hoverImage: prod5,
       priceNew: "$65.00",
       tag: "Trending",
       colors: [
         {
           name: "Orange",
           value: "bg-light-orange-2",
-          image: "images/product/product-12.jpg",
+          image: prod5,
           active: true,
         },
         {
           name: "Blue",
           value: "bg-light-blue",
-          image: "images/product/product-39.jpg",
+          image: prod5,
         },
       ],
     },
     {
       id: 3,
       name: "Crop T-shirt",
-      mainImage: "images/product/product-11.jpg",
-      hoverImage: "images/product/product-7.jpg",
+      mainImage: prod5,
+      hoverImage: prod5,
       priceNew: "$45.00",
       discount: "20% Off",
       countdown: 1007500,
@@ -108,27 +109,27 @@ const RecentlyViewed = () => {
         {
           name: "White",
           value: "bg-white",
-          image: "images/product/product-11.jpg",
+          image: prod5,
           line: true,
         },
         {
           name: "Beige",
           value: "bg-beige",
-          image: "images/product/product-7.jpg",
+          image: prod5,
           active: true,
         },
         {
           name: "Light Orange",
           value: "bg-light-orange-2",
-          image: "images/product/product-18.jpg",
+          image: prod5,
         },
       ],
     },
     {
       id: 4,
       name: "Short Sleeve Sweat",
-      mainImage: "images/product/product-31.jpg",
-      hoverImage: "images/product/product-13.jpg",
+      mainImage: prod5,
+      hoverImage: prod5,
       priceNew: "$130.00",
       tag: "Limited",
       tagType: "type-2",
@@ -136,35 +137,35 @@ const RecentlyViewed = () => {
         {
           name: "White",
           value: "bg-white",
-          image: "images/product/product-31.jpg",
+          image: prod5,
           active: true,
           line: true,
         },
         {
           name: "Black",
           value: "bg-dark",
-          image: "images/product/product-13.jpg",
+          image: prod5,
         },
       ],
     },
     {
       id: 5,
       name: "Breeze Soft Tee",
-      mainImage: "images/product/product-30.jpg",
-      hoverImage: "images/product/product-10.jpg",
+      mainImage: prod5,
+      hoverImage: prod5,
       priceNew: "$50.00",
       priceOld: "$70.00",
       colors: [
         {
           name: "Purple",
           value: "bg-purple-3",
-          image: "images/product/product-30.jpg",
+          image: prod5,
           active: true,
         },
         {
           name: "Blue",
           value: "bg-light-blue-2",
-          image: "images/product/product-10.jpg",
+          image: prod5,
         },
       ],
     },

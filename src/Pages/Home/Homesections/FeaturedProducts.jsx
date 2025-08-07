@@ -2,6 +2,19 @@ import React, { useState, useEffect } from "react";
 import QuickAddModal from "../../../components/ui/Modal/QuickAdd";
 import QuickViewModal from "../../../components/ui/Modal/QuickView";
 import CompareModal from "../../../components/ui/Modal/CompareModal"; // Adjust the path as needed // Adjust the path as needed
+import FPImg1 from "@/assets/images/product-1.jpg"
+import FPImg2 from "@/assets/images/product-2.jpg"
+import FPImg3 from "@/assets/images/product-3.jpg"
+import FPImg4 from "@/assets/images/product-4.jpg"
+import FPImg5 from "@/assets/images/product-5.jpg"
+import FPImg6 from "@/assets/images/product-6.jpg"
+import FPImg7 from "@/assets/images/product-7.jpg"
+import FPImg8 from "@/assets/images/product-8.jpg"
+import FPImg9 from "@/assets/images/product-9.jpg"
+import FPImg10 from "@/assets/images/product-10.jpg"
+import FPImg11 from "@/assets/images/product-11.jpg"
+
+
 const FeaturedProducts = () => {
   // Initialize Swiper when component mounts
   const [showQuickAdd, setShowQuickAdd] = useState(false);
@@ -55,13 +68,13 @@ const FeaturedProducts = () => {
       priceOld: "$150.00",
       discount: "20% Off",
       images: {
-        main: "images/product-1.jpg",
-        hover: "images/product-2.jpg",
+        main: FPImg1,
+        hover:FPImg2
       },
       colors: [
-        { name: "White", value: "bg-white", image: "images/product-1.jpg" },
-        { name: "Brown", value: "bg-brown-9", image: "images/product-2.jpg" },
-        { name: "Black", value: "bg-dark", image: "images/product-3.jpg" },
+        { name: "White", value: "bg-white", image: FPImg1 },
+        { name: "Brown", value: "bg-brown-9", image: FPImg1 },
+        { name: "Black", value: "bg-dark", image: FPImg3 },
       ],
     },
     {
@@ -71,20 +84,20 @@ const FeaturedProducts = () => {
       priceOld: "$130.00",
       discount: "20% Off",
       images: {
-        main: "images/product-4.jpg",
-        hover: "images/product-5.jpg",
+        main: FPImg4,
+        hover: FPImg5,
       },
       colors: [
         {
           name: "Beige",
           value: "bg-light-beige-2",
-          image: "images/product-4.jpg",
+          image: FPImg4,
         },
-        { name: "Black", value: "bg-dark", image: "images/product-5.jpg" },
+        { name: "Black", value: "bg-dark", image: FPImg4 },
         {
           name: "Taupe Brown",
           value: "bg-taupe-brown",
-          image: "images/product-6.jpg",
+          image: FPImg6,
         },
       ],
     },
@@ -93,20 +106,20 @@ const FeaturedProducts = () => {
       name: "Olive Tree",
       priceNew: "$150.00",
       images: {
-        main: "images/product-7.jpg",
-        hover: "images/product-8.jpg",
+        main: FPImg7,
+        hover: FPImg8,
       },
       colors: [
         {
           name: "Reddish Brown",
           value: "bg-reddish-brown",
-          image: "images/product-7.jpg",
+          image: FPImg7,
         },
-        { name: "Blue", value: "bg-blue-2", image: "images/product-8.jpg" },
+        { name: "Blue", value: "bg-blue-2", image: FPImg8 },
         {
           name: "Terra Cotta",
           value: "bg-terra-cotta",
-          image: "images/product-9.jpg",
+          image: FPImg9,
         },
       ],
     },
@@ -117,12 +130,12 @@ const FeaturedProducts = () => {
       priceOld: "$160.00",
       discount: "20% Off",
       images: {
-        main: "images/product-10.jpg",
-        hover: "images/product-11.jpg",
+        main: FPImg10,
+        hover: FPImg11,
       },
       colors: [
-        { name: "Black", value: "bg-dark-6", image: "images/product-10.jpg" },
-        { name: "Beige", value: "bg-beige-2", image: "images/product-11.jpg" },
+        { name: "Black", value: "bg-dark-6", image: FPImg10 },
+        { name: "Beige", value: "bg-beige-2", image:FPImg11 },
       ],
     },
     {
@@ -132,13 +145,13 @@ const FeaturedProducts = () => {
       priceOld: "$150.00",
       discount: "20% Off",
       images: {
-        main: "images/product-1.jpg",
-        hover: "images/product-2.jpg",
+        main: FPImg1,
+        hover: FPImg2,
       },
       colors: [
-        { name: "White", value: "bg-white", image: "images/product-1.jpg" },
-        { name: "Brown", value: "bg-brown-9", image: "images/product-2.jpg" },
-        { name: "Black", value: "bg-dark", image: "images/product-3.jpg" },
+        { name: "White", value: "bg-white", image: FPImg1 },
+        { name: "Brown", value: "bg-brown-9", image: FPImg2 },
+        { name: "Black", value: "bg-dark", image: FPImg3 },
       ],
     },
   ];

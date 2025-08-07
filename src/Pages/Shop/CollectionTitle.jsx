@@ -2,7 +2,7 @@ import React from "react";
 
 const CollectionTitle = () => {
   return (
-    <section className="tf-page-title">
+    <section className="tf-page-title mb-4">
       <div className="container">
         <div className="box-title text-center">
           <h4 className="title">Collection</h4>

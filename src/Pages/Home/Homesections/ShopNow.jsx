@@ -1,4 +1,10 @@
 import React, { useEffect } from "react";
+import plant1 from "@/assets/images/plant-1.jpg";
+import plant2 from "@/assets/images/plant-2.jpg";
+import plant3 from "@/assets/images/plant-3.jpg";
+import plant4 from "@/assets/images/plant-4.jpg";
+import plant5 from "@/assets/images/plant-5.jpg";
+
 
 const ShopNow = () => {
   useEffect(() => {
@@ -25,31 +31,31 @@ const ShopNow = () => {
     {
       id: 1,
       title: "Plants",
-      image: "images/plant-1.jpg",
+      image: plant1,
       link: "shop",
     },
     {
       id: 2,
       title: "Plant Care",
-      image: "images/plant-2.jpg",
+      image: plant2,
       link: "shop",
     },
     {
       id: 3,
       title: "Pots",
-      image: "images/plant-3.jpg",
+      image: plant3,
       link: "shop",
     },
     {
       id: 4,
       title: "Pet-Friendly",
-      image: "images/plant-4.jpg",
+      image: plant4,
       link: "shop",
     },
     {
       id: 5,
       title: "Gift Ideas",
-      image: "images/plant-5.jpg",
+      image: plant5,
       link: "shop",
     },
   ];

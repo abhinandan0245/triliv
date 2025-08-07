@@ -6,9 +6,9 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 
 // Import images
-import plantTip1 from "../../../../public/images/plant-tip-1.jpg";
-import plantTip2 from "../../../../public/images/plant-tip-2.jpg";
-import plantTip3 from "../../../../public/images/plant-tip-3.jpg";
+import plantTip1 from "@/assets/images/plant-tip-1.jpg";
+import plantTip2 from "@/assets/images/plant-tip-2.jpg";
+import plantTip3 from "@/assets/images/plant-tip-3.jpg";
 
 const LatestTips = () => {
   const prevRef = useRef(null);

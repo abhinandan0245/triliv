@@ -1,0 +1,29 @@
+import { configureStore } from '@reduxjs/toolkit';
+import { authApi } from '../services/auth/authApi';
+import { categoryApi } from '../services/category/categoryApi';
+import authReducer from '../redux/slice/authSlice';
+import { resetPasswordApi } from '../services/resetPassApi';
+import { whyShopApi } from '../services/homepage/whyShopApi';
+import { banner2Api } from '../services/homepage/banner2Api';
+import { banner3Api } from '../services/homepage/banner3Api';
+import { sliderApi } from '../services/homepage/sliderApi';
+import { productApi } from '../services/products/productApi';
+import { cartApi } from '../services/cart/cartApi';
+
+export const store = configureStore({
+  reducer: {
+    auth: authReducer,
+    [authApi.reducerPath]: authApi.reducer,
+    [categoryApi.reducerPath]: categoryApi.reducer,
+    [resetPasswordApi.reducerPath]: resetPasswordApi.reducer,
+    [whyShopApi.reducerPath]: whyShopApi.reducer,
+    [banner2Api.reducerPath]: banner2Api.reducer,
+    [banner2Api.reducerPath]: banner2Api.reducer,
+    [banner3Api.reducerPath]: banner3Api.reducer,
+    [sliderApi.reducerPath]: sliderApi.reducer,
+    [productApi.reducerPath]: productApi.reducer,
+    [cartApi.reducerPath]: cartApi.reducer,
+  },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(authApi.middleware, categoryApi.middleware , resetPasswordApi.middleware , whyShopApi.middleware , banner2Api.middleware , banner3Api.middleware , sliderApi.middleware , productApi.middleware , cartApi.middleware), // FIXED HERE
+});

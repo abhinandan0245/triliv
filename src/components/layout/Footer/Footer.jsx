@@ -1,6 +1,6 @@
 import React from "react";
 import MobileMenu from "../../ui/Modal/MobileMenu";
-
+import logo1 from "@/assets/images/logo1.png"
 const Footer = () => {
   // Handle form submission
   const handleSubscribe = (e) => {
@@ -23,7 +23,7 @@ const Footer = () => {
             <div className="footer-top-wrap">
               <div className="footer-logo">
                 <a href="index.php">
-                  <img src="images/logo1.png" className="logo" alt="logo" />
+                  <img src={logo1} className="logo" alt="logo" />
                 </a>
               </div>
               <ul className="tf-social-icon style-large">

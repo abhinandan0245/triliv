@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 import Swiper from "swiper";
 import "swiper/swiper-bundle.css";
+import prod10 from "@/assets/images/product/product-10.jpg"
+
 
 const PeopleAlsoBought = () => {
   useEffect(() => {
@@ -85,14 +87,14 @@ const PeopleAlsoBought = () => {
                     <a href="productdetail" className="product-img">
                       <img
                         className="img-product lazyload"
-                        data-src="images/product/product-10.jpg"
-                        src="images/product/product-10.jpg"
+                        data-src={prod10}
+                        src={prod10}
                         alt="image-product"
                       />
                       <img
                         className="img-hover lazyload"
-                        data-src="images/product/product-4.jpg"
-                        src="images/product/product-4.jpg"
+                        data-src={prod10}
+                        src={prod10}
                         alt="image-product"
                       />
                     </a>
@@ -172,8 +174,8 @@ const PeopleAlsoBought = () => {
                         <span className="swatch-value bg-light-blue-2" />
                         <img
                           className="lazyload"
-                          data-src="images/product/product-10.jpg"
-                          src="images/product/product-10.jpg"
+                          data-src={prod10}
+                          src={prod10}
                           alt="image-product"
                         />
                       </li>
@@ -182,8 +184,8 @@ const PeopleAlsoBought = () => {
                         <span className="swatch-value bg-white" />
                         <img
                           className="lazyload"
-                          data-src="images/product/product-4.jpg"
-                          src="images/product/product-4.jpg"
+                          data-src={prod10}
+                          src={prod10}
                           alt="image-product"
                         />
                       </li>
@@ -192,8 +194,8 @@ const PeopleAlsoBought = () => {
                         <span className="swatch-value bg-light-pink-9" />
                         <img
                           className="lazyload"
-                          data-src="images/product/product-30.jpg"
-                          src="images/product/product-30.jpg"
+                          data-src={prod10}
+                          src={prod10}
                           alt="image-product"
                         />
                       </li>
@@ -209,14 +211,14 @@ const PeopleAlsoBought = () => {
                     <a href="productdetail" className="product-img">
                       <img
                         className="img-product lazyload"
-                        data-src="images/product/product-16.jpg"
-                        src="images/product/product-16.jpg"
+                        data-src={prod10}
+                        src={prod10}
                         alt="image-product"
                       />
                       <img
                         className="img-hover lazyload"
-                        data-src="images/product/product-19.jpg"
-                        src="images/product/product-19.jpg"
+                        data-src={prod10}
+                        src={prod10}
                         alt="image-product"
                       />
                     </a>
@@ -287,8 +289,8 @@ const PeopleAlsoBought = () => {
                         <span className="swatch-value bg-yellow-4" />
                         <img
                           className="lazyload"
-                          data-src="images/product/product-16.jpg"
-                          src="images/product/product-16.jpg"
+                          data-src={prod10}
+                          src={prod10}
                           alt="image-product"
                         />
                       </li>
@@ -297,8 +299,8 @@ const PeopleAlsoBought = () => {
                         <span className="swatch-value bg-grey-4" />
                         <img
                           className="lazyload"
-                          data-src="images/product/product-19.jpg"
-                          src="images/product/product-19.jpg"
+                          data-src={prod10}
+                          src={prod10}
                           alt="image-product"
                         />
                       </li>
@@ -307,8 +309,8 @@ const PeopleAlsoBought = () => {
                         <span className="swatch-value bg-dark" />
                         <img
                           className="lazyload"
-                          data-src="images/product/product-22.jpg"
-                          src="images/product/product-22.jpg"
+                          data-src={prod10}
+                          src={prod10}
                           alt="image-product"
                         />
                       </li>
@@ -324,14 +326,14 @@ const PeopleAlsoBought = () => {
                     <a href="productdetail" className="product-img">
                       <img
                         className="img-product lazyload"
-                        data-src="images/product/product-32.jpg"
-                        src="images/product/product-32.jpg"
+                        data-src={prod10}
+                        src={prod10}
                         alt="image-product"
                       />
                       <img
                         className="img-hover lazyload"
-                        data-src="images/product/product-42.jpg"
-                        src="images/product/product-42.jpg"
+                        data-src={prod10}
+                        src={prod10}
                         alt="image-product"
                       />
                     </a>
@@ -401,8 +403,8 @@ const PeopleAlsoBought = () => {
                         <span className="swatch-value bg-grey-4" />
                         <img
                           className="lazyload"
-                          data-src="images/product/product-32.jpg"
-                          src="images/product/product-32.jpg"
+                          data-src={prod10}
+                          src={prod10}
                           alt="image-product"
                         />
                       </li>
@@ -411,8 +413,8 @@ const PeopleAlsoBought = () => {
                         <span className="swatch-value bg-light-pink-10" />
                         <img
                           className="lazyload"
-                          data-src="images/product/product-42.jpg"
-                          src="images/product/product-42.jpg"
+                          data-src={prod10}
+                          src={prod10}
                           alt="image-product"
                         />
                       </li>
@@ -428,14 +430,14 @@ const PeopleAlsoBought = () => {
                     <a href="productdetail" className="product-img">
                       <img
                         className="img-product lazyload"
-                        data-src="images/product/product-33.jpg"
-                        src="images/product/product-33.jpg"
+                        data-src={prod10}
+                        src={prod10}
                         alt="image-product"
                       />
                       <img
                         className="img-hover lazyload"
-                        data-src="images/product/product-17.jpg"
-                        src="images/product/product-17.jpg"
+                        data-src={prod10}
+                        src={prod10}
                         alt="image-product"
                       />
                     </a>
@@ -543,14 +545,14 @@ const PeopleAlsoBought = () => {
                     <a href="productdetail" className="product-img">
                       <img
                         className="img-product lazyload"
-                        data-src="images/fs-orange2.jpg"
-                        src="images/fs-orange2.jpg"
+                        data-src={prod10}
+                        src={prod10}
                         alt="image-product"
                       />
                       <img
                         className="img-hover lazyload"
-                        data-src="images/fs-green2.jpg"
-                        src="images/fs-green2.jpg"
+                        data-src={prod10}
+                        src={prod10}
                         alt="image-product"
                       />
                     </a>
@@ -621,8 +623,8 @@ const PeopleAlsoBought = () => {
                         <span className="swatch-value bg-light-orange-2" />
                         <img
                           className="lazyload"
-                          data-src="images/fs-orange2.jpg"
-                          src="images/fs-orange2.jpg"
+                          data-src={prod10}
+                          src={prod10}
                           alt="image-product"
                         />
                       </li>
@@ -631,8 +633,8 @@ const PeopleAlsoBought = () => {
                         <span className="swatch-value bg-light-green" />
                         <img
                           className="lazyload"
-                          data-src="images/fs-green2.jpg"
-                          src="images/fs-green2.jpg"
+                          data-src={prod10}
+                          src={prod10}
                           alt="image-product"
                         />
                       </li>

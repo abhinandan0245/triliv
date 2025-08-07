@@ -1,21 +1,18 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useSignupMutation } from "../../../services/auth/authApi";
+import { toast } from "react-toastify";
 
-const RegisterPopup = ({ show, onClose }) => {
+const RegisterPopup = ({ show, onClose, toggleLogin }) => {
+  const [signup, { isLoading }] = useSignupMutation();
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
+    name: '',
+    mobile: '',
+    email: '',
+    password: '',
   });
 
   const navigate = useNavigate();
-
-  const handleRegisterClick = () => {
-    onClose(); // Close the popup
-    navigate("/myaccount"); // Navigate to MyAccount
-  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -25,25 +22,29 @@ const RegisterPopup = ({ show, onClose }) => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle registration logic here
-    console.log("Registration form submitted:", formData);
-    // You would typically make an API call here
+    try {
+      const res = await signup(formData).unwrap();
+      toast.success(res.message || "Registration successful!");
+      onClose(); // close popup
+      setTimeout(() => toggleLogin(), 100); // open login
+    } catch (err) {
+      const msg = err?.data?.message || "Registration failed.";
+      toast.error(msg);
+    }
   };
 
   return (
     <div
-      className={`offcanvas offcanvas-end popup-style-1 popup-register ${
-        show ? "show" : ""
-      }`}
+      className={`offcanvas offcanvas-end popup-style-1 popup-register ${show ? "show d-block" : ""}`} style={{ visibility: show ? "visible" : "hidden" }} id="register"
     >
       <div className="canvas-wrapper">
         <div className="canvas-header popup-header">
           <span className="title">Create Account</span>
           <button
             className="icon-close icon-close-popup"
-            onClick={onClose} // Changed from data-bs-dismiss
+            onClick={onClose}
             aria-label="Close"
           />
         </div>
@@ -53,22 +54,22 @@ const RegisterPopup = ({ show, onClose }) => {
               <fieldset className="first-name mb_12">
                 <input
                   type="text"
-                  name="firstName"
+                  name="name"
                   className="form-control"
-                  placeholder="First Name*"
+                  placeholder="Name*"
                   required
-                  value={formData.firstName}
+                  value={formData.name}
                   onChange={handleChange}
                 />
               </fieldset>
               <fieldset className="last-name mb_12">
                 <input
                   type="text"
-                  name="lastName"
+                  name="mobile"
                   className="form-control"
-                  placeholder="Last Name*"
+                  placeholder="Mobile *"
                   required
-                  value={formData.lastName}
+                  value={formData.mobile}
                   onChange={handleChange}
                 />
               </fieldset>
@@ -96,24 +97,22 @@ const RegisterPopup = ({ show, onClose }) => {
               />
             </fieldset>
 
-            <div className="button-wrap">
+            <div className="button-wrap d-flex gap-2 mt-4">
               <button
                 className="subscribe-button tf-btn animate-btn d-inline-flex bg-dark-2 w-100"
                 type="submit"
-                onClick={handleRegisterClick}
+                disabled={isLoading}
               >
-                Register
+                {isLoading ? "Registering..." : "Register"}
               </button>
               <button
                 type="button"
+                onClick={() => { onClose(); toggleLogin(); }}
                 className="tf-btn btn-out-line-dark2 w-100"
-                onClick={() => {
-                  onClose(); // Close register
-                  // This function should be passed from Header
-                  toggleLogin(); // Open login
-                }}
+                href="#login"
+                    data-bs-toggle="offcanvas"
               >
-                Already have an account? Sign in
+                Sign in
               </button>
             </div>
           </form>
