@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { useGetAllProductsQuery } from "../../services/products/productApi";
 import { useGetAllCategoriesQuery } from "../../services/category/categoryApi";
 import { Link, useParams } from "react-router-dom";
+import { useAddToCartMutation } from "../../services/cart/cartApi";
+import { addToGuestCart } from "../../utils/guestCart";
+import { toast } from "react-toastify";
 
 const Product = () => {
   const [layout, setLayout] = useState("tf-col-4");
@@ -18,6 +21,8 @@ const Product = () => {
   const { data: products, isLoading, error } = useGetAllProductsQuery(
     selectedCategory ? { categoryId: selectedCategory.id } : {}
   );
+
+  const [addToCart, { isLoading: isAdding }] = useAddToCartMutation();
 
   if (isLoading) return <p>Loading...</p>;
   if (error) return <p>Error fetching products</p>;
@@ -102,6 +107,46 @@ const processedProducts = products.map(product => {
     defaultVariant: defaultVariant
   };
 });
+
+// add to cart api call
+
+const handleAddToCart = async () => {
+  if (!productData) return;
+
+  if (!selectedSize) {
+    toast.error("Please select a size");
+    return;
+  }
+
+  //  Guest user → store in localStorage
+  if (!user || !user.id) {
+    addToGuestCart({
+      productId: productData.id,
+      size: selectedSize,
+      quantity,
+      name: productData.name || productData.title, // handle both naming patterns
+      price: productData.price,
+      image: productData.image || productData.images?.[0]
+    });
+    toast.success("Added to cart (Guest)");
+    return;
+  }
+
+  //  Logged-in user → store in DB
+  try {
+    await addToCart({
+      customerId: user.id,
+      productId: productData.id,
+      quantity,
+      size: selectedSize
+    }).unwrap();
+
+    toast.success("Product added to cart");
+  } catch (error) {
+    console.error("Cart error:", error);
+    toast.error("Failed to add product to cart");
+  }
+};
 
 
   return (
@@ -328,6 +373,7 @@ const processedProducts = products.map(product => {
                   </div>
                   <div className="list-product-btn">
                     <a
+                      onClick={handleAddToCart}
                       href="#shoppingCart"
                       data-bs-toggle="offcanvas"
                       className="tf-btn btn-main-product add-to-cart animate-btn"

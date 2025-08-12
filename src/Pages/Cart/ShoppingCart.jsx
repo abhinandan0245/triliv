@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 
 // Import images (adjust paths as needed)
-import product1 from "@/assets/images/product/product-1.jpg";
-import product34 from "@/assets/images/product/product-34.jpg";
-import product35 from "@/assets/images/product/product-35.jpg";
+// import product1 from "@/assets/images/product/product-1.jpg";
+// import product34 from "@/assets/images/product/product-34.jpg";
+// import product35 from "@/assets/images/product/product-35.jpg";
 import avt1 from "@/assets/images/avt-1.png";
 import blogAuthor2 from "@/assets/images/blog-author-2.jpg";
 import blogAuthor3 from "@/assets/images/blog-author-3.jpg";
@@ -11,124 +11,192 @@ import visa from "@/assets/images/Visa.png";
 import dinersClub from "@/assets/images/DinersClub.png";
 import mastercard from "@/assets/images/Mastercard.png";
 import stripe from "@/assets/images/Stripe.png";
+import { useSelector } from "react-redux";
+import { useGetCartQuery, useRemoveFromCartMutation, useUpdateCartQuantityMutation } from "../../services/cart/cartApi";
+import { getGuestCart, removeFromGuestCart, updateGuestCartQuantity } from "../../utils/guestCart";
+import Swiper from "swiper";
+import { Navigation, Pagination } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
 
 const Shopping = () => {
-  // State for cart items
-  const [cartItems, setCartItems] = useState([
-    {
-      id: 1,
-      name: "Oversized Printed T-shirt",
-      image: product1,
-      variant: "White / L",
-      price: 130.0,
-      quantity: 1,
-    },
-    {
-      id: 2,
-      name: "Loose Fit Tee",
-      image: product34,
-      variant: "White / L",
-      price: 130.0,
-      quantity: 1,
-    },
-    {
-      id: 3,
-      name: "Crop T-shirt",
-      image: product35,
-      variant: "White / L",
-      price: 130.0,
-      quantity: 1,
-    },
-  ]);
+ const user = useSelector(state => state.auth.user);
+  const userId = user?.id ?? user?._id ?? null;
 
-  // State for form inputs
+  // Cart API hooks
+  const { 
+    data: serverData, 
+    isLoading: serverLoading, 
+    refetch 
+  } = useGetCartQuery(userId, {
+    skip: !userId
+  });
+  
+  const [updateCartQuantity, { isLoading: isUpdating }] = useUpdateCartQuantityMutation();
+  const [removeFromCart, { isLoading: isRemoving }] = useRemoveFromCartMutation();
+
+  // Guest cart state
+  const [guestItems, setGuestItems] = useState(() => getGuestCart());
+
+  // Form states
   const [giftWrap, setGiftWrap] = useState(false);
   const [discountCode, setDiscountCode] = useState("");
-  const [specialInstructions, setSpecialInstructions] = useState("");
-  const [shippingInfo, setShippingInfo] = useState({
-    country: "",
-    state: "",
-    zipcode: "",
-  });
   const [agreeTerms, setAgreeTerms] = useState(false);
 
-  // Calculate subtotal
+  // Sync guest cart when auth changes or localStorage updates
+  useEffect(() => {
+    if (!userId) setGuestItems(getGuestCart());
+    
+    const handleStorageChange = () => {
+      setGuestItems(getGuestCart());
+    };
+    
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, [userId]);
+
+  // Normalize cart items for display - match the popup structure
+  const cartItems = useMemo(() => {
+    if (userId) {
+      const rows = serverData?.cart || [];
+      return rows.map((row) => ({
+        cartId: row.cartId ?? row.id,
+        productId: row.productId,
+        title: row.title,
+        price: Number(row.price || 0),
+        originalPrice: Number(row.originalPrice || row.price || 0),
+        image: row.image || "/default-thumb.jpg",
+        size: row.size,
+        quantity: Number(row.quantity || 1),
+        isServer: true,
+        raw: row,
+      }));
+    } else {
+      return guestItems.map((it) => ({
+        cartId: `${it.productId}-${it.size}`,
+        productId: it.productId,
+        title: it.name,
+        price: Number(it.price || 0),
+        originalPrice: Number(it.originalPrice || it.price || 0),
+        image: it.image || "/default-thumb.jpg",
+        size: it.size,
+        quantity: Number(it.quantity || 1),
+        isServer: false,
+        raw: it,
+      }));
+    }
+  }, [serverData, guestItems, userId]);
+
+  // Calculate totals
   const subtotal = cartItems.reduce(
-    (sum, item) => sum + item.price * item.quantity,
+    (sum, item) => sum + (item.price * item.quantity),
     0
   );
   const total = subtotal + (giftWrap ? 10 : 0);
 
-  // Initialize Swiper and
+  // Initialize Swiper
+//  / Fixed Swiper initialization
   useEffect(() => {
-    // Initialize all Swiper instances
-    const swipers = document.querySelectorAll(".tf-swiper");
-    swipers.forEach((el) => {
-      try {
-        const config = JSON.parse(
-          el.getAttribute("data-swiper").replace(/'/g, '"')
-        );
-        new Swiper(el, {
-          ...config,
-          // Add modules if needed (for navigation, pagination, etc.)
-          // modules: [Navigation, Pagination]
-        });
-      } catch (error) {
-        console.error("Error initializing Swiper:", error);
-      }
-    });
-
-    // Cleanup function
-    return () => {
-      // Cleanup Swiper instances if needed
+    const initializeSwipers = () => {
+      const swipers = document.querySelectorAll(".tf-swiper");
+      swipers.forEach((el) => {
+        try {
+          const swiperConfig = el.getAttribute("data-swiper");
+          if (swiperConfig) {
+            const config = JSON.parse(swiperConfig.replace(/'/g, '"'));
+            new Swiper(el, {
+              ...config,
+              modules: [Navigation, Pagination]
+            });
+          }
+        } catch (error) {
+          console.error("Error initializing Swiper:", error);
+        }
+      });
     };
-  }, []);
 
-  // Handle quantity changes
-  const handleQuantityChange = (id, newQuantity) => {
-    if (newQuantity < 1) return;
+    const timer = setTimeout(initializeSwipers, 100);
+    return () => clearTimeout(timer);
+  }, [cartItems]);
 
-    setCartItems(
-      cartItems.map((item) =>
-        item.id === id ? { ...item, quantity: newQuantity } : item
-      )
-    );
+
+  // Handle quantity changes - match popup functionality
+  const handleQuantityChange = async (item, delta) => {
+    const newQty = item.quantity + delta;
+    
+    if (newQty <= 0) {
+      await handleRemove(item);
+      return;
+    }
+
+    if (item.isServer) {
+      try {
+        await updateCartQuantity({
+          customerId: userId,
+          productId: item.productId,
+          size: item.size,
+          quantity: newQty
+        }).unwrap();
+        refetch();
+        toast.success("Quantity updated");
+      } catch (error) {
+        toast.error(error.data?.message || "Failed to update quantity");
+      }
+    } else {
+      updateGuestCartQuantity(item.productId, item.size, newQty);
+      setGuestItems(getGuestCart());
+      toast.success("Quantity updated");
+    }
   };
 
-  // Remove item from cart
-  const removeItem = (id) => {
-    setCartItems(cartItems.filter((item) => item.id !== id));
-  };
-
-  // Handle shipping info changes
-  const handleShippingChange = (e) => {
-    const { id, value } = e.target;
-    setShippingInfo((prev) => ({ ...prev, [id]: value }));
+  // Remove item from cart - match popup functionality
+  const handleRemove = async (item) => {
+    if (item.isServer) {
+      try {
+        await removeFromCart({
+          customerId: userId,
+          productId: item.productId,
+          size: item.size,
+        }).unwrap();
+        refetch();
+        toast.success("Item removed from cart");
+      } catch (error) {
+        toast.error(error.data?.message || "Failed to remove item");
+      }
+    } else {
+      removeFromGuestCart(item.productId, item.size);
+      setGuestItems(getGuestCart());
+      toast.success("Item removed from cart");
+    }
   };
 
   // Handle discount code application
   const applyDiscount = (e) => {
     e.preventDefault();
-    // Add your discount logic here
     console.log("Applying discount code:", discountCode);
-  };
-
-  // Handle shipping estimate
-  const handleShippingEstimate = (e) => {
-    e.preventDefault();
-    console.log("Estimating shipping with:", shippingInfo);
+    // Add your discount logic here
   };
 
   // Handle checkout
   const handleCheckout = (e) => {
     e.preventDefault();
-    if (!agreeTerms) return;
-    console.log("Proceeding to checkout with:", {
-      cartItems,
-      total,
-      shippingInfo,
-    });
+    if (!agreeTerms) {
+      toast.error("Please agree to terms and conditions");
+      return;
+    }
+    if (cartItems.length === 0) {
+      toast.error("Your cart is empty");
+      return;
+    }
+    console.log("Proceeding to checkout");
   };
+
+  if (serverLoading && userId) {
+    return <div className="loading">Loading cart...</div>;
+  }
 
   return (
     <>
@@ -174,23 +242,26 @@ const Shopping = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {cartItems.map((item) => (
-                        <tr key={item.id} className="tf-cart-item file-delete">
-                          <td className="tf-cart-item_product">
-                            <a href="productdetail" className="img-box">
-                              <img src={item.image} alt="img-product" />
+                      
+                      {cartItems.length > 0 ? (
+                        cartItems.map((item) =>(
+
+                           <tr key={item.cartId} className="tf-cart-item file-delete">
+                          <td  className="tf-cart-item_product">
+                            <a href={`/productdetail/${item.productId}`}  className="img-box">
+                              <img src={item.image} alt= {item.title} />
                             </a>
                             <div className="cart-info">
                               <a
-                                href="productdetail"
+                                href={`/productdetail/${item.productId}`}
                                 className="name text-md link fw-medium"
                               >
-                                {item.name}
+                                {item.title}
                               </a>
-                              <div className="variants">{item.variant}</div>
+                              <div className="variants">{item.size}</div>
                               <span
                                 className="remove-cart link remove"
-                                onClick={() => removeItem(item.id)}
+                                onClick={() => handleRemove(item)}
                               >
                                 Remove
                               </span>
@@ -201,8 +272,13 @@ const Shopping = () => {
                             data-cart-title="Price"
                           >
                             <span className="cart-price price-on-sale text-md fw-medium">
-                              ${item.price.toFixed(2)}
+                              ₹{item.price.toFixed(2)}
                             </span>
+                            {item.originalPrice > item.price && (
+                                <span className="old-price text-decoration-line-through text-dark-1">
+                                  ₹{item.originalPrice.toFixed(2)}
+                                </span>
+                              )}
                           </td>
                           <td
                             className="tf-cart-item_quantity"
@@ -211,12 +287,8 @@ const Shopping = () => {
                             <div className="wg-quantity">
                               <span
                                 className="btn-quantity btn-decrease"
-                                onClick={() =>
-                                  handleQuantityChange(
-                                    item.id,
-                                    item.quantity - 1
-                                  )
-                                }
+                                 onClick={() => handleQuantityChange(item, -1)}
+                                  disabled={isUpdating || isRemoving}
                               >
                                 -
                               </span>
@@ -225,21 +297,12 @@ const Shopping = () => {
                                 type="text"
                                 name="number"
                                 value={item.quantity}
-                                onChange={(e) =>
-                                  handleQuantityChange(
-                                    item.id,
-                                    parseInt(e.target.value) || 1
-                                  )
-                                }
+                                readOnly
                               />
                               <span
                                 className="btn-quantity btn-increase"
-                                onClick={() =>
-                                  handleQuantityChange(
-                                    item.id,
-                                    item.quantity + 1
-                                  )
-                                }
+                               onClick={() => handleQuantityChange(item, 1)}
+                                  disabled={isUpdating || isRemoving}
                               >
                                 +
                               </span>
@@ -250,11 +313,20 @@ const Shopping = () => {
                             data-cart-title="Total"
                           >
                             <div className="cart-total total-price text-md fw-medium">
-                              ${(item.price * item.quantity).toFixed(2)}
+                              ₹{(item.price * item.quantity).toFixed(2)}
                             </div>
                           </td>
                         </tr>
-                      ))}
+                        ))
+                      ): (
+                        <tr>
+                          <td colSpan="4" className="text-center py-4">
+                            Your cart is empty
+                          </td>
+                        </tr>
+                      )}
+                       
+                      
                     </tbody>
                   </table>
                   <div className="check-gift">
@@ -267,7 +339,7 @@ const Shopping = () => {
                     />
                     <label htmlFor="checkGift" className="label text-dark-4">
                       Add gift wrap. Only{" "}
-                      <span className="fw-medium">$10.00.</span> (You can choose
+                      <span className="fw-medium">₹10.00.</span> (You can choose
                       or not)
                     </label>
                   </div>
@@ -289,16 +361,7 @@ const Shopping = () => {
                       </button>
                     </div>
                   </div>
-                  <div className="cart-note">
-                    <label htmlFor="note" className="text-md fw-medium">
-                      Special instructions for seller
-                    </label>
-                    <textarea
-                      id="note"
-                      value={specialInstructions}
-                      onChange={(e) => setSpecialInstructions(e.target.value)}
-                    />
-                  </div>
+                 
                 </form>
                 <div className="fl-iconbox " data-aos="fade-up">
                   <div
@@ -376,56 +439,7 @@ const Shopping = () => {
             </div>
             <div className="col-xl-4">
               <div className="tf-page-cart-sidebar">
-                <form
-                  className="cart-box shipping-cart-box"
-                  onSubmit={handleShippingEstimate}
-                >
-                  <div className="text-lg title fw-medium">
-                    Shipping estimates
-                  </div>
-                  <fieldset className="field">
-                    <label htmlFor="country" className="text-sm">
-                      Country
-                    </label>
-                    <input
-                      type="text"
-                      id="country"
-                      placeholder="United State"
-                      value={shippingInfo.country}
-                      onChange={handleShippingChange}
-                    />
-                  </fieldset>
-                  <fieldset className="field">
-                    <label htmlFor="state" className="text-sm">
-                      State/Province
-                    </label>
-                    <input
-                      type="text"
-                      id="state"
-                      placeholder="State/Province"
-                      value={shippingInfo.state}
-                      onChange={handleShippingChange}
-                    />
-                  </fieldset>
-                  <fieldset className="field">
-                    <label htmlFor="code" className="text-sm">
-                      Zipcode
-                    </label>
-                    <input
-                      type="text"
-                      id="code"
-                      placeholder="41000"
-                      value={shippingInfo.zipcode}
-                      onChange={handleShippingChange}
-                    />
-                  </fieldset>
-                  <button
-                    type="submit"
-                    className="tf-btn btn-dark2 animate-btn w-100"
-                  >
-                    Estimate
-                  </button>
-                </form>
+              
                 <form
                   className="cart-box checkout-cart-box"
                   onSubmit={handleCheckout}
@@ -433,7 +447,7 @@ const Shopping = () => {
                   <div className="cart-head">
                     <div className="total-discount text-xl fw-medium">
                       <span>Total:</span>
-                      <span className="total">${total.toFixed(2)} USD</span>
+                      <span className="total">₹{total.toFixed(2)} INR</span>
                     </div>
                     <p className="text-sm text-dark-4">
                       Taxes and shipping calculated at checkout
@@ -458,13 +472,13 @@ const Shopping = () => {
                     </label>
                   </div>
                   <div className="checkout-btn">
-                    <button
-                      type="submit"
+                    <Link
+                      to="/checkout"
                       className="tf-btn btn-dark2 animate-btn w-100"
                       disabled={!agreeTerms}
                     >
                       Checkout
-                    </button>
+                    </Link>
                   </div>
                   <div className="cart-imgtrust">
                     <p className="text-center text-sm text-dark-1">We accept</p>

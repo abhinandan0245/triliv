@@ -115,7 +115,7 @@ const WishlistPage = () => {
                   />
                   <div className="card-product-wrapper">
                     <a
-                      href={`/productdetail/${item.product.id}`}
+                      href={`/product/${item.product.id}`}
                       className="product-img"
                     >
                       <img
@@ -175,7 +175,7 @@ const WishlistPage = () => {
                   </div>
                   <div className="card-product-info">
                     <a
-                       href={`/productdetail/${item.product.id}`}
+                      href="productdetail"
                       className="name-product link fw-medium text-md"
                     >
                       {item.product.title}

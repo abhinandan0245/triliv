@@ -70,7 +70,7 @@ const PeopleAlsoBought = () => {
 
   return (
     <section>
-      <div className="container">
+      <div className="container mb-4">
         <div className="flat-title" data-aos="fade-up">
           <h4 className="title">People Also Bought</h4>
         </div>

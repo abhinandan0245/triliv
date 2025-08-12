@@ -16,6 +16,8 @@ import { useGetAllCategoriesQuery } from "../../../services/category/categoryApi
 import { LuLogOut } from "react-icons/lu";
 import ResetPasswordPopup from "../../ui/Modal/ResetPassword";
 import VerifyOtpAndResetPasswordPopup from "../../ui/Modal/VerifyOtpAndResetPasswordPopup";
+import { useGetCartQuery } from "../../../services/cart/cartApi";
+import { useGetWishlistQuery } from "../../../services/wishlist/wishlistApi";
 const Header = () => {
   const location = useLocation();
   const isHomePage = location.pathname === "/";
@@ -29,6 +31,20 @@ const [showVerifyPopup, setShowVerifyPopup] = useState(false);
 const [emailForReset, setEmailForReset] = useState("");
 
   const navigate = useNavigate();
+      const dispatch = useDispatch();
+ const { isAuthenticated, user } = useSelector((state) => state.auth);
+
+ const customerId = user?.id; // Or user.id depending on your backend
+
+   const { data: categories, isLoading, error } = useGetAllCategoriesQuery();
+  const { data: cartData, isLoading: cartLoading } = useGetCartQuery(customerId, {
+  skip: !customerId,
+});
+const { data: wishlistData, isLoading: isLoadingWishlist } =
+  useGetWishlistQuery(user?.id, {
+    skip: !user?.id,
+  });
+
 
   const openLogin = () => {
     setShowRegister(false);
@@ -67,8 +83,6 @@ const [emailForReset, setEmailForReset] = useState("");
     "Limited-Time Offer",
   ];
 
-    const dispatch = useDispatch();
- const { isAuthenticated, user } = useSelector((state) => state.auth);
 
 
   const handleLogout = () => {
@@ -80,10 +94,23 @@ const [emailForReset, setEmailForReset] = useState("");
 
   // categoiry api inegtration 
 
-   const { data: categories, isLoading, error } = useGetAllCategoriesQuery();
 
   if (isLoading) return <p>Loading...</p>;
   if (error) return <p>Error loading categories</p>;
+
+  // cart count 
+
+  // const { user } = useSelector((state) => state.auth); // Assuming you store logged-in user here
+  
+
+ 
+
+  // Calculate total items (if your cart API returns [{ quantity }])
+  // const cartCount = cartData?.items?.reduce(
+  //   (total, item) => total + (item.quantity || 1),
+  //   0
+  // ) || 0;
+      const cartCount = cartData?.cart?.length || 0;
 
   return (
     <>
@@ -264,26 +291,32 @@ const [emailForReset, setEmailForReset] = useState("");
 </li>
 
 
-               <li className="nav-wishlist">
-  {isAuthenticated ? (
-    <Link to="/wish-list" className="nav-icon-item">
-      <i className="icon icon-heart"></i>
-      <span className="count-box">0</span>
-    </Link>
-  ) : (
-    <a
-      className="nav-icon-item"
-      style={{ background: "none", border: "none" }}
-      onClick={() => {
-        toast.info("Please log in to access your wishlist");
-        openLogin();
-      }}
-    >
-      <i className="icon icon-heart"></i>
-      <span className="count-box">0</span>
-    </a>
-  )}
-</li>
+              <li className="nav-wishlist">
+                                {isAuthenticated ? (
+                                  <Link to="/wish-list" className="nav-icon-item">
+                                    <i className="icon icon-heart"></i>
+                                    {isLoadingWishlist ? (
+                                      <span className="count-box">...</span>
+                                    ) : wishlistData?.wishlist?.length > 0 ? (
+                                      <span className="count-box">
+                                        {wishlistData.wishlist.length}
+                                      </span>
+                                    ) : null}
+                                  </Link>
+                                ) : (
+                                  <a
+                                    className="nav-icon-item"
+                                    style={{ background: "none", border: "none" }}
+                                    onClick={() => {
+                                      toast.info("Please log in to access your wishlist");
+                                      openLogin();
+                                    }}
+                                  >
+                                    <i className="icon icon-heart"></i>
+                                    <span className="count-box">0</span>
+                                  </a>
+                                )}
+                              </li>
 
 <li className={`nav-cart ${isHomePage ? "pl" : ""}`}>
   
@@ -293,7 +326,12 @@ const [emailForReset, setEmailForReset] = useState("");
       className="nav-icon-item"
     >
       <i className="icon icon-cart"></i>
-      <span className="count-box">{isHomePage ? "2" : "0"}</span>
+     {/* {isLoading &&  <span className="count-box">{isHomePage ? cartCount : "0"}</span>} */}
+     {cartLoading ? (
+          <span className="count-box">0</span>
+        ) : (
+          <span className="count-box">{cartCount}</span>
+        )}
     </a>
  
     
