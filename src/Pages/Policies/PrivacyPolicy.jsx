@@ -1,7 +1,25 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useGetPrivacyPolicyQuery } from "../../services/privacypolicy/privacyPolicyApi";
 // Adjust the path as needed
 
 const PrivacyPolicy = () => {
+
+  const { data: policies, isLoading, isError } = useGetPrivacyPolicyQuery();
+  const [latestPolicy, setLatestPolicy] = useState(null);
+
+  useEffect(() => {
+    if (policies && policies.length > 0) {
+      // Get the most recent policy (sorted by createdAt DESC)
+      setLatestPolicy(policies[0]);
+    }
+  }, [policies]);
+
+  if (isLoading)
+    return <div className="loading">Loading privacy policy...</div>;
+  if (isError)
+    return <div className="error">Failed to load privacy policy</div>;
+
+
   return (
     <>
       {/* Title Page */}
@@ -26,7 +44,7 @@ const PrivacyPolicy = () => {
       {/* Privacy policy */}
       <section className="s-term-user flat-spacing-13">
         <div className="container">
-          <div className="content">
+          {/* <div className="content">
             <div className="term-item">
               <p className="term-title">1. Information We Collect</p>
               <div className="text-wrap">
@@ -162,6 +180,18 @@ const PrivacyPolicy = () => {
                 </a>
               </div>
             </div>
+          </div> */}
+
+          <div className="content">
+            {latestPolicy ? (
+              <div dangerouslySetInnerHTML={{ __html: latestPolicy.content }} />
+            ) : (
+              <div className="term-item">
+                <p className="term-text body-text text-main">
+                  No privacy policy found.
+                </p>
+              </div>
+            )}
           </div>
         </div>
       </section>
