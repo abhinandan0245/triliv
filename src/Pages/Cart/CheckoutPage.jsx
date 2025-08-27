@@ -1,45 +1,150 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";  // Correct import
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useCreateOrderMutation } from "../../services/order/orderApi";
+import { useGetCartQuery } from "../../services/cart/cartApi";
+import { useGetUserProfileQuery } from "../../services/auth/authApi";
+import { useSelector } from "react-redux";
 
 const CheckoutPage = () => {
-    const navigate = useNavigate(); 
-  // Form state management
-  const [formData, setFormData] = useState({
-    firstname: "",
-    lastname: "",
-    country: "",
-    address: "",
-    apartment: "",
-    city: "",
-    state: "",
-    zipcode: "",
-    phone: "",
-    emailPhone: "",
-    shippingMethod: "expship", // Default to express shipping
-    paymentMethod: "credit-card", // Default to credit card
-    cardNumber: "",
-    expiryDate: "",
-    securityCode: "",
-    cardName: "",
-    useShippingAsBilling: true,
+  const navigate = useNavigate();
+  const [createOrder, { isLoading: isCreatingOrder }] = useCreateOrderMutation();
+  const user = useSelector((state) => state.auth.user);
+  const userId = user?.id ?? user?._id ?? null;
+
+  // Get cart data
+  const { data: cartData, isLoading: isLoadingCart } = useGetCartQuery(userId, {
+    skip: !userId,
   });
 
+  // Get customer profile data
+  const { data: profileData } = useGetUserProfileQuery();
+
+  const [formData, setFormData] = useState({
+    shippingName: "",
+    shippingEmail: "",
+    shippingAddress: "",
+    shippingCity: "",
+    shippingState: "",
+    shippingPostalCode: "",
+    shippingCountry: "",
+    shippingPhone: "",
+    paymentMethod: "cod",
+  });
+
+  const profile = profileData?.customer || profileData?.data;
+
+  // Pre-fill form when profile data loads
+  useEffect(() => {
+    if (profile) {
+      setFormData((prev) => ({
+        ...prev,
+        shippingName: profile.name || "",
+        shippingEmail: profile.email || "",
+        shippingAddress: profile.shippingAddress || "",
+        shippingCity: profile.city || "",
+        shippingState: profile.state || "",
+        shippingPostalCode: profile.pinCode || "",
+        shippingCountry: profile.country || "",
+        shippingPhone: profile.mobile || "",
+      }));
+    }
+  }, [profileData]);
+
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : value,
-    }));
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
- const handleSubmit = (e) => {
+  // Calculate order totals for sidebar display
+  const products =
+    cartData?.cart?.map((item) => ({
+      productId: item.productId,
+      title: item.title || item.product?.title,
+      price: item.price,
+      size: item.size || item.product?.size,
+      image: item.image || item.product?.imageVariants?.[0]?.url,
+      quantity: item.quantity,
+      qtyPrice: item.qtyPrice,
+    })) || [];
+
+  const subtotal =
+    cartData?.subtotal ??
+    products.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const tax = cartData?.tax ?? subtotal * 0.1;
+  const shippingRate = cartData?.shipping ?? 10;
+  const discount = cartData?.discount ?? 0;
+  const grandTotal =
+    cartData?.total ?? subtotal + tax + shippingRate - discount;
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission logic here
-    console.log("Form submitted:", formData);
-    // Navigate to success page after submission
-    navigate('/thankyou');
+    if (isLoadingCart || !cartData) return;
+
+    try {
+      const orderData = {
+        ...formData,
+        products,
+        subtotal,
+        tax,
+        shippingRate,
+        discount,
+        grandTotal,
+      };
+
+      const response = await createOrder(orderData).unwrap();
+
+      // COD → success redirect
+      if (formData.paymentMethod === "cod") {
+        navigate(`/thankyou/${response.order.orderId}?status=success`);
+        return;
+      }
+
+      // CCAvenue → redirect via hidden form
+      if (formData.paymentMethod === "ccavenue" && response?.gateway) {
+        const { actionUrl, encRequest, accessCode } = response.gateway;
+
+        const form = document.createElement("form");
+        form.method = "POST";
+        form.action = actionUrl;
+
+        const enc = document.createElement("input");
+        enc.type = "hidden";
+        enc.name = "encRequest";
+        enc.value = encRequest;
+
+        const acc = document.createElement("input");
+        acc.type = "hidden";
+        acc.name = "access_code";
+        acc.value = accessCode;
+
+        form.appendChild(enc);
+        form.appendChild(acc);
+        document.body.appendChild(form);
+        form.submit();
+        return;
+      }
+
+      // fallback
+      navigate(`/thankyou/error?status=failed`);
+    } catch (error) {
+      console.error("Order creation failed:", error);
+      navigate(
+        `/thankyou/error?status=failed&msg=${
+          error?.data?.msg || "Order creation failed"
+        }`
+      );
+    }
   };
 
+  // Show loading state while cart is loading
+  if (isLoadingCart) {
+    return <div>Loading cart...</div>;
+  }
+
+  // Show error if no cart data
+  if (!cartData) {
+    return <div>Error loading cart data</div>;
+  }
 
   return (
     <div>
@@ -67,105 +172,90 @@ const CheckoutPage = () => {
         <div className="container">
           <div className="row">
             <div className="col-xl-8">
-              <form className="tf-checkout-cart-main" onSubmit={handleSubmit}>
+              <form className="tf-checkout-cart-main">
+                {/* --- Shipping Info --- */}
                 <div className="box-ip-checkout">
                   <div className="title text-lg fw-medium">Checkout</div>
                   <div className="grid-2 mb_16">
                     <div className="tf-field style-2 style-3">
                       <input
                         className="tf-field-input tf-input"
-                        id="firstname"
+                        id="shippingName"
                         placeholder=" "
                         type="text"
-                        name="firstname"
-                        value={formData.firstname}
+                        name="shippingName"
+                        value={formData.shippingName}
                         onChange={handleChange}
                         required
                       />
-                      <label className="tf-field-label" htmlFor="firstname">
-                        First name
-                      </label>
-                    </div>
-                    <div className="tf-field style-2 style-3">
-                      <input
-                        className="tf-field-input tf-input"
-                        id="lastname"
-                        placeholder=" "
-                        type="text"
-                        name="lastname"
-                        value={formData.lastname}
-                        onChange={handleChange}
-                        required
-                      />
-                      <label className="tf-field-label" htmlFor="lastname">
-                        Last name
+                      <label
+                        className="tf-field-label"
+                        htmlFor="shippingName"
+                      >
+                        Name
                       </label>
                     </div>
                   </div>
                   <fieldset className="tf-field style-2 style-3 mb_16">
                     <input
                       className="tf-field-input tf-input"
-                      id="country"
+                      id="shippingCountry"
                       type="text"
-                      name="country"
+                      name="shippingCountry"
                       placeholder=" "
-                      value={formData.country}
+                      value={formData.shippingCountry}
                       onChange={handleChange}
                       required
                     />
-                    <label className="tf-field-label" htmlFor="country">
+                    <label
+                      className="tf-field-label"
+                      htmlFor="shippingCountry"
+                    >
                       Country
                     </label>
                   </fieldset>
                   <fieldset className="tf-field style-2 style-3 mb_16">
                     <input
                       className="tf-field-input tf-input"
-                      id="address"
+                      id="shippingAddress"
                       type="text"
-                      name="address"
+                      name="shippingAddress"
                       placeholder=" "
-                      value={formData.address}
+                      value={formData.shippingAddress}
                       onChange={handleChange}
                       required
                     />
-                    <label className="tf-field-label" htmlFor="address">
+                    <label
+                      className="tf-field-label"
+                      htmlFor="shippingAddress"
+                    >
                       Address
-                    </label>
-                  </fieldset>
-                  <fieldset className="tf-field style-2 style-3 mb_16">
-                    <input
-                      type="text"
-                      className="tf-field-input tf-input"
-                      name="apartment"
-                      placeholder=" "
-                      value={formData.apartment}
-                      onChange={handleChange}
-                    />
-                    <label className="tf-field-label" htmlFor="apartment">
-                      Apartment, suite, etc (optional)
                     </label>
                   </fieldset>
                   <div className="grid-3 mb_16">
                     <fieldset className="tf-field style-2 style-3">
                       <input
                         className="tf-field-input tf-input"
-                        id="city"
+                        id="shippingCity"
                         type="text"
-                        name="city"
+                        name="shippingCity"
                         placeholder=" "
-                        value={formData.city}
+                        value={formData.shippingCity}
                         onChange={handleChange}
                         required
                       />
-                      <label className="tf-field-label" htmlFor="city">
+                      <label
+                        className="tf-field-label"
+                        htmlFor="shippingCity"
+                      >
                         City
                       </label>
                     </fieldset>
                     <div className="tf-select select-square">
                       <select
-                        name="state"
-                        id="state"
-                        value={formData.state}
+                        name="shippingState"
+                        id="shippingState"
+                        value={formData.shippingState}
                         onChange={handleChange}
                         required
                       >
@@ -181,15 +271,18 @@ const CheckoutPage = () => {
                     <fieldset className="tf-field style-2 style-3">
                       <input
                         className="tf-field-input tf-input"
-                        id="code"
+                        id="shippingPostalCode"
                         type="text"
-                        name="zipcode"
+                        name="shippingPostalCode"
                         placeholder=" "
-                        value={formData.zipcode}
+                        value={formData.shippingPostalCode}
                         onChange={handleChange}
                         required
                       />
-                      <label className="tf-field-label" htmlFor="code">
+                      <label
+                        className="tf-field-label"
+                        htmlFor="shippingPostalCode"
+                      >
                         Zipcode/Postal
                       </label>
                     </fieldset>
@@ -197,87 +290,51 @@ const CheckoutPage = () => {
                   <fieldset className="tf-field style-2 style-3 mb_16">
                     <input
                       className="tf-field-input tf-input"
-                      id="phone"
+                      id="shippingPhone"
                       type="text"
-                      name="phone"
+                      name="shippingPhone"
                       placeholder=" "
-                      value={formData.phone}
+                      value={formData.shippingPhone}
                       onChange={handleChange}
                       required
                     />
-                    <label className="tf-field-label" htmlFor="phone">
+                    <label
+                      className="tf-field-label"
+                      htmlFor="shippingPhone"
+                    >
                       Phone
                     </label>
                   </fieldset>
                 </div>
+
+                {/* --- Contact Info --- */}
                 <div className="box-ip-contact">
                   <div className="title">
-                    <div className="text-lg fw-medium">Contact Information</div>
-                    <a
-                      href="#login"
-                      data-bs-toggle="offcanvas"
-                      className="text-sm link"
-                    >
-                      Log in
-                    </a>
+                    <div className="text-lg fw-medium">
+                      Contact Information
+                    </div>
                   </div>
                   <fieldset className="tf-field style-2 style-3">
                     <input
                       className="tf-field-input tf-input"
-                      id="email/phone"
+                      id="shippingEmail"
                       placeholder=" "
                       type="text"
-                      name="emailPhone"
-                      value={formData.emailPhone}
+                      name="shippingEmail"
+                      value={formData.shippingEmail}
                       onChange={handleChange}
                       required
                     />
-                    <label className="tf-field-label" htmlFor="email/phone">
-                      Email or phone number
+                    <label
+                      className="tf-field-label"
+                      htmlFor="shippingEmail"
+                    >
+                      Email
                     </label>
                   </fieldset>
                 </div>
-                <div className="box-ip-shipping">
-                  <div className="title text-lg fw-medium">Shipping Method</div>
-                  <fieldset className="mb_16">
-                    <label htmlFor="freeship" className="check-ship">
-                      <input
-                        type="radio"
-                        id="freeship"
-                        className="tf-check-rounded"
-                        name="shippingMethod"
-                        value="freeship"
-                        checked={formData.shippingMethod === "freeship"}
-                        onChange={handleChange}
-                      />
-                      <span className="text text-sm">
-                        <span>
-                          Free Shipping (Estimate in 7/10 - 10/10/2025)
-                        </span>
-                        <span className="price">$00.00</span>
-                      </span>
-                    </label>
-                  </fieldset>
-                  <fieldset>
-                    <label htmlFor="expship" className="check-ship">
-                      <input
-                        type="radio"
-                        id="expship"
-                        className="tf-check-rounded"
-                        name="shippingMethod"
-                        value="expship"
-                        checked={formData.shippingMethod === "expship"}
-                        onChange={handleChange}
-                      />
-                      <span className="text text-sm">
-                        <span>
-                          Express Shipping (Estimate in 4/10 - 5/10/2025)
-                        </span>
-                        <span className="price">$10.00</span>
-                      </span>
-                    </label>
-                  </fieldset>
-                </div>
+
+                {/* --- Payment Info --- */}
                 <div className="box-ip-payment">
                   <div className="title">
                     <div className="text-lg fw-medium mb_4">Payment</div>
@@ -285,290 +342,136 @@ const CheckoutPage = () => {
                       All transactions are secure and encrypted.
                     </p>
                   </div>
-                  <fieldset className="mb_12">
-                    <label htmlFor="bank-transfer" className="check-payment">
-                      <input
-                        type="radio"
-                        id="bank-transfer"
-                        className="tf-check-rounded"
-                        name="paymentMethod"
-                        value="bank-transfer"
-                        checked={formData.paymentMethod === "bank-transfer"}
-                        onChange={handleChange}
-                      />
-                      <span className="text-payment text-sm">
-                        Direct bank transfer
-                      </span>
-                    </label>
-                  </fieldset>
-                  <p className="mb_16 text-main">
-                    Make your payment directly into our bank account. Please use
-                    your Order ID as the payment reference.Your order will not
-                    be shipped until the funds have cleared in our account.
-                  </p>
-                  <div className="payment-method-box" id="payment-method-box">
+                  <div
+                    className="payment-method-box"
+                    id="payment-method-box"
+                  >
                     <div className="payment-item mb_16">
                       <label
                         htmlFor="delivery"
                         className="payment-header collapsed"
-                        data-bs-toggle="collapse"
-                        data-bs-target="#delivery-payment"
-                        aria-controls="delivery-payment"
                       >
                         <input
                           type="radio"
                           name="paymentMethod"
-                          className="tf-check-rounded"
                           id="delivery"
-                          value="delivery"
-                          checked={formData.paymentMethod === "delivery"}
+                          value="cod"
+                          checked={formData.paymentMethod === "cod"}
                           onChange={handleChange}
                         />
                         <span className="pay-title text-sm">
                           Cash on delivery
                         </span>
                       </label>
-                      <div
-                        id="delivery-payment"
-                        className="collapse"
-                        data-bs-parent="#payment-method-box"
-                      />
-                    </div>
-                    <div className="payment-item mb_16">
-                      <label
-                        htmlFor="credit-card"
-                        className="payment-header"
-                        data-bs-toggle="collapse"
-                        data-bs-target="#credit-card-payment"
-                        aria-controls="credit-card-payment"
-                      >
-                        <input
-                          type="radio"
-                          name="paymentMethod"
-                          className="tf-check-rounded"
-                          id="credit-card"
-                          value="credit-card"
-                          checked={formData.paymentMethod === "credit-card"}
-                          onChange={handleChange}
-                        />
-                        <span className="pay-title text-sm">Credit Card</span>
-                      </label>
-                      <div
-                        id="credit-card-payment"
-                        className="collapse show"
-                        data-bs-parent="#payment-method-box"
-                      >
-                        <div className="payment-body">
-                          <fieldset className="ip-card mb_16">
-                            <input
-                              type="text"
-                              className="style-2"
-                              placeholder="Card number"
-                              name="cardNumber"
-                              value={formData.cardNumber}
-                              onChange={handleChange}
-                              required={
-                                formData.paymentMethod === "credit-card"
-                              }
-                            />
-                            <img
-                              className="card-logo"
-                              width={41}
-                              height={12}
-                              src="images/visa-2.png"
-                              alt="card"
-                            />
-                          </fieldset>
-                          <div className="grid-2 mb_16">
-                            <input
-                              type="text"
-                              className="style-2"
-                              placeholder="Expiration date (MM/YY)"
-                              name="expiryDate"
-                              value={formData.expiryDate}
-                              onChange={handleChange}
-                              required={
-                                formData.paymentMethod === "credit-card"
-                              }
-                            />
-                            <input
-                              type="text"
-                              className="style-2"
-                              placeholder="Sercurity code"
-                              name="securityCode"
-                              value={formData.securityCode}
-                              onChange={handleChange}
-                              required={
-                                formData.paymentMethod === "credit-card"
-                              }
-                            />
-                          </div>
-                          <fieldset className="mb_16">
-                            <input
-                              type="text"
-                              className="style-2"
-                              placeholder="Name on card"
-                              name="cardName"
-                              value={formData.cardName}
-                              onChange={handleChange}
-                              required={
-                                formData.paymentMethod === "credit-card"
-                              }
-                            />
-                          </fieldset>
-                          <div className="cb-ship">
-                            <input
-                              type="checkbox"
-                              className="tf-check"
-                              id="checkShip"
-                              name="useShippingAsBilling"
-                              checked={formData.useShippingAsBilling}
-                              onChange={handleChange}
-                            />
-                            <label
-                              htmlFor="checkShip"
-                              className="text-sm text-main"
-                            >
-                              Use shipping address as billing address
-                            </label>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                     <div className="payment-item paypal-payment mb_16">
                       <label
-                        htmlFor="paypal"
+                        htmlFor="ccavenue"
                         className="payment-header collapsed"
-                        data-bs-toggle="collapse"
-                        data-bs-target="#paypal-payment"
-                        aria-controls="paypal-payment"
                       >
                         <input
                           type="radio"
                           name="paymentMethod"
-                          className="tf-check-rounded"
-                          id="paypal"
-                          value="paypal"
-                          checked={formData.paymentMethod === "paypal"}
+                          id="ccavenue"
+                          value="ccavenue"
+                          checked={formData.paymentMethod === "ccavenue"}
                           onChange={handleChange}
                         />
                         <span className="pay-title text-sm">
-                          PayPal
-                          <img
-                            className="card-logo"
-                            width={78}
-                            height={20}
-                            src="images/paypal-2.png"
-                            alt="apple"
-                          />
+                          PayNow (Credit Card, Debit Card, UPI)
                         </span>
                       </label>
-                      <div
-                        id="paypal-payment"
-                        className="collapse"
-                        data-bs-parent="#payment-method-box"
-                      ></div>
                     </div>
                   </div>
-                  <p className="text-dark-6 text-sm">
-                    Your personal data will be used to process your order,
-                    support your experience throughout this website, and for
-                    other purposes described in our{" "}
-                    <a
-                      href="privacypolicy"
-                      className="fw-medium text-decoration-underline link text-sm"
-                    >
-                      privacy policy.
-                    </a>
-                  </p>
                 </div>
               </form>
             </div>
+
+            {/* Sidebar */}
             <div className="col-xl-4">
               <div className="tf-page-cart-sidebar">
-                <form className="cart-box order-box">
-                  <div className="title text-lg fw-medium">In your cart</div>
+                <div className="cart-box order-box">
+                  <div className="title text-lg fw-medium">
+                    In your cart
+                  </div>
                   <ul className="list-order-product">
-                    <li className="order-item">
-                      <figure className="img-product">
-                        <img src="images/product/order-1.jpg" alt="product" />
-                        <span className="quantity">1</span>
-                      </figure>
-                      <div className="content">
-                        <div className="info">
-                          <p className="name text-sm fw-medium">
-                            Loose Fit Tee
-                          </p>
-                          <span className="variant">White / L</span>
+                    {cartData?.cart?.map((item) => (
+                      <li
+                        className="order-item"
+                        key={item.productId}
+                      >
+                        <figure className="img-product">
+                          <img
+                            src={
+                              item.image ||
+                              item.product?.imageVariants?.[0]?.url ||
+                              "images/product/placeholder.jpg"
+                            }
+                            alt={item.title || item.product?.title}
+                          />
+                          <span className="quantity">
+                            {item.quantity}
+                          </span>
+                        </figure>
+                        <div className="content">
+                          <div className="info">
+                            <p className="name text-sm fw-medium">
+                              {item.title || item.product?.title}
+                            </p>
+                            {item.size && (
+                              <span className="variant">{item.size}</span>
+                            )}
+                          </div>
+                          <span className="price text-sm fw-medium">
+                            ₹{(item.price * item.quantity).toFixed(2)}
+                          </span>
                         </div>
-                        <span className="price text-sm fw-medium">$120.00</span>
-                      </div>
-                    </li>
-                    <li className="order-item">
-                      <figure className="img-product">
-                        <img src="images/product/order-2.jpg" alt="product" />
-                        <span className="quantity">1</span>
-                      </figure>
-                      <div className="content">
-                        <div className="info">
-                          <p className="name text-sm fw-medium">
-                            Bow-Tie T-Shirt
-                          </p>
-                          <span className="variant">Black / L</span>
-                        </div>
-                        <span className="price text-sm fw-medium">$120.00</span>
-                      </div>
-                    </li>
-                    <li className="order-item">
-                      <figure className="img-product">
-                        <img src="images/product/order-3.jpg" alt="product" />
-                        <span className="quantity">1</span>
-                      </figure>
-                      <div className="content">
-                        <div className="info">
-                          <p className="name text-sm fw-medium">
-                            Loose Fit Tee
-                          </p>
-                          <span className="variant">White / L</span>
-                        </div>
-                        <span className="price text-sm fw-medium">$130.00</span>
-                      </div>
-                    </li>
+                      </li>
+                    ))}
                   </ul>
                   <ul className="list-total">
                     <li className="total-item text-sm d-flex justify-content-between">
                       <span>Subtotal:</span>
-                      <span className="price-sub fw-medium">$370.00 USD</span>
+                      <span className="price-sub fw-medium">
+                        ₹{subtotal.toFixed(2) || "0.00"}
+                      </span>
                     </li>
                     <li className="total-item text-sm d-flex justify-content-between">
                       <span>Discount:</span>
                       <span className="price-discount fw-medium">
-                        -$48.00 USD
+                        -₹{discount.toFixed(2) || "0.00"}
                       </span>
                     </li>
                     <li className="total-item text-sm d-flex justify-content-between">
                       <span>Shipping:</span>
-                      <span className="price-ship fw-medium">$10.00 USD</span>
+                      <span className="price-ship fw-medium">
+                        ₹{shippingRate.toFixed(2) || "0.00"}
+                      </span>
                     </li>
                     <li className="total-item text-sm d-flex justify-content-between">
                       <span>Tax:</span>
-                      <span className="price-tax fw-medium">$48.00 USD</span>
+                      <span className="price-tax fw-medium">
+                        ₹{tax?.toFixed(2) || "0.00"}
+                      </span>
                     </li>
                   </ul>
                   <div className="subtotal text-lg fw-medium d-flex justify-content-between">
-                    <span>Subtotal:</span>
-                    <span className="total-price-order">$380.00 USD</span>
+                    <span>Total:</span>
+                    <span className="total-price-order">
+                      ₹{grandTotal?.toFixed(2) || "0.00"}
+                    </span>
                   </div>
                   <div className="btn-order">
                     <button
-                      type="submit"
+                      type="button"
+                      disabled={isCreatingOrder || isLoadingCart}
                       className="tf-btn btn-dark2 animate-btn w-100 text-transform-none"
                       onClick={handleSubmit}
                     >
-                      Place order
+                      {isCreatingOrder ? "Processing..." : "Place order"}
                     </button>
                   </div>
-                </form>
+                </div>
               </div>
             </div>
           </div>

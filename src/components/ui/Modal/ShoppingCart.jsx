@@ -1,4 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
+import { useGetCartQuery, useRemoveFromCartMutation, useUpdateCartQuantityMutation } from "../../../services/cart/cartApi";
+import { getGuestCart, removeFromGuestCart, updateGuestCartQuantity } from "../../../utils/guestCart";
+import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
 const ShoppingCart = () => {
   const [quantity1, setQuantity1] = useState(1);
@@ -15,6 +19,11 @@ const ShoppingCart = () => {
     type: "",
     text: "",
   });
+
+     // --- auth
+  const user = useSelector((state) => state.auth.user);
+  const userId = user?.id ?? user?._id ?? null;
+
 
   const handleQuantityChange = (product, action) => {
     if (product === 1) {
@@ -72,6 +81,123 @@ const ShoppingCart = () => {
     }
   };
 
+  // cart 
+
+  // / --- server (RTK Query) - skip when guest
+  const { data: serverData, isLoading: serverLoading } = useGetCartQuery(userId, {
+    skip: !userId,
+  });
+
+  // --- server mutations
+  const [updateCartQuantity, { isLoading: isUpdating }] = useUpdateCartQuantityMutation();
+  const [removeFromCart, { isLoading: isRemoving }] = useRemoveFromCartMutation();
+
+  // --- guest cart state
+  const [guestItems, setGuestItems] = useState(() => getGuestCart());
+
+  // sync guest items when localStorage changes (other tabs)
+  useEffect(() => {
+    const onStorage = () => setGuestItems(getGuestCart());
+    window.addEventListener("storage", onStorage);
+    return () => window.removeEventListener("storage", onStorage);
+  }, []);
+
+  // refresh guest items if auth changes to guest
+  useEffect(() => {
+    if (!userId) setGuestItems(getGuestCart());
+  }, [userId]);
+
+  // normalize data shape for rendering
+  const cartItems = useMemo(() => {
+  if (userId) {
+    const rows = serverData?.cart || [];
+    return rows.map((row) => ({
+      cartId: row.cartId ?? row.id,
+      productId: row.productId,
+      title: row.title,
+      price: Number(row.price || 0),
+      originalPrice: Number(row.originalPrice || row.price || 0),
+      image: row.image || "/default-thumb.jpg",
+      size: row.size,
+      quantity: Number(row.quantity || 1),
+      isServer: true,
+      raw: row,
+    }));
+  } else {
+    return guestItems.map((it) => ({
+      cartId: `${it.productId}-${it.size}`,
+      productId: it.productId,
+      title: it.name,
+      price: Number(it.price || 0),
+      originalPrice: Number(it.originalPrice || it.price || 0),
+      image: it.image || "/default-thumb.jpg",
+      size: it.size,
+      quantity: Number(it.quantity || 1),
+      isServer: false,
+      raw: it,
+    }));
+  }
+}, [serverData, guestItems, userId]);
+
+
+  // handlers
+  const changeQty = async (item, delta) => {
+    const newQty = item.quantity + delta;
+    if (item.isServer) {
+      try {
+        if (newQty <= 0) {
+          await removeFromCart({
+            customerId: userId,
+            productId: item.productId,
+            size: item.size,
+          }).unwrap();
+          toast.success("Item removed from cart");
+        } else {
+          await updateCartQuantity({
+            customerId: userId,
+            productId: item.productId,
+            size: item.size,
+            quantity: newQty,
+          }).unwrap();
+          // RTK invalidation will refetch automatically (cartApi invalidates 'Cart')
+        }
+      } catch (err) {
+        console.error("Server update error:", err);
+        toast.error("Failed to update server cart");
+      }
+    } else {
+      // guest localStorage update
+      updateGuestCartQuantity(item.productId, item.size, Math.max(0, newQty));
+      setGuestItems(getGuestCart());
+      toast.success(newQty <= 0 ? "Item removed from cart" : "Cart updated");
+    }
+  };
+
+  const handleRemove = async (item) => {
+    if (item.isServer) {
+      try {
+        await removeFromCart({
+          customerId: userId,
+          productId: item.productId,
+          size: item.size,
+        }).unwrap();
+        toast.success("Item removed from cart");
+      } catch (err) {
+        console.error("Remove error:", err);
+        toast.error("Failed to remove item");
+      }
+    } else {
+      removeFromGuestCart(item.productId, item.size);
+      setGuestItems(getGuestCart());
+      toast.success("Item removed from cart");
+    }
+  };
+
+  const total = cartItems.reduce((sum, it) => sum + it.price * it.quantity, 0);
+
+  const loading = userId ? serverLoading : false;
+
+
   return (
     <div
       className="offcanvas offcanvas-end popup-style-1 popup-shopping-cart"
@@ -86,9 +212,11 @@ const ShoppingCart = () => {
           />
         </div>
         <div className="wrap">
+
+         
           <div className="tf-mini-cart-threshold">
             <div className="text">
-              Spend <span className="fw-medium">$100</span> more to get{" "}
+              Spend <span className="fw-medium">₹100</span> more to get{" "}
               <span className="fw-medium">Free Shipping</span>
             </div>
             <div className="tf-progress-bar tf-progress-ship">
@@ -97,18 +225,30 @@ const ShoppingCart = () => {
               </div>
             </div>
           </div>
+
+
+
           <div className="tf-mini-cart-wrap">
             <div className="tf-mini-cart-main">
+
+               {loading ?(
+            <div className="p-4">Loading cart...</div>
+          ) : cartItems.length === 0 ? (
+            <div className="p-4">Your cart is empty</div>
+          ) : (
+
               <div className="tf-mini-cart-sroll">
                 <div className="tf-mini-cart-items">
-                  <div className="tf-mini-cart-item file-delete">
+                 {cartItems.map((item) => (
+
+                   <div key={item.cartId} className="tf-mini-cart-item file-delete">
                     <div className="tf-mini-cart-image">
-                      <a href="productdetail">
+                      <a href={`/productdetail/${item.productId}`}>
+
                         <img
                           className="lazyload"
-                          data-src="images/product-1.jpg"
-                          src="images/product-1.jpg"
-                          alt="img-product"
+                          data-src={item.image || "/default-thumb.jpg"}
+                          src={item.image || "/default-thumb.jpg"} alt={item.title}
                         />
                       </a>
                     </div>
@@ -116,22 +256,31 @@ const ShoppingCart = () => {
                       <div className="d-flex justify-content-between">
                         <a
                           className="title link text-md fw-medium"
-                          href="productdetail"
+                          href={`/productdetail/${item.productId}`}
                         >
-                          Bird of Paradise
+                          {item.title}
                         </a>
-                        <i className="icon icon-close remove fs-12" />
+                        <i className="icon icon-close remove fs-12"   onClick={() => handleRemove(item)}/>
                       </div>
                       <p className="price-wrap text-sm fw-medium">
-                        <span className="new-price text-primary">$130.00</span>
-                        <span className="old-price text-decoration-line-through text-dark-1">
-                          $150.00
-                        </span>
-                      </p>
+  <span className="new-price text-primary">₹ {item.price}</span>
+  {/* {item.originalPrice > item.price && ( */}
+    <span className="old-price text-decoration-line-through text-dark-1">
+      ₹ {item.originalPrice}
+    </span>
+  {/* )} */}
+</p>
+                      <p className="price-wrap text-sm fw-medium">
+  <span className="new-price text-primary">{item.size}</span>
+  
+</p>
+
                       <div className="wg-quantity small">
                         <button
                           className="btn-quantity minus-btn"
-                          onClick={() => handleQuantityChange(1, "decrease")}
+                          // onClick={() => handleQuantityChange(1, "decrease")}
+                          onClick={() => changeQty(item, -1)}
+                          disabled={isUpdating || isRemoving}
                         >
                           -
                         </button>
@@ -139,67 +288,27 @@ const ShoppingCart = () => {
                           className="quantity-product font-4"
                           type="text"
                           name="number"
-                          value={quantity1}
+                          // value={quantity1}
+                          value={item.quantity}
                           readOnly
                         />
                         <button
                           className="btn-quantity plus-btn"
-                          onClick={() => handleQuantityChange(1, "increase")}
+                          // onClick={() => handleQuantityChange(1, "increase")}
+                          onClick={() => changeQty(item, +1)}
+                          disabled={isUpdating || isRemoving}
                         >
                           +
                         </button>
                       </div>
                     </div>
                   </div>
-                  <div className="tf-mini-cart-item file-delete">
-                    <div className="tf-mini-cart-image">
-                      <a href="productdetail">
-                        <img
-                          className="lazyload"
-                          data-src="images/product-4.jpg"
-                          src="images/product-4.jpg"
-                          alt="img-product"
-                        />
-                      </a>
-                    </div>
-                    <div className="tf-mini-cart-info">
-                      <div className="d-flex justify-content-between">
-                        <a
-                          className="title link text-md fw-medium"
-                          href="productdetail"
-                        >
-                          Ficus 'Ruby'
-                        </a>
-                        <i className="icon icon-close remove fs-12" />
-                      </div>
-                      <p className="price-wrap text-sm fw-medium">
-                        <span className="new-price text-primary">$110.00</span>
-                      </p>
-                      <div className="wg-quantity small">
-                        <button
-                          className="btn-quantity minus-btn"
-                          onClick={() => handleQuantityChange(2, "decrease")}
-                        >
-                          -
-                        </button>
-                        <input
-                          className="quantity-product font-4"
-                          type="text"
-                          name="number"
-                          value={quantity2}
-                          readOnly
-                        />
-                        <button
-                          className="btn-quantity plus-btn"
-                          onClick={() => handleQuantityChange(2, "increase")}
-                        >
-                          +
-                        </button>
-                      </div>
-                    </div>
-                  </div>
+                 ))}
+                 
                 </div>
 
+                {/* you may also like */}
+{/* 
                 <div className="tf-minicart-recommendations">
                   <div className="tf-minicart-recommendations-heading d-flex justify-content-between align-items-end">
                     <div className="tf-minicart-recommendations-title text-md fw-medium">
@@ -330,8 +439,11 @@ const ShoppingCart = () => {
                       </div>
                     </div>
                   </div>
-                </div>
+                </div> */}
               </div>
+            
+          )}
+          
             </div>
             <div className="tf-mini-cart-bottom">
               <div className="tf-mini-cart-tool">
@@ -368,7 +480,8 @@ const ShoppingCart = () => {
                 <div className="tf-cart-totals-discounts">
                   <div className="tf-cart-total text-xl fw-medium">Total:</div>
                   <div className="tf-totals-total-value text-xl fw-medium">
-                    ${calculateTotal()} USD
+                     {/* ₹ {calculateTotal()} */}
+                     ₹  {total.toFixed(2)}
                   </div>
                 </div>
                 <div className="tf-cart-tax text-sm opacity-8">
@@ -414,7 +527,7 @@ const ShoppingCart = () => {
             </div>
 
             {/* Gift Wrap Popup */}
-            {activePopup === "giftWrap" && (
+            {/* {activePopup === "giftWrap" && (
               <div
                 className="tf-mini-cart-tool-openable add-gift"
                 onClick={handleOverlayClick}
@@ -445,10 +558,10 @@ const ShoppingCart = () => {
                   </div>
                 </form>
               </div>
-            )}
+            )} */}
 
             {/* Order Note Popup */}
-            {activePopup === "note" && (
+            {/* {activePopup === "note" && (
               <div
                 className="tf-mini-cart-tool-openable add-note"
                 onClick={handleOverlayClick}
@@ -484,10 +597,10 @@ const ShoppingCart = () => {
                   </div>
                 </form>
               </div>
-            )}
+            )} */}
 
             {/* Coupon Popup */}
-            {activePopup === "coupon" && (
+            {/* {activePopup === "coupon" && (
               <div
                 className="tf-mini-cart-tool-openable coupon"
                 onClick={handleOverlayClick}
@@ -523,10 +636,10 @@ const ShoppingCart = () => {
                   </div>
                 </form>
               </div>
-            )}
+            )} */}
 
             {/* Shipping Estimate Popup */}
-            {activePopup === "shipping" && (
+            {/* {activePopup === "shipping" && (
               <div
                 className="tf-mini-cart-tool-openable estimate-shipping"
                 onClick={handleOverlayClick}
@@ -626,7 +739,7 @@ const ShoppingCart = () => {
                   </div>
                 </form>
               </div>
-            )}
+            )} */}
           </div>
         </div>
       </div>

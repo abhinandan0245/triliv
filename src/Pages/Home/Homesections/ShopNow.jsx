@@ -61,8 +61,8 @@ const ShopNow = () => {
   ];
 
   return (
-    <section>
-      <div className="container">
+    <section className="mb-5 justify-content-center mx-auto w-75">
+      <div className="container ">
         <div className="flat-title " data-aos="fade-up">
           <h3 className="title font-7">Shop By Collections</h3>
         </div>

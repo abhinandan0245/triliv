@@ -5,6 +5,8 @@ import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "../../../redux/slice/authSlice";
+import { mergeGuestCartToDB } from "../../../utils/mergeGuestCart";
+import { useAddToCartMutation } from "../../../services/cart/cartApi";
 
 const LoginPopup = ({ show, onClose, toggleRegister , openResetPopup }) => {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -12,6 +14,7 @@ const LoginPopup = ({ show, onClose, toggleRegister , openResetPopup }) => {
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
    const dispatch = useDispatch();
+   const [addToCart] = useAddToCartMutation();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -21,33 +24,62 @@ const LoginPopup = ({ show, onClose, toggleRegister , openResetPopup }) => {
     }));
   };
 
-   const handleSubmit = async (e) => {
+  //  const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   setErrorMessage("");
+
+  //   try {
+  //     const res = await login(formData).unwrap();
+      
+      
+
+  //     // Dispatch to global state
+  // dispatch(setCredentials({ customer: res.customer, token: res.token }));
+  // localStorage.setItem("CUSTOMER_TOKEN", res.token);
+  //     localStorage.setItem("CUSTOMER_USER", JSON.stringify(res.customer));
+  //     toast.success(res.message || "Login successful");
+  //     // onClose(); // close popup
+  //     // Delay closing and navigating to ensure toast shows
+  //   // setTimeout(() => {
+  //   //   onClose(); // close popup
+  //   //   navigate("/"); // navigate to home
+  //   // }, 1500); // 1.5 second delay
+  //   onClose(); // ✅ Close modal immediately
+  //   } catch (err) {
+  //     const msg = err?.data?.message || "Login failed";
+  //     setErrorMessage(msg);
+  //     toast.error(msg);
+  //   }
+  // };
+
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMessage("");
 
     try {
+      // 🔹 Login API call
       const res = await login(formData).unwrap();
-      
-      
 
-      // Dispatch to global state
-  dispatch(setCredentials({ customer: res.customer, token: res.token }));
-  localStorage.setItem("CUSTOMER_TOKEN", res.token);
+      // 🔹 Save to Redux & localStorage
+      dispatch(setCredentials({ customer: res.customer, token: res.token }));
+      localStorage.setItem("CUSTOMER_TOKEN", res.token);
       localStorage.setItem("CUSTOMER_USER", JSON.stringify(res.customer));
-      toast.success(res.message || "Login successful");
-      // onClose(); // close popup
-      // Delay closing and navigating to ensure toast shows
-    // setTimeout(() => {
-    //   onClose(); // close popup
-    //   navigate("/"); // navigate to home
-    // }, 1500); // 1.5 second delay
-    onClose(); // ✅ Close modal immediately
+
+      // 🔹 Merge guest cart into DB
+      await mergeGuestCartToDB(addToCart, res.customer.id); // assumes id is customer ID
+
+      toast.success(res.message || "Login successful, cart updated!");
+
+      // 🔹 Close modal
+      onClose();
     } catch (err) {
       const msg = err?.data?.message || "Login failed";
       setErrorMessage(msg);
       toast.error(msg);
     }
   };
+
 
   return (
     <div

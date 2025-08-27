@@ -1,7 +1,13 @@
 import React from "react";
 import MobileMenu from "../../ui/Modal/MobileMenu";
 import logo1 from "@/assets/images/logo1.png"
+import { useGetContactusQuery } from "../../../services/contact/contactusApi";
 const Footer = () => {
+
+      // Fetch contact page data
+    const { data: contactData, isLoading: isContactLoading } = useGetContactusQuery();
+
+
   // Handle form submission
   const handleSubscribe = (e) => {
     e.preventDefault();
@@ -10,6 +16,10 @@ const Footer = () => {
     console.log("Subscribed with email:", email);
     // You can add AJAX call or state management here
   };
+
+    if (isContactLoading) return <p>Loading contact info...</p>;
+
+  const contact = contactData?.data; // your backend returns { data: { content, facebook, etc. } }
 
   return (
     <div id="wrapper">
@@ -27,35 +37,55 @@ const Footer = () => {
                 </a>
               </div>
               <ul className="tf-social-icon style-large">
-                <li>
-                  <a
-                    href="https://www.facebook.com/"
-                    className="social-item social-facebook"
-                  >
-                    <i className="icon icon-fb"></i>
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://www.instagram.com/"
-                    className="social-item social-instagram"
-                  >
-                    <i className="icon icon-instagram"></i>
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://www.snapchat.com/"
-                    className="social-item social-linkedin"
-                  >
-                    <i className="icon icon-linkedin"></i>
-                  </a>
-                </li>
-                <li>
-                  <a href="https://x.com/" className="social-item social-x">
-                    <i className="icon icon-x"></i>
-                  </a>
-                </li>
+                {contact.facebook && (
+                  <li>
+                    <a
+                      href={contact.facebook}
+                      className="social-item social-facebook"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <i className="icon icon-fb"></i>
+                    </a>
+                  </li>
+                )}
+                {contact.instagram && (
+                  <li>
+                    <a
+                      href={contact.instagram}
+                      className="social-item social-instagram"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <i className="icon icon-instagram"></i>
+                    </a>
+                  </li>
+                )}
+            
+                {contact.snapchat && (
+                  <li>
+                    <a
+                      href={contact.snapchat}
+                      className="social-item social-snapchat"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <i className="icon icon-snapchat"></i>
+                    </a>
+                  </li>
+                )}
+                {contact.twitter && (
+                  <li>
+                    <a
+                      href={contact.twitter}
+                      className="social-item social-x"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <i className="icon icon-x"></i>
+                    </a>
+                  </li>
+                )}
               </ul>
             </div>
           </div>
@@ -137,7 +167,7 @@ const Footer = () => {
                   </div>
                 </div>
               </div>
-              <div className="footer-inner-wrap footer-col-block s2">
+              {/* <div className="footer-inner-wrap footer-col-block s2">
                 <div className="footer-heading footer-heading-mobile text-xl fw-medium">
                   Subscribe Newsletter
                 </div>
@@ -201,7 +231,7 @@ const Footer = () => {
                     </form>
                   </div>
                 </div>
-              </div>
+              </div> */}
               <div className="footer-inner-wrap s3">
                 <div className="footer-col-block inner-col">
                   <div className="footer-heading footer-heading-mobile text-xl fw-medium">
@@ -210,16 +240,16 @@ const Footer = () => {
                   <div className="tf-collapse-content">
                     <ul className="footer-menu-list">
                       <li>
-                        <a href="aboutus">About Us</a>
+                        <a href="/aboutus">About Us</a>
                       </li>
                       <li>
                         <a href="contact">Contact Us</a>
                       </li>
                       <li>
-                        <a href="faq">FAQ</a>
+                        <a href="/faq">FAQ</a>
                       </li>
                       <li>
-                        <a href="notfound">Sitemap</a>
+                        <a href="/notfound">Sitemap</a>
                       </li>
                     </ul>
                   </div>
@@ -231,19 +261,19 @@ const Footer = () => {
                   <div className="tf-collapse-content">
                     <ul className="footer-menu-list">
                       <li>
-                        <a href="privacypolicy">Privacy Policies</a>
+                        <a href="/privacypolicy">Privacy Policies</a>
                       </li>
                       <li>
-                        <a href="term-condition">Terms & Conditions</a>
+                        <a href="/term-condition">Terms & Conditions</a>
                       </li>
                       <li>
-                        <a href="returnrefund">Returns & Refunds</a>
+                        <a href="/returnrefund">Returns & Refunds</a>
                       </li>
                       <li>
-                        <a href="faq">FAQ's</a>
+                        <a href="/faq">FAQ's</a>
                       </li>
                       <li>
-                        <a href="shipping">Shipping</a>
+                        <a href="/shipping">Shipping</a>
                       </li>
                     </ul>
                   </div>

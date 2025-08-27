@@ -1,20 +1,47 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
+import { useGetFaqQuery } from "../../services/faq/faqApi";
 
 const FAQPage = () => {
   // State for managing accordion open/close states
+  const { data: faqs = [], isLoading } = useGetFaqQuery();
+
   const [activeAccordions, setActiveAccordions] = useState({
     shopping: "collapseOne",
     payment: "collapsePaymentOne",
     exchange: "collapseExchangeOne",
   });
 
+   // Group FAQs by title (section)
+  const groupedFaqs = useMemo(() => {
+    const groups = {};
+    faqs.forEach(faq => {
+      if (!groups[faq.title]) groups[faq.title] = [];
+      groups[faq.title].push(faq);
+    });
+    return groups;
+  }, [faqs]);
+
   // Function to toggle accordion items
-  const toggleAccordion = (accordionGroup, target) => {
-    setActiveAccordions((prev) => ({
+  // const toggleAccordion = (accordionGroup, target) => {
+  //   setActiveAccordions((prev) => ({
+  //     ...prev,
+  //     [accordionGroup]: prev[accordionGroup] === target ? "" : target,
+  //   }));
+  // };
+
+  // Accordion state
+  const [openIndex, setOpenIndex] = useState({});
+
+  const toggleAccordion = (section, idx) => {
+    setOpenIndex(prev => ({
       ...prev,
-      [accordionGroup]: prev[accordionGroup] === target ? "" : target,
+      [section]: prev[section] === idx ? null : idx
     }));
   };
+
+  if (isLoading) return <p>Loading...</p>;
+
+
 
   return (
     <>
@@ -69,7 +96,7 @@ const FAQPage = () => {
               </div>
             </div>
             <div className="col-lg-8">
-              <ul className="faq-list">
+              {/* <ul className="faq-list">
                 <li className="faq-item">
                   <p className="name-faq">Shopping Information</p>
                   <div className="faq-wrap" id="accordionShoping">
@@ -500,7 +527,35 @@ const FAQPage = () => {
                     </div>
                   </div>
                 </li>
-              </ul>
+              </ul> */}
+              <ul className="faq-list">
+          {Object.entries(groupedFaqs).map(([section, items]) => (
+            <li className="faq-item" key={section}>
+              <p className="name-faq">{section}</p>
+              <div className="faq-wrap">
+                {items.map((faq, idx) => (
+                  <div className="widget-accordion" key={faq.id}>
+                    <div
+                      className={`accordion-title ${openIndex[section] === idx ? "" : "collapsed"}`}
+                      onClick={() => toggleAccordion(section, idx)}
+                      role="button"
+                    >
+                      <span>{faq.question}</span>
+                      <span className="icon icon-arrow-down"></span>
+                    </div>
+                    <div
+                      className={`accordion-collapse collapse ${openIndex[section] === idx ? "show" : ""}`}
+                    >
+                      <div className="accordion-body widget-desc">
+                        <p className="text-main">{faq.answer}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </li>
+          ))}
+        </ul>
             </div>
           </div>
         </div>

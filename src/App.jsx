@@ -83,7 +83,7 @@ function App() {
           <Route path="/addresses" element={<PrivateRoute><Addresses /></PrivateRoute>} />
           <Route path="/orders" element={<PrivateRoute><Orders /></PrivateRoute>} />
           <Route path="/accountdetails" element={<PrivateRoute><AccountDetail /></PrivateRoute>} />
-          <Route path="/thankyou" element={<OrderSuccess />} />
+          <Route path="/thankyou/:id" element={<OrderSuccess />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </main>

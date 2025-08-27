@@ -1,13 +1,36 @@
-import React from "react";
+import React, { useState } from "react";
+import { useCreateContactMessageMutation } from "../../services/contactmessage/contactMessageApi";
+import { toast } from "react-toastify";
+import { useGetContactusQuery } from "../../services/contact/contactusApi";
 
 const ContactPage = () => {
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // You'll need to implement form submission logic here
-    // This could be using fetch API, axios, or your preferred method
-    console.log("Form submitted");
-    // In a real app, you would send the form data to your backend
+   const [form, setForm] = useState({ name: "", email: "", message: "" });
+  const [createContactMessage, { isLoading, isSuccess, error }] =
+    useCreateContactMessageMutation();
+
+    // Fetch contact page data
+  const { data: contactData, isLoading: isContactLoading } = useGetContactusQuery();
+
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
   };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+   try {
+    const response = await createContactMessage(form);
+     setForm({ name: "", email: "", message: "" }); // reset form
+     toast.success(response.data.message || "Message sent successfully!");
+   } catch (error) {
+     console.error("Failed to create contact message:", error);
+     toast.error(error?.data?.message || "Failed to send message.");
+   }
+  };
+
+   if (isContactLoading) return <p>Loading contact info...</p>;
+
+  const contact = contactData?.data; // your backend returns { data: { content, facebook, etc. } }
+
 
   return (
     <div>
@@ -33,7 +56,7 @@ const ContactPage = () => {
       {/* Contact */}
       <section className="s-contact flat-spacing-13">
         <div className="container">
-          <div className="wg-map">
+          {/* <div className="wg-map">
             <iframe
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d27294.62418958524!2d151.25730233429948!3d-33.82005608618041!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6b12ab8bc95a137f%3A0x358f04a7f6f5f6a6!2sGrotto%20Point%20Lighthouse!5e0!3m2!1sen!2s!4v1733976867160!5m2!1sen!2s"
               className="map"
@@ -43,96 +66,69 @@ const ContactPage = () => {
               referrerPolicy="no-referrer-when-downgrade"
               title="Google Maps Location"
             />
-          </div>
+          </div> */}
           <div className="row">
+             {/* contact us content */}
             <div className="col-lg-6">
               <div className="content-left">
-                <div className="title fw-medium display-md-2">Contact Us</div>
-                <p className="sub-title text-main">
-                  Have a question? Please contact us using the customer support{" "}
-                  <br /> channels below.
-                </p>
-                <ul className="contact-list">
-                  <li>
-                    <p>
-                      Address:
+                 <div
+                  className="prose max-w-none"
+                  dangerouslySetInnerHTML={{ __html: contact?.content }}
+                />
+               <ul className="tf-social-icon style-large mt-4">
+                  {contact?.facebook && (
+                    <li>
                       <a
-                        className="link"
-                        href="https://www.google.com/maps?q=15Yarranst,Punchbowl,NSW,Australia"
+                        href={contact.facebook}
+                        className="social-item social-facebook"
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        15 Yarran st, Punchbowl, NSW, Australia
+                        <i className="icon icon-fb" />
                       </a>
-                    </p>
-                  </li>
-                  <li>
-                    <p>
-                      Phone number:
-                      <a className="link" href="tel:123456">
-                        +1 234 567
+                    </li>
+                  )}
+                  {contact?.instagram && (
+                    <li>
+                      <a
+                        href={contact.instagram}
+                        className="social-item social-instagram"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <i className="icon icon-instagram" />
                       </a>
-                    </p>
-                  </li>
-                  <li>
-                    <p>
-                      Email:
-                      <a className="link" href="mailto:contact@vineta.com">
-                        contact@vineta.com
+                    </li>
+                  )}
+                  {contact?.twitter && (
+                    <li>
+                      <a
+                        href={contact.twitter}
+                        className="social-item social-x"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <i className="icon icon-x" />
                       </a>
-                    </p>
-                  </li>
-                  <li>
-                    <p>
-                      Open:
-                      <span className="text-main">8am - 7pm, Mon - Sat</span>
-                    </p>
-                  </li>
-                </ul>
-                <ul className="tf-social-icon style-large">
-                  <li>
-                    <a
-                      href="https://www.facebook.com/"
-                      className="social-item social-facebook"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <i className="icon icon-fb" />
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="https://www.instagram.com/"
-                      className="social-item social-instagram"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <i className="icon icon-instagram" />
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="https://x.com/"
-                      className="social-item social-x"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <i className="icon icon-x" />
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="https://www.snapchat.com/"
-                      className="social-item social-snapchat"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <i className="icon icon-snapchat" />
-                    </a>
-                  </li>
+                    </li>
+                  )}
+                  {contact?.snapchat && (
+                    <li>
+                      <a
+                        href={contact.snapchat}
+                        className="social-item social-snapchat"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <i className="icon icon-snapchat" />
+                      </a>
+                    </li>
+                  )}
                 </ul>
               </div>
             </div>
+
+            {/* get in touch  */}
             <div className="col-lg-6">
               <div className="content-right">
                 <div className="title fw-medium display-md-2">Get In Touch</div>
@@ -153,6 +149,8 @@ const ContactPage = () => {
                           <input
                             name="name"
                             id="name"
+                            value={form.name}
+                            onChange={handleChange}
                             className="radius-8"
                             type="text"
                             required
@@ -163,6 +161,8 @@ const ContactPage = () => {
                           <input
                             name="email"
                             id="email"
+                            value={form.email}
+                            onChange={handleChange}
                             className="radius-8"
                             type="email"
                             required
@@ -175,6 +175,8 @@ const ContactPage = () => {
                           <textarea
                             name="message"
                             id="message"
+                            value={form.message}
+                            onChange={handleChange}
                             required
                             className="radius-8"
                             defaultValue={""}
@@ -185,6 +187,18 @@ const ContactPage = () => {
                         <button className="tf-btn animate-btn" type="submit">
                           Send
                         </button>
+
+                        {isSuccess && (
+  <div className="alert alert-success mt-3">
+    ✅ Thank you for reaching out! We’ll get back to you soon.
+  </div>
+)}
+{error && (
+  <div className="alert alert-danger mt-3">
+    ❌ Oops! Something went wrong. Please try again later.
+  </div>
+)}
+
                       </div>
                     </div>
                   </form>
