@@ -17,6 +17,8 @@ const ReturnRefund = () => {
   if (isError)
     return <div className="error">Failed to load privacy policy</div>;
 
+
+
   return (
     <div>
       {/* Title Page */}
@@ -197,4 +199,4 @@ const ReturnRefund = () => {
   );
 };
 
-export default ReturnRefund;
+export default ReturnRefund
