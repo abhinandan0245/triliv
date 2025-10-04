@@ -22,15 +22,7 @@ const BreadcrumbP = ({ currentPage }) => {
     <div className="breadcrumb-sec">
       <div className="container">
         <div className="breadcrumb-wrap">
-          <div className="breadcrumb-list">
-            <a className="breadcrumb-item" href="/">
-              Home
-            </a>
-            <div className="breadcrumb-item dot">
-              <span />
-            </div>
-            <div className="breadcrumb-item current">Black mustard oil</div>
-          </div>
+          
           
         </div>
       </div>

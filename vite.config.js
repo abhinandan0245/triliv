@@ -17,12 +17,14 @@ import { resolve } from 'path'
 // Fix for jQuery plugins needing global access
 import { fileURLToPath } from 'url'
 import { dirname } from 'path'
+import compression from "vite-plugin-compression";
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 
 export default defineConfig({
-  plugins: [react()],
+  base: "/" , 
+  plugins: [react() , compression()],
   resolve: {
     alias: {
       '@': resolve(__dirname, 'src'),
@@ -39,5 +41,7 @@ export default defineConfig({
 
    build: {
     sourcemap: false, // disables .map warning
+    chunkSizeWarningLimit: 2000, // 500 → 2000
   },
 })
+

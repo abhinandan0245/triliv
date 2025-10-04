@@ -167,10 +167,17 @@ const SearchModal = () => {
         variant = {};
       }
 
-      const { price = 0, originalPrice = 0 } = variant;
-      const discount = originalPrice && originalPrice > price
-        ? Math.round(((originalPrice - price) / originalPrice) * 100)
-        : 0;
+      const { price = 0, originalPrice = 0, discountAmount = 0, discountPercentage = 0 } = variant;
+
+let discountLabel = null;
+if (discountPercentage > 0) {
+  discountLabel = `- ${discountPercentage}%`;
+} else if (discountAmount > 0) {
+  discountLabel = `- ₹${discountAmount}`;
+} else if (originalPrice > price) {
+  const calcDiscount = Math.round(((originalPrice - price) / originalPrice) * 100);
+  discountLabel = `- ${calcDiscount}%`;
+}
 
       return (
         <div className="col" key={product.id}>
@@ -181,11 +188,12 @@ const SearchModal = () => {
                 alt={product.title}
                 className="card-img-top product-img"
               />
-              {discount > 0 && (
-                <span className="badge bg-danger position-absolute top-0 start-0 m-2">
-                  -{discount}%
-                </span>
-              )}
+              {discountLabel && (
+  <span className="badge bg-danger position-absolute top-0 start-0 m-2">
+    {discountLabel}
+  </span>
+)}
+
               {product?.tags?.includes("organic") && (
                 <span className="badge bg-success position-absolute top-0 end-0 m-2">
                   Organic

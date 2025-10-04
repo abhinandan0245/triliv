@@ -1,114 +1,79 @@
 import React, { useEffect } from "react";
-import plant1 from "@/assets/images/plant-1.jpg";
-import plant2 from "@/assets/images/plant-2.jpg";
-import plant3 from "@/assets/images/plant-3.jpg";
-import plant4 from "@/assets/images/plant-4.jpg";
-import plant5 from "@/assets/images/plant-5.jpg";
+import { useGetAllCategoriesQuery } from "../../../services/category/categoryApi";
+
+
+
 
 
 const ShopNow = () => {
-  useEffect(() => {
-    const swiper = new Swiper(".tf-swiper", {
-      slidesPerView: 2,
-      spaceBetween: 12,
-      speed: 800,
-      observer: true,
-      observeParents: true,
-      slidesPerGroup: 2,
-      pagination: {
-        el: ".sw-pagination-cls",
-        clickable: true,
-      },
-      breakpoints: {
-        768: { slidesPerView: 2.7, spaceBetween: 12, slidesPerGroup: 2 },
-        992: { slidesPerView: 3.7, spaceBetween: 24, slidesPerGroup: 3 },
-        1200: { slidesPerView: 4.7, spaceBetween: 24, slidesPerGroup: 3 }, // <-- Critical for partial slide
-      },
-    });
-  }, []);
+  const { data, isLoading, isError } = useGetAllCategoriesQuery();
 
-  const collections = [
-    {
-      id: 1,
-      title: "Plants",
-      image: plant1,
-      link: "shop",
-    },
-    {
-      id: 2,
-      title: "Plant Care",
-      image: plant2,
-      link: "shop",
-    },
-    {
-      id: 3,
-      title: "Pots",
-      image: plant3,
-      link: "shop",
-    },
-    {
-      id: 4,
-      title: "Pet-Friendly",
-      image: plant4,
-      link: "shop",
-    },
-    {
-      id: 5,
-      title: "Gift Ideas",
-      image: plant5,
-      link: "shop",
-    },
-  ];
+  useEffect(() => {
+    if (data) {
+      new Swiper(".tf-swiper", {
+        slidesPerView: 1,
+        spaceBetween: 12,
+        speed: 800,
+        observer: true,
+        observeParents: true,
+        slidesPerGroup: 1,
+        pagination: {
+          el: ".sw-pagination-cls",
+          clickable: true,
+        },
+        breakpoints: {
+          768: { slidesPerView: 2.7, spaceBetween: 12, slidesPerGroup: 2 },
+          992: { slidesPerView: 2, spaceBetween: 24, slidesPerGroup: 2 },
+          1200: { slidesPerView: 4.7, spaceBetween: 24, slidesPerGroup: 3 },
+        },
+      });
+    }
+  }, [data]);
+
+  // if (isLoading) return <p>Loading collections...</p>;
+  // if (isError) return <p>Failed to load collections</p>;
+
+  const categories = data || [];
 
   return (
-    <section className="mb-5 justify-content-center mx-auto w-75">
+    <section className="mb-5 justify-content-center mx-auto w-75 pt-5 pb-5">
       <div className="container ">
         <div className="flat-title " data-aos="fade-up">
-          <h3 className="title font-7">Shop By Collections</h3>
+          <h3 className="title font-7">Shop By Collection</h3>
         </div>
       </div>
       <div className="slider-layout-right " data-aos="fade-up">
-        <div
-          dir="ltr"
-          className="swiper tf-swiper tf-sw-right wrap-sw-over"
-          data-swiper={JSON.stringify({
-            slidesPerView: 2,
-            spaceBetween: 12,
-            speed: 800,
-            observer: true,
-            observeParents: true,
-            slidesPerGroup: 2,
-            pagination: { el: ".sw-pagination-cls", clickable: true },
-            breakpoints: {
-              768: { slidesPerView: 2.7, spaceBetween: 12, slidesPerGroup: 2 },
-              992: { slidesPerView: 3.7, spaceBetween: 24, slidesPerGroup: 3 },
-              1200: { slidesPerView: 4.7, spaceBetween: 24, slidesPerGroup: 3 }, // <-- 4.7 ensures partial visibility
-            },
-          })}
-        >
+        <div dir="ltr" className="swiper tf-swiper tf-sw-right wrap-sw-over">
           <div className="swiper-wrapper">
-            {collections.map((collection) => (
-              <div key={collection.id} className="swiper-slide">
+            {categories.map((cat, index) => (
+              <div key={cat.id} className="swiper-slide">
                 <div className="wg-cls hover-img">
                   <a
-                    href={collection.link}
+                    href={`/shop/category/${cat.id}`}
                     className="d-block radius-16 image img-style"
                   >
                     <img
-                      src={collection.image}
-                      data-src={collection.image}
-                      alt={collection.title}
-                      className="ls-is-cached lazyloaded"
+                      src={cat.image || defaultImages[index % defaultImages.length]} 
+                      alt={cat.name}
+                      className="lazyload"
+                      style={{
+                        objectFit: "cover",
+                        width: "100%",
+                        height: "399px",
+                      }}
                     />
                   </a>
                   <div className="cls-content gap-6">
                     <a
-                      href={collection.link}
+                      href={`/shop/category/${cat.id}`}
                       className="text-xl fw-medium link"
                     >
-                      {collection.title}
+                      {cat.name}
                     </a>
-                    <a href={collection.link} className=" tf-btn btn-line-dark">
+                    <a
+                      href={`/shop/category/${cat.id}`}
+                      className="tf-btn btn-line-dark"
+                    >
                       <span className="text-xs">Shop Now</span>
                       <i className="icon icon-arrow-top-left fs-7" />
                     </a>

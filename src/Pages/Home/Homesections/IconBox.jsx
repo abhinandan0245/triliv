@@ -8,8 +8,7 @@ import { useGetAllWhyShopQuery } from "../../../services/homepage/whyShopApi";
 const IconBoxCarousel = () => {
   const { data, error, isLoading } = useGetAllWhyShopQuery();
   
-  if (isLoading) return <p>Loading...</p>;
-  if (error) return <p>Error loading reasons to shop.</p>;
+ 
 
    // Check if data exists and is an array
   const whyShopItems = Array.isArray(data) ? data : [];
@@ -71,67 +70,64 @@ const IconBoxCarousel = () => {
   ];
   
 
-  // If no data is available, show a message or fallback content
-  if (whyShopItems.length === 0) {
-    return (
-      <div className="flat-spacing-26">
-        <div className="container">
-          <p>No reasons to shop available at the moment.</p>
-        </div>
-      </div>
-    );
-  }
+  
 
 
   return (
-    <div className="flat-spacing-26 ">
+    <div className="flat-spacing-26 bg-gradient-9">
       <div className="container">
         <div className="flat-wrapper-iconbox">
-          <h3 className="title letter-0 font-7 fw-semibold">
+          <h3 className="title letter-0 font-7 fw-semibold bg-gradient-10">
             Why Shop With Us?
           </h3>
 
           <Swiper
-            slidesPerView={1}
-            spaceBetween={12}
-            speed={800}
-            breakpoints={{
-              575: {
-                slidesPerView: 1,
-                spaceBetween: 24,
-                slidesPerGroup: 1
-              },
-              992: {
-                slidesPerView: 2,
-                spaceBetween: 24,
-                slidesPerGroup: 2
-              },
-              1400: {
-                slidesPerView: 4,
-                spaceBetween: 80,
-                slidesPerGroup: 1
-              }
-            }}
-            pagination={{
-              clickable: true,
-              el: ".sw-pagination-iconbox",
-            }}
-            modules={[Pagination]}
-            className="tf-swiper"
-            data-aos="fade-up"
-          >
+  slidesPerView={1}
+  spaceBetween={16}
+  speed={800}
+  breakpoints={{
+    575: {
+      slidesPerView: 1,
+      spaceBetween: 16,
+      slidesPerGroup: 1,
+    },
+    768: {
+      slidesPerView: 2,
+      spaceBetween: 24,
+      slidesPerGroup: 2,
+    },
+    992: {
+      slidesPerView: 3,
+      spaceBetween: 24,
+      slidesPerGroup: 3,
+    },
+    1200: {
+      slidesPerView: 4,
+      spaceBetween: 32,
+      slidesPerGroup: 4,
+    },
+  }}
+  pagination={{
+    clickable: true,
+    el: ".sw-pagination-iconbox",
+  }}
+  modules={[Pagination]}
+  className="tf-swiper"
+  data-aos="fade-up"
+>
+
             {whyShopItems.map((item, index) => (
-              <SwiperSlide key={item._id || index}>
-                <div className="tf-icon-box style-3 justify-content-center justify-content-lg-start">
+              <SwiperSlide key={item._id || index} className="container ">
+                <div className="tf-icon-box style-3 d-flex justify-content-center">
                   <div className="box-icon">
                     {icons[index % icons.length]}
                   </div>
                   <div className="content">
-                    <div className="title fw-bold font-7">
+                    <div className="title fw-bold fs-4 ">
                       {item.title || `Reason ${index + 1}`}
                     </div>
                     <p className="text-main-3 text-md">
-                      {item.description || `Great reason to shop with us`}
+                      {item.subtitle || `Great reason to shop with us`}
                     </p>
                   </div>
                 </div>

@@ -2,24 +2,20 @@ import React from "react";
 import MobileMenu from "../../ui/Modal/MobileMenu";
 import logo1 from "@/assets/images/logo1.png"
 import { useGetContactusQuery } from "../../../services/contact/contactusApi";
+import { Link } from "react-router-dom";
 const Footer = () => {
 
       // Fetch contact page data
     const { data: contactData, isLoading: isContactLoading } = useGetContactusQuery();
 
 
-  // Handle form submission
-  const handleSubscribe = (e) => {
-    e.preventDefault();
-    const email = e.target.elements["email-form"].value;
-    // Add your form submission logic here
-    console.log("Subscribed with email:", email);
-    // You can add AJAX call or state management here
-  };
 
-    if (isContactLoading) return <p>Loading contact info...</p>;
 
-  const contact = contactData?.data; // your backend returns { data: { content, facebook, etc. } }
+    // if (isContactLoading) return <p>Loading contact info...</p>;
+
+ const contact = contactData?.data || {};
+
+ // your backend returns { data: { content, facebook, etc. } }
 
   return (
     <div id="wrapper">
@@ -32,61 +28,39 @@ const Footer = () => {
           <div className="container">
             <div className="footer-top-wrap">
               <div className="footer-logo">
-                <a href="index.php">
+                <Link  to="/">
                   <img src={logo1} className="logo" alt="logo" />
-                </a>
+                </Link>
               </div>
               <ul className="tf-social-icon style-large">
-                {contact.facebook && (
-                  <li>
-                    <a
-                      href={contact.facebook}
-                      className="social-item social-facebook"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <i className="icon icon-fb"></i>
-                    </a>
-                  </li>
-                )}
-                {contact.instagram && (
-                  <li>
-                    <a
-                      href={contact.instagram}
-                      className="social-item social-instagram"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <i className="icon icon-instagram"></i>
-                    </a>
-                  </li>
-                )}
-            
-                {contact.snapchat && (
-                  <li>
-                    <a
-                      href={contact.snapchat}
-                      className="social-item social-snapchat"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <i className="icon icon-snapchat"></i>
-                    </a>
-                  </li>
-                )}
-                {contact.twitter && (
-                  <li>
-                    <a
-                      href={contact.twitter}
-                      className="social-item social-x"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <i className="icon icon-x"></i>
-                    </a>
-                  </li>
-                )}
-              </ul>
+  {contact?.facebook && (
+    <li>
+      <a
+        href={contact.facebook}
+        className="social-item social-facebook"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <i className="icon icon-fb"></i>
+      </a>
+    </li>
+  )}
+  {contact?.instagram && (
+    <li>
+      <a
+        href={contact.instagram}
+        className="social-item social-instagram"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <i className="icon icon-instagram"></i>
+      </a>
+    </li>
+  )}
+  
+  
+</ul>
+
             </div>
           </div>
         </div>
@@ -100,7 +74,8 @@ const Footer = () => {
                 <div className="tf-collapse-content">
                   <div className="footer-contact">
                     <ul className="footer-info">
-                      <li className="item">
+                     {contact?.address && (
+                       <li className="item">
                         <span className="box-icon">
                           <svg
                             width="12"
@@ -119,15 +94,13 @@ const Footer = () => {
                             />
                           </svg>
                         </span>
-                        <a
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          href="https://www.google.com/maps?q=123Yarranst,Punchbowl,NSW2196,Australia"
-                        >
-                          123 Yarran st, Punchbowl, NSW 2196, Australia
-                        </a>
+                        
+                          {contact.address}
+                        
                       </li>
-                      <li className="item">
+                     )}
+                     {contact?.mobile && (
+                       <li className="item">
                         <span className="box-icon">
                           <svg
                             width="14"
@@ -142,9 +115,11 @@ const Footer = () => {
                             />
                           </svg>
                         </span>
-                        <a href="tel:18888383022">(64) 8342 1245</a>
+                        {contact.mobile}
                       </li>
-                      <li className="item">
+                     )}
+                      {contact?.email && (
+                        <li className="item">
                         <span className="box-icon">
                           <svg
                             width="14"
@@ -159,79 +134,16 @@ const Footer = () => {
                             />
                           </svg>
                         </span>
-                        <a href="mailto:support@example.com">
-                          support@example.com
-                        </a>
+                        
+                          {contact.email}
+                        
                       </li>
+                      )}
                     </ul>
                   </div>
                 </div>
               </div>
-              {/* <div className="footer-inner-wrap footer-col-block s2">
-                <div className="footer-heading footer-heading-mobile text-xl fw-medium">
-                  Subscribe Newsletter
-                </div>
-                <div className="tf-collapse-content">
-                  <div className="footer-newsletter">
-                    <p>
-                      We invite you to register to read the latest news, offers
-                      and events about our company. We promise not spam your
-                      inbox.
-                    </p>
-                    <form
-                      onSubmit={handleSubscribe}
-                      className="form-newsletter"
-                      id="subscribe-form"
-                      method="post"
-                      acceptCharset="utf-8"
-                      data-mailchimp="true"
-                    >
-                      <div id="subscribe-content" className="subscribe-content">
-                        <fieldset className="email">
-                          <input
-                            type="email"
-                            name="email-form"
-                            id="subscribe-email"
-                            className="subscribe-email"
-                            placeholder="Email address"
-                            tabIndex="0"
-                            aria-required="true"
-                            required
-                          />
-                        </fieldset>
-                        <div className="button-submit">
-                          <button
-                            id="subscribe-button"
-                            className="subscribe-button animate-btn"
-                            type="submit"
-                          >
-                            <svg
-                              width="18"
-                              height="18"
-                              viewBox="0 0 18 18"
-                              fill="none"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <g clipPath="url(#clip0_5296_3345)">
-                                <path
-                                  d="M17.7938 8.50229L17.7931 8.50162L14.1192 4.84537C13.8439 4.57147 13.3988 4.57249 13.1248 4.84776C12.8508 5.123 12.8519 5.56818 13.1271 5.84212L15.5938 8.29687H0.703125C0.314789 8.29687 0 8.61166 0 9C0 9.38833 0.314789 9.70312 0.703125 9.70312H15.5938L13.1272 12.1579C12.8519 12.4318 12.8509 12.877 13.1248 13.1522C13.3988 13.4275 13.844 13.4285 14.1192 13.1546L17.7932 9.49837L17.7938 9.4977C18.0692 9.22285 18.0683 8.77623 17.7938 8.50229Z"
-                                  fill="white"
-                                />
-                              </g>
-                              <defs>
-                                <clipPath id="clip0_5296_3345">
-                                  <rect width="18" height="18" fill="white" />
-                                </clipPath>
-                              </defs>
-                            </svg>
-                          </button>
-                        </div>
-                      </div>
-                      <div id="subscribe-msg"></div>
-                    </form>
-                  </div>
-                </div>
-              </div> */}
+              
               <div className="footer-inner-wrap s3">
                 <div className="footer-col-block inner-col">
                   <div className="footer-heading footer-heading-mobile text-xl fw-medium">
@@ -240,16 +152,10 @@ const Footer = () => {
                   <div className="tf-collapse-content">
                     <ul className="footer-menu-list">
                       <li>
-                        <a href="/aboutus">About Us</a>
+                        <Link to="/aboutus">Our Story</Link>
                       </li>
                       <li>
-                        <a href="contact">Contact Us</a>
-                      </li>
-                      <li>
-                        <a href="/faq">FAQ</a>
-                      </li>
-                      <li>
-                        <a href="/notfound">Sitemap</a>
+                        <Link to="contact">Contact Us</Link>
                       </li>
                     </ul>
                   </div>
@@ -261,19 +167,19 @@ const Footer = () => {
                   <div className="tf-collapse-content">
                     <ul className="footer-menu-list">
                       <li>
-                        <a href="/privacypolicy">Privacy Policies</a>
+                        <Link to="/privacypolicy">Privacy Policy</Link>
                       </li>
                       <li>
-                        <a href="/term-condition">Terms & Conditions</a>
+                        <Link to="/term-condition">Terms & Conditions</Link>
                       </li>
                       <li>
-                        <a href="/returnrefund">Returns & Refunds</a>
+                        <Link to="/returnrefund">Returns & Refunds</Link>
                       </li>
                       <li>
-                        <a href="/faq">FAQ's</a>
+                        <Link to="/faq">FAQ's</Link>
                       </li>
                       <li>
-                        <a href="/shipping">Shipping</a>
+                        <Link to="/shipping">Shipping</Link>
                       </li>
                     </ul>
                   </div>
@@ -289,14 +195,9 @@ const Footer = () => {
                 Copyright © {new Date().getFullYear()} by{" "}
                 <span className="fw-medium">Triliv</span> All Rights Reserved.
               </p>
-              <div className="box-right">
-                <a className="link" href="/privacypolicy">
-                  Privacy Policy
-                </a>
-                <a className="link" href="/term-condition">
-                  Term of Use
-                </a>
-              </div>
+               <p className="flex item-center">
+                Payment Partner  <span><img src="https://www.ccavenue.com/images_mcpg/cc-footer-logo.png" alt="ccavenue" /></span>
+              </p>
             </div>
           </div>
         </div>

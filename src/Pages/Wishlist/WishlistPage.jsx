@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDeleteFromWishlistMutation, useGetWishlistQuery } from "../../services/wishlist/wishlistApi";
 import { useAddToCartMutation } from "../../services/cart/cartApi";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import QuickViewModal from "../../components/ui/Modal/QuickView";
 
 const WishlistPage = () => {
   const user = useSelector((state) => state.auth.user);
+  const [quickViewProduct, setQuickViewProduct] = useState(null);
   const {
     data: wishlistData,
     isLoading,
@@ -14,6 +16,7 @@ const WishlistPage = () => {
   } = useGetWishlistQuery(user?.id, {
     skip: !user?.id,
   });
+  console.log("wishlist" ,wishlistData)
   const [deleteFromWishlist] = useDeleteFromWishlistMutation();
   // const [addToCart] = useAddToCartMutation();
 
@@ -30,46 +33,13 @@ const WishlistPage = () => {
     }
   };
 
-  // Handle add to cart
-  // const handleAddToCart = async (e, product) => {
-  //   e.preventDefault();
-  //   if (!user?.id) {
-  //     toast.error("Please login to add items to cart");
-  //     return;
-  //   }
-
-  //   try {
-  //     await addToCart({
-  //       customerId: user.id,
-  //       productId: product.id,
-  //       quantity: 1,
-  //       size: product.sizes?.[0] || "", // Default to first size if available
-  //     }).unwrap();
-  //     toast.success("Added to cart");
-  //   } catch (error) {
-  //     console.error("Failed to add to cart:", error);
-  //     toast.error(error.data?.message || "Failed to add to cart");
-  //   }
-  // };
-
-  if (isLoading) return <div className="loading">Loading wishlist...</div>;
-  if (isError) return <div className="error">Failed to load wishlist</div>;
+  
   if (!user)
     return <div className="error">Please login to view your wishlist</div>;
 
  
 
-  // Handle quick view
-  const handleQuickView = (e) => {
-    e.preventDefault();
-    console.log("Quick view");
-  };
 
-  // Handle compare
-  const handleCompare = (e) => {
-    e.preventDefault();
-    console.log("Compare");
-  };
 
   return (
     <div>
@@ -97,7 +67,7 @@ const WishlistPage = () => {
           {wishlistData?.wishlist?.length === 0 ? (
             <div className="empty-wishlist text-center">
               <h5>Your wishlist is empty</h5>
-              <a href="/products" className="tf-btn">
+              <a href="/shop" className="tf-btn">
                 Browse Products
               </a>
             </div>
@@ -140,7 +110,7 @@ const WishlistPage = () => {
                       )}
                     </a>
                     <ul className="list-product-btn">
-                      <li>
+                      {/* <li>
                         <a
                           href="#shoppingCart"
                           className="box-icon hover-tooltip"
@@ -149,17 +119,19 @@ const WishlistPage = () => {
                           <span className="icon icon-cart2" />
                           <span className="tooltip">Add to Cart</span>
                         </a>
-                      </li>
+                      </li> */}
                       <li>
                         <a
-                          // href="#quickView"
-                          href={`/product/${item.product.id}`}
-                          className="box-icon hover-tooltip quickview"
-                          // onClick={handleQuickView}
-                        >
-                          <span className="icon icon-view" />
-                          <span className="tooltip">Quick View</span>
-                        </a>
+                        href="#"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setQuickViewProduct(item.product);
+                        }}
+                        className="box-icon hover-tooltip quickview"
+                      >
+                        <span className="icon icon-view" />
+                        <span className="tooltip">Quick View</span>
+                      </a>
                       </li>
                       {/* <li>
                         <a
@@ -216,6 +188,12 @@ const WishlistPage = () => {
             </div>
           )}
         </div>
+        {quickViewProduct && (
+          <QuickViewModal
+            product={quickViewProduct}
+            onClose={() => setQuickViewProduct(null)}
+          />
+        )}
       </section>
     </div>
   );

@@ -3,20 +3,21 @@ import { useGetTermsConditionsQuery } from "../../services/termscond/termscondAp
 
 const TermsCondition = () => {
 
-   const { data: policies, isLoading, isError } = useGetTermsConditionsQuery();
-      const [latestPolicy, setLatestPolicy] = useState(null);
-    
-      useEffect(() => {
-        if (policies && policies.length > 0) {
-          // Get the most recent policy (sorted by createdAt DESC)
-          setLatestPolicy(policies[0]);
-        }
-      }, [policies]);
-    
-      if (isLoading)
-        return <div className="loading">Loading privacy policy...</div>;
-      if (isError)
-        return <div className="error">Failed to load privacy policy</div>;
+   const { data: policy, isLoading, isError } = useGetTermsConditionsQuery();
+const [latestPolicy, setLatestPolicy] = useState(null);
+
+useEffect(() => {
+  if (policy) {
+    // Agar backend single object return kare
+    if (policy.content) {
+      setLatestPolicy(policy);
+    }
+    // Agar backend array return kare
+    else if (Array.isArray(policy) && policy.length > 0) {
+      setLatestPolicy(policy[0]);
+    }
+  }
+}, [policy]);
 
 
   return (
@@ -187,7 +188,7 @@ const TermsCondition = () => {
             ) : (
               <div className="term-item">
                 <p className="term-text body-text text-main">
-                  No privacy policy found.
+                  No Terms & Condition found.
                 </p>
               </div>
             )}

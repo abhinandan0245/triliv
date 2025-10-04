@@ -7,20 +7,16 @@ const Marquee = () => (
         {[...Array(5)].map((_, i) => (
           <React.Fragment key={i}>
             <div className="marquee-child-item">
-              <p>Return extended to 60 days</p>
+              <p>Celebrate Our Launch With Us ! Get 10% Off on Every Order. Use Copuon: Launch10</p>
             </div>
+            
+            {/* <div className="marquee-child-item">
+              <p></p>
+            </div>
+            
             <div className="marquee-child-item">
-              <span className="dot" />
-            </div>
-            <div className="marquee-child-item">
-              <p>Life-time Guarantes</p>
-            </div>
-            <div className="marquee-child-item">
-              <span className="dot" />
-            </div>
-            <div className="marquee-child-item">
-              <p>Limited-Time Offer</p>
-            </div>
+              <p></p>
+            </div> */}
             <div className="marquee-child-item">
               <span className="dot" />
             </div>

@@ -1,16 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 
-// Import images (adjust paths as needed)
-// import product1 from "@/assets/images/product/product-1.jpg";
-// import product34 from "@/assets/images/product/product-34.jpg";
-// import product35 from "@/assets/images/product/product-35.jpg";
+
 import avt1 from "@/assets/images/avt-1.png";
-import blogAuthor2 from "@/assets/images/blog-author-2.jpg";
-import blogAuthor3 from "@/assets/images/blog-author-3.jpg";
-import visa from "@/assets/images/Visa.png";
-import dinersClub from "@/assets/images/DinersClub.png";
-import mastercard from "@/assets/images/Mastercard.png";
-import stripe from "@/assets/images/Stripe.png";
 import { useSelector } from "react-redux";
 import { useGetCartQuery, useRemoveFromCartMutation, useUpdateCartQuantityMutation } from "../../services/cart/cartApi";
 import { getGuestCart, removeFromGuestCart, updateGuestCartQuantity } from "../../utils/guestCart";
@@ -194,36 +185,14 @@ const Shopping = () => {
     console.log("Proceeding to checkout");
   };
 
-  if (serverLoading && userId) {
-    return <div className="loading">Loading cart...</div>;
-  }
+  // if (serverLoading && userId) {
+  //   return <div className="loading">Loading cart...</div>;
+  // }
 
   return (
     <>
       {/* Title Page */}
-      <div className="flat-spacing-24">
-        <div className="container">
-          <div className="row justify-content-center">
-            <div className="col-xl-4 col-sm-8">
-              <div className="tf-cart-head text-center">
-                <p className="text-xl-3 title text-dark-4">
-                  Spend <span className="fw-medium">$100</span> more to get
-                  <span className="fw-medium"> Free Shipping</span>
-                </p>
-                <div className="progress-sold tf-progress-ship">
-                  <div
-                    className="value"
-                    style={{ width: "0%" }}
-                    data-progress={60}
-                  >
-                    <i className="icon icon-car" />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      
 
       {/* Cart Section */}
       <div className="flat-spacing-2 pt-0 mt_15">
@@ -329,112 +298,11 @@ const Shopping = () => {
                       
                     </tbody>
                   </table>
-                  <div className="check-gift">
-                    <input
-                      type="checkbox"
-                      className="tf-check"
-                      id="checkGift"
-                      checked={giftWrap}
-                      onChange={(e) => setGiftWrap(e.target.checked)}
-                    />
-                    <label htmlFor="checkGift" className="label text-dark-4">
-                      Add gift wrap. Only{" "}
-                      <span className="fw-medium">₹10.00.</span> (You can choose
-                      or not)
-                    </label>
-                  </div>
-                  <div className="box-ip-discount">
-                    <div className="discount-ip">
-                      <input
-                        className="value-discount"
-                        type="text"
-                        placeholder="Discount code"
-                        value={discountCode}
-                        onChange={(e) => setDiscountCode(e.target.value)}
-                      />
-                      <button
-                        type="button"
-                        className="tf-btn radius-6 btn-out-line-dark-2"
-                        onClick={applyDiscount}
-                      >
-                        Apply
-                      </button>
-                    </div>
-                  </div>
+                  
+                  
                  
                 </form>
-                <div className="fl-iconbox " data-aos="fade-up">
-                  <div
-                    dir="ltr"
-                    className="swiper tf-swiper sw-auto"
-                    data-swiper='{
-                    "slidesPerView": 1,
-                    "spaceBetween": 12,
-                    "speed": 800,
-                    "preventInteractionOnTransition": false, 
-                    "touchStartPreventDefault": false,
-                    "slidesPerGroup": 1,
-                    "pagination": { "el": ".sw-pagination-iconbox", "clickable": true },
-                    "breakpoints": {
-                        "575": { "slidesPerView": 2, "spaceBetween": 12, "slidesPerGroup": 2}, 
-                        "768": { "slidesPerView": 3, "spaceBetween": 24, "slidesPerGroup": 3},
-                        "1200": { "slidesPerView": "auto", "spaceBetween": 24}
-                    }
-                  }'
-                  >
-                    <div className="swiper-wrapper">
-                      <div className="swiper-slide">
-                        <div className="tf-icon-box justify-content-center justify-content-sm-start style-3">
-                          <div className="box-icon">
-                            <i className="icon icon-shipping" />
-                          </div>
-                          <div className="content">
-                            <div className="title text-uppercase">
-                              Free Shipping
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="swiper-slide">
-                        <div className="tf-icon-box justify-content-center justify-content-sm-start style-3">
-                          <div className="box-icon">
-                            <i className="icon icon-gift" />
-                          </div>
-                          <div className="content">
-                            <div className="title text-uppercase">
-                              Gift Package
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="swiper-slide">
-                        <div className="tf-icon-box justify-content-center justify-content-sm-start style-3">
-                          <div className="box-icon">
-                            <i className="icon icon-return" />
-                          </div>
-                          <div className="content">
-                            <div className="title text-uppercase">
-                              Ease Returns
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="swiper-slide">
-                        <div className="tf-icon-box justify-content-center justify-content-sm-start style-3">
-                          <div className="box-icon">
-                            <i className="icon icon-support" />
-                          </div>
-                          <div className="content">
-                            <div className="title text-uppercase text-nowrap">
-                              ONE YEAR WARRANTY
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="d-flex d-xl-none sw-dot-default sw-pagination-iconbox justify-content-center"></div>
-                </div>
+                
               </div>
             </div>
             <div className="col-xl-4">
@@ -450,7 +318,7 @@ const Shopping = () => {
                       <span className="total">₹{total.toFixed(2)} INR</span>
                     </div>
                     <p className="text-sm text-dark-4">
-                      Taxes and shipping calculated at checkout
+                      Shipping calculated at checkout
                     </p>
                   </div>
                   <div className="check-agree">
@@ -480,128 +348,9 @@ const Shopping = () => {
                       Checkout
                     </Link>
                   </div>
-                  <div className="cart-imgtrust">
-                    <p className="text-center text-sm text-dark-1">We accept</p>
-                    <div className="cart-list-social">
-                      <div className="payment-card">
-                        <img src={visa} alt="Visa" />
-                      </div>
-                      <div className="payment-card">
-                        <img src={dinersClub} alt="Diners Club" />
-                      </div>
-                      <div className="payment-card">
-                        <img src={mastercard} alt="Mastercard" />
-                      </div>
-                      <div className="payment-card">
-                        <img src={stripe} alt="Stripe" />
-                      </div>
-                    </div>
-                  </div>
+                  
                 </form>
-                <div className="cart-box testimonial-cart-box">
-                  <div
-                    dir="ltr"
-                    className="swiper tf-swiper"
-                    data-swiper='{
-                    "slidesPerView": 1,
-                    "spaceBetween": 12,
-                    "speed": 800,
-                    "preventInteractionOnTransition": false, 
-                    "touchStartPreventDefault": false,
-                    "pagination": { "el": ".sw-pagination-tes", "clickable": true },
-                    "navigation": {
-                        "clickable": true,
-                        "nextEl": ".nav-next-tes",
-                        "prevEl": ".nav-prev-tes"
-                    }
-                  }'
-                  >
-                    <div className="swiper-wrapper">
-                      <div className="swiper-slide">
-                        <div className="box-testimonial-main">
-                          <span className="quote icon-quote5" />
-                          <div className="content">
-                            <div className="list-star-default">
-                              <i className="icon-star" />
-                              <i className="icon-star" />
-                              <i className="icon-star" />
-                              <i className="icon-star" />
-                              <i className="icon-star" />
-                            </div>
-                            <p className="text-review text-md text-main">
-                              "Stylish, comfortable, and perfect for any
-                              occasion! My new favorite fashion destination."
-                            </p>
-                            <div className="box-author">
-                              <div className="img">
-                                <img src={avt1} alt="author" />
-                              </div>
-                              <span className="name text-sm fw-medium">
-                                Vineta P.
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="swiper-slide">
-                        <div className="box-testimonial-main">
-                          <span className="quote icon-quote5" />
-                          <div className="content">
-                            <div className="list-star-default">
-                              <i className="icon-star" />
-                              <i className="icon-star" />
-                              <i className="icon-star" />
-                              <i className="icon-star" />
-                              <i className="icon-star" />
-                            </div>
-                            <p className="text-review text-md text-main">
-                              "Trendy, versatile, and fits perfectly! My go-to
-                              place for stylish outfits."
-                            </p>
-                            <div className="box-author">
-                              <div className="img">
-                                <img src={blogAuthor3} alt="author" />
-                              </div>
-                              <span className="name text-sm fw-medium">
-                                Themesflat
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="swiper-slide">
-                        <div className="box-testimonial-main">
-                          <span className="quote icon-quote5" />
-                          <div className="content">
-                            <div className="list-star-default">
-                              <i className="icon-star" />
-                              <i className="icon-star" />
-                              <i className="icon-star" />
-                              <i className="icon-star" />
-                              <i className="icon-star" />
-                            </div>
-                            <p className="text-review text-md text-main">
-                              "Chic, affordable, and always on point! I'm
-                              obsessed with their collections!"
-                            </p>
-                            <div className="box-author">
-                              <div className="img">
-                                <img src={blogAuthor2} alt="author" />
-                              </div>
-                              <span className="name text-sm fw-medium">
-                                Henry P.
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="box-nav-swiper">
-                      <div className="swiper-button-prev nav-swiper nav-prev-tes" />
-                      <div className="swiper-button-next nav-swiper nav-next-tes" />
-                    </div>
-                  </div>
-                </div>
+                
               </div>
             </div>
           </div>

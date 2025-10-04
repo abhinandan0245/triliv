@@ -1,17 +1,24 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ShoppingCart from "../Modal/ShoppingCart";
+import { useGetCartQuery } from "../../../services/cart/cartApi";
+import { useGetWishlistQuery } from "../../../services/wishlist/wishlistApi";
+import { useSelector } from "react-redux";
 
-const Toolbar = ({ onClose }) => {
-  const navigate = useNavigate();
+const Toolbar = ({ onClose  ,cartCount = 0, wishlistCount = 0}) => {
+
+    const navigate = useNavigate();
+
+
   const handleAccountClick = () => {
-    // Close the popup
-    navigate("/myaccount"); // Navigate to MyAccount
+    navigate("/myaccount"); 
   };
+
+
   return (
     <div className="tf-toolbar-bottom">
       <div className="toolbar-item">
-        <a href="/">
+        <Link to="/">
           <div className="toolbar-icon">
             <svg
               width="20"
@@ -39,10 +46,10 @@ const Toolbar = ({ onClose }) => {
             </svg>
           </div>
           <div className="toolbar-label">Home</div>
-        </a>
+        </Link>
       </div>
       <div className="toolbar-item">
-        <a href="/myaccount" data-bs-toggle="offcanvas">
+        <Link to="/myaccount">
           <div onClick={handleAccountClick} style={{ cursor: "pointer" }}>
             <div className="toolbar-icon">
               <svg
@@ -62,10 +69,10 @@ const Toolbar = ({ onClose }) => {
             </div>
           </div>
           <div className="toolbar-label">Account</div>
-        </a>
+        </Link>
       </div>
       <div className="toolbar-item">
-        <a href="/shop">
+        <Link to="/shop">
           <div className="toolbar-icon">
             <svg
               width="20"
@@ -107,10 +114,10 @@ const Toolbar = ({ onClose }) => {
             </svg>
           </div>
           <div className="toolbar-label">Shop</div>
-        </a>
+        </Link>
       </div>
       <div className="toolbar-item">
-        <a href="/wish-list">
+        <Link to="/wish-list">
           <div className="toolbar-icon">
             <svg
               width="20"
@@ -131,10 +138,10 @@ const Toolbar = ({ onClose }) => {
                 </clipPath>
               </defs>
             </svg>
-            <div className="toolbar-count">0</div>
+            <div className="toolbar-count">{wishlistCount}</div>
           </div>
           <div className="toolbar-label">Wishlist</div>
-        </a>
+        </Link>
       </div>
       <div className="toolbar-item">
         <li>
@@ -160,7 +167,7 @@ const Toolbar = ({ onClose }) => {
                   fill="black"
                 />
               </svg>
-              <div className="toolbar-count">0</div>
+              <div className="toolbar-count">{cartCount}</div>
             </div>
             <div className="toolbar-label">Cart</div>
           </a>

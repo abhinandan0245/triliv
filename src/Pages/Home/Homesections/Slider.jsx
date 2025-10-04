@@ -5,6 +5,7 @@ import "swiper/css";
 import "swiper/css/pagination";
 
 import { useGetAllBannersQuery } from "../../../services/homepage/sliderApi";
+import { Link } from "react-router-dom";
 
 const Slider = () => {
   const { data: banners = [], error, isLoading } = useGetAllBannersQuery();
@@ -72,8 +73,8 @@ const Slider = () => {
     },
   };
 
-  if (isLoading) return <p>Loading banners...</p>;
-  if (error) return <p>Error loading banners</p>;
+  // if (isLoading) return <p>Loading banners...</p>;
+  // if (error) return <p>Error loading banners</p>;
 
   return (
     <div className="tf-slideshow slider-plant slider-default">
@@ -81,40 +82,28 @@ const Slider = () => {
         <Swiper {...swiperConfig} modules={[Autoplay, Pagination]} className="swiper-wrapper" ref={swiperRef}>
           {banners.map((banner, index) => (
             <SwiperSlide key={banner.id} data-swiper-slide-index={index}>
-              <div className="slider-wrap">
+             <Link to={banner.linkUrl || "#"} className="slider-link">
+               <div className="slider-wrap">
                 <div className="image">
-                  <img
-                    src={banner.homepageImage}
-                    alt={banner.title}
-                    className="lazyload"
-                  />
-                </div>
-                <div className="box-content">
-                  <div className="container">
-                    <div className="row">
-                      <div className="col-12">
-                        <div className="content-slider text-center">
-                          <div className="box-title-slider">
-                            <div className="heading font-7 display-2xl text-white fw-semibold">
-                              {banner.title}
-                            </div>
-                            <p className="sub text-md text-white">{banner.description}</p>
-                          </div>
-                          <div className="box-btn-slider">
-                            <a
-                              href={banner.linkUrl || "#"}
-                              className="tf-btn animate-btn btn-orange"
-                            >
-                              Shop Collection
-                              <i className="icon icon-arr-right"></i>
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+  {/* Desktop Image */}
+  <img
+    src={banner.homepageImage}
+    alt={banner.title}
+    className="d-none d-sm-block img-fluid"
+    loading="lazy"
+  />
+  {/* Mobile Image */}
+  <img
+    src={banner.mobileImage || banner.homepageImage} // fallback
+    alt={banner.title}
+    className="d-block d-sm-none img-fluid"
+    loading="lazy"
+  />
+</div>
+
+                
               </div>
+             </Link>
             </SwiperSlide>
           ))}
         </Swiper>

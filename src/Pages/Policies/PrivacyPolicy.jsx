@@ -4,20 +4,19 @@ import { useGetPrivacyPolicyQuery } from "../../services/privacypolicy/privacyPo
 
 const PrivacyPolicy = () => {
 
-  const { data: policies, isLoading, isError } = useGetPrivacyPolicyQuery();
+const { data: policy, isLoading, isError } = useGetPrivacyPolicyQuery();
   const [latestPolicy, setLatestPolicy] = useState(null);
 
-  useEffect(() => {
-    if (policies && policies.length > 0) {
-      // Get the most recent policy (sorted by createdAt DESC)
-      setLatestPolicy(policies[0]);
+useEffect(() => {
+  if (policy) {
+    if (policy.content) {
+      setLatestPolicy(policy);
     }
-  }, [policies]);
-
-  if (isLoading)
-    return <div className="loading">Loading privacy policy...</div>;
-  if (isError)
-    return <div className="error">Failed to load privacy policy</div>;
+    else if (Array.isArray(policy) && policy.length > 0) {
+      setLatestPolicy(policy[0]);
+    }
+  }
+}, [policy]);
 
 
   return (

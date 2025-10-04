@@ -134,7 +134,6 @@
 // };
 
 // export default VerifyOtpAndResetPasswordPopup;
-
 import React, { useState, useEffect, useRef } from "react";
 import { useVerifyOtpMutation, useResetPasswordMutation } from "../../../services/resetPassApi";
 import { toast } from "react-toastify";
@@ -158,21 +157,40 @@ const VerifyOtpAndResetPasswordPopup = ({ show, onClose, email }) => {
     }
   }, [show, email]);
 
+  // backdrop cleanup
+  useEffect(() => {
+    if (!show) return;
+
+    const modalElement = document.getElementById("modalId");
+    if (modalElement) {
+      const handleHidden = () => {
+        setTimeout(() => {
+          document.querySelectorAll(".modal-backdrop, .offcanvas-backdrop")
+            .forEach((b) => b.remove());
+          document.body.classList.remove("modal-open", "offcanvas-open");
+          document.body.style.overflow = "";
+        }, 50);
+      };
+
+      modalElement.addEventListener("hidden.bs.modal", handleHidden);
+      return () => {
+        modalElement.removeEventListener("hidden.bs.modal", handleHidden);
+      };
+    }
+  }, [show]);
+
   const handleOtpChange = (index, value) => {
-    if (isNaN(value)) return; // Only allow numbers
-    
+    if (isNaN(value)) return;
     const newOtp = [...otp];
     newOtp[index] = value;
     setOtp(newOtp);
-    
-    // Auto focus to next input
+
     if (value && index < 5) {
       otpInputRefs.current[index + 1].focus();
     }
   };
 
   const handleOtpKeyDown = (index, e) => {
-    // Move to previous input on backspace
     if (e.key === "Backspace" && !otp[index] && index > 0) {
       otpInputRefs.current[index - 1].focus();
     }
@@ -185,7 +203,7 @@ const VerifyOtpAndResetPasswordPopup = ({ show, onClose, email }) => {
       toast.error("Please enter complete 6-digit OTP");
       return;
     }
-    
+
     try {
       const res = await verifyOtp({ code, email }).unwrap();
       toast.success(res.message || "OTP verified successfully");
@@ -209,11 +227,10 @@ const VerifyOtpAndResetPasswordPopup = ({ show, onClose, email }) => {
         newPassword,
         confirmPassword,
       }).unwrap();
-      
+
       toast.success(res.message || "Password reset successfully");
       setTimeout(() => {
         onClose();
-        // Clear all states after successful reset
         setOtp(Array(6).fill(""));
         setNewPassword("");
         setConfirmPassword("");
@@ -224,92 +241,89 @@ const VerifyOtpAndResetPasswordPopup = ({ show, onClose, email }) => {
     }
   };
 
-  if (!show) return null;
-
+  // ✅ render conditional UI, but DO NOT return before hooks
   return (
-    <div className={`offcanvas offcanvas-end popup-style-1 ${show ? "show d-block" : ""}`}
+    <div
+      className={`offcanvas offcanvas-end popup-style-1 ${show ? "show d-block" : ""}`}
       style={{ visibility: show ? "visible" : "hidden" }}
     >
       <div className="canvas-wrapper">
         <div className="canvas-header popup-header">
           <span className="title">{isVerified ? "Reset Password" : "Verify OTP"}</span>
-          <button
-            className="icon-close icon-close-popup"
-            onClick={onClose}
-            aria-label="Close"
-          />
+          <button className="icon-close icon-close-popup" onClick={onClose} aria-label="Close" />
         </div>
         <div className="canvas-body popup-inner">
-          <form onSubmit={isVerified ? handleResetPassword : handleVerifyOtp}>
-            {!isVerified ? (
-              <>
-                <p className="text text-sm text-main-2 mb-4">
-                  Enter the 6-digit OTP sent to {email}
-                </p>  
-                <div className="otp-container d-flex justify-content-between mb-4">
-                  {otp.map((digit, index) => (
+          {show && (
+            <form onSubmit={isVerified ? handleResetPassword : handleVerifyOtp}>
+              {!isVerified ? (
+                <>
+                  <p className="text text-sm text-main-2 mb-4">
+                    Enter the 6-digit OTP sent to {email}
+                  </p>
+                  <div className="otp-container d-flex justify-content-between mb-4">
+                    {otp.map((digit, index) => (
+                      <input
+                        key={index}
+                        type="text"
+                        maxLength="1"
+                        value={digit}
+                        onChange={(e) => handleOtpChange(index, e.target.value)}
+                        onKeyDown={(e) => handleOtpKeyDown(index, e)}
+                        ref={(el) => (otpInputRefs.current[index] = el)}
+                        className="otp-input form-control text-center"
+                        style={{ width: "60px", height: "50px", fontSize: "16px" }}
+                        required
+                      />
+                    ))}
+                  </div>
+                </>
+              ) : (
+                <>
+                  <fieldset className="email mb_12">
                     <input
-                      key={index}
-                      type="text"
-                      maxLength="1"
-                      value={digit}
-                      onChange={(e) => handleOtpChange(index, e.target.value)}
-                      onKeyDown={(e) => handleOtpKeyDown(index, e)}
-                      ref={(el) => (otpInputRefs.current[index] = el)}
-                      className="otp-input form-control text-center"
-                      style={{
-                        width: "60px",
-                        height: "50px",
-                        fontSize: "16px",
-                        // margin: "0 5px"
-                      }}
+                      type="password"
+                      placeholder="New Password"
+                      value={newPassword}
+                      onChange={(e) => setNewPassword(e.target.value)}
                       required
                     />
-                  ))}
-                </div>
-              </>
-            ) : (
-              <>
-                <fieldset className="email mb_12">
-                  <input
-                    type="password"
-                    placeholder="New Password"
-                    value={newPassword}
-                    onChange={(e) => setNewPassword(e.target.value)}
-                    required
-                  />
-                </fieldset>
-                <fieldset className="email mb_12">
-                  <input
-                    type="password"
-                    placeholder="Confirm Password"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    required
-                  />
-                </fieldset>
-              </>
-            )}
-            
-            <div className="button-wrap">
-              <button
-                className="subscribe-button tf-btn animate-btn bg-dark-2 w-100"
-                type="submit"
-                disabled={isVerifying || isResetting}
-              >
-                {isVerified 
-                  ? isResetting ? "Resetting..." : "Reset Password"
-                  : isVerifying ? "Verifying..." : "Verify OTP"}
-              </button>
-              <button
-                type="button"
-                onClick={onClose}
-                className="tf-btn btn-out-line-dark2 w-100"
-              >
-                Cancel
-              </button>
-            </div>
-          </form>
+                  </fieldset>
+                  <fieldset className="email mb_12">
+                    <input
+                      type="password"
+                      placeholder="Confirm Password"
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      required
+                    />
+                  </fieldset>
+                </>
+              )}
+
+              <div className="button-wrap">
+                <button
+                  className="subscribe-button tf-btn animate-btn bg-dark-2 w-100"
+                  type="submit"
+                  disabled={isVerifying || isResetting}
+                >
+                  {isVerified
+                    ? isResetting
+                      ? "Resetting..."
+                      : "Reset Password"
+                    : isVerifying
+                      ? "Verifying..."
+                      : "Verify OTP"}
+                </button>
+                <button
+                  type="button"
+                  onClick={onClose}
+                  className="tf-btn btn-out-line-dark2 w-100"
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          )}
         </div>
       </div>
     </div>

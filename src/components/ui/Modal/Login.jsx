@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useLoginMutation } from "../../../services/auth/authApi";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -62,7 +62,9 @@ const LoginPopup = ({ show, onClose, toggleRegister , openResetPopup }) => {
       const res = await login(formData).unwrap();
 
       // 🔹 Save to Redux & localStorage
-      dispatch(setCredentials({ customer: res.customer, token: res.token }));
+      // dispatch(setCredentials({ customer: res.customer, token: res.token }));
+        // ✅ Dispatch with correct key
+    dispatch(setCredentials({ user: res.customer, token: res.token }));
       localStorage.setItem("CUSTOMER_TOKEN", res.token);
       localStorage.setItem("CUSTOMER_USER", JSON.stringify(res.customer));
 
@@ -79,7 +81,35 @@ const LoginPopup = ({ show, onClose, toggleRegister , openResetPopup }) => {
       toast.error(msg);
     }
   };
+  
 
+  // backdrop fix 
+
+  // LoginPopup, RegisterPopup, ResetPasswordPopup, VerifyOtpAndResetPasswordPopup में add करें:
+
+useEffect(() => {
+  if (!show) return;
+  
+  const modalElement = document.getElementById('modalId'); // अपना modal ID use करें
+  
+  if (modalElement) {
+    const handleHidden = () => {
+      // Cleanup after modal is hidden
+      setTimeout(() => {
+        const backdrops = document.querySelectorAll('.modal-backdrop, .offcanvas-backdrop');
+        backdrops.forEach(b => b.remove());
+        document.body.classList.remove('modal-open', 'offcanvas-open');
+        document.body.style.overflow = '';
+      }, 50);
+    };
+
+    modalElement.addEventListener('hidden.bs.modal', handleHidden);
+    
+    return () => {
+      modalElement.removeEventListener('hidden.bs.modal', handleHidden);
+    };
+  }
+}, [show]);
 
   return (
     <div
@@ -88,7 +118,7 @@ const LoginPopup = ({ show, onClose, toggleRegister , openResetPopup }) => {
       <div className="canvas-wrapper">
         <div className="canvas-header popup-header">
           <span className="title">Log in</span>
-          <button className="icon-close icon-close-popup" data-bs-dismiss="offcanvas"/>
+          <button className="icon-close icon-close-popup" data-bs-dismiss="offcanvas" onClick={onClose}/>
         </div>
         <div className="canvas-body popup-inner">
           <form onSubmit={handleSubmit} className="form-login">

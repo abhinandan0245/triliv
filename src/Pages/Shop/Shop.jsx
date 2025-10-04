@@ -6,9 +6,10 @@ import SubProduct from "./SubProduct";
 const Shop = () => {
   return (
     <>
-      <CollectionTitle className="mb-6" />
+      {/* <CollectionTitle className="mb-6" /> */}
+      
       <Product className="mt-6"/>
-      <ShopDescription />
+      {/* <ShopDescription /> */}
     </>
   );
 };

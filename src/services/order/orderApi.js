@@ -25,6 +25,16 @@ export const orderApi = createApi({
       invalidatesTags: ['Order'],
     }),
 
+    // cancel order 
+    cancelOrder: builder.mutation({
+      query: ({id, ...body}) => ({
+          url: `/${id}/cancel`,
+        method: 'PATCH',
+        body,
+      }),
+      invalidatesTags: ['Order'],
+    }),
+
    // 📜 Get all orders of the logged-in customer
    getMyOrders: builder.query({
   query: () => `/my`,
@@ -37,12 +47,14 @@ export const orderApi = createApi({
       query: (orderId) => `/my/${orderId}`,
       providesTags: ['Order'],
       transformResponse: (response) => response.data, // ✅ unwrap the `data` object
+      
     }),
   }),
 });
 
 export const {
   useCreateOrderMutation,
+  useCancelOrderMutation,
   useGetMyOrdersQuery,
   useGetMyOrderByIdQuery,
 } = orderApi;

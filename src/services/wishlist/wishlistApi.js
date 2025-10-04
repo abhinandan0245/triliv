@@ -75,6 +75,7 @@ export const wishlistApi = createApi({
       providesTags: ["Wishlist"],
       transformResponse: (response) => ({
         wishlist: response.wishlist,
+          count: response.total,   // 👈 direct count le aaya
         pagination: {
           total: response.total,
           page: response.page,

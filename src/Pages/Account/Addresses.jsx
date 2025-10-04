@@ -1,37 +1,11 @@
 import React, { useState } from "react";
+import MobileMenuHeader from "../../components/ui/Modal/mobileMenuHeader";
 
 const Addresses = () => {
   const [showAddForm, setShowAddForm] = useState(false);
   const [editingAddress, setEditingAddress] = useState(null);
   const [addresses, setAddresses] = useState([
-    {
-      id: 1,
-      title: "15 Yarran st (Default address)",
-      firstName: "Vineta",
-      lastName: "Pham",
-      email: "account@vince.com",
-      company: "Company",
-      address1: "16 Yarran st",
-      city: "Punchbowl",
-      country: "Australia",
-      postalCode: "2196",
-      phone: "+61 1234 3435",
-      isDefault: true,
-    },
-    {
-      id: 2,
-      title: "17 Yarran st",
-      firstName: "Vineta",
-      lastName: "Pham",
-      email: "account@vince.com",
-      company: "Company",
-      address1: "17 Yarran st",
-      city: "Punchbowl",
-      country: "Australia",
-      postalCode: "2196",
-      phone: "+61 1234 3435",
-      isDefault: false,
-    },
+    
   ]);
 
   const [formData, setFormData] = useState({
@@ -41,7 +15,6 @@ const Addresses = () => {
     address1: "",
     city: "",
     region: "",
-    province: "",
     zipCode: "",
     phone: "",
     isDefault: false,
@@ -65,7 +38,7 @@ const Addresses = () => {
       address1: "",
       city: "",
       region: "",
-      province: "",
+      
       zipCode: "",
       phone: "",
       isDefault: false,
@@ -82,7 +55,7 @@ const Addresses = () => {
       address1: address.address1,
       city: address.city,
       region: "",
-      province: "",
+      
       zipCode: address.postalCode,
       phone: address.phone,
       isDefault: address.isDefault,
@@ -178,11 +151,7 @@ const Addresses = () => {
       <div className="flat-spacing-13">
         <div className="container-7">
           {/* sidebar-account */}
-          <div className="btn-sidebar-mb d-lg-none">
-            <button data-bs-toggle="offcanvas" data-bs-target="#mbAccount">
-              <i className="icon icon-sidebar" />
-            </button>
-          </div>
+        
           {/* /sidebar-account */}
 
           {/* Account */}
@@ -205,14 +174,7 @@ const Addresses = () => {
                     My Orders
                   </a>
                 </li>
-                <li>
-                  <a
-                    href="wish-list"
-                    className="text-sm link fw-medium my-account-nav-item"
-                  >
-                    My Wishlist
-                  </a>
-                </li>
+                
                 <li>
                   <a
                     href="addresses"
@@ -240,6 +202,10 @@ const Addresses = () => {
               </ul>
             </div>
 
+            
+                                      {/* menu for mobile */}
+                           <MobileMenuHeader/>
+
             <div className="my-acount-content account-address">
               <h6 className="title-account">
                 Your addresses ({addresses.length})
@@ -262,7 +228,7 @@ const Addresses = () => {
                 >
                   <div className="cols">
                     <fieldset>
-                      <label htmlFor="first-name">First Name</label>
+                      <label htmlFor="first-name">Name</label>
                       <input
                         type="text"
                         id="first-name"
@@ -272,7 +238,7 @@ const Addresses = () => {
                         required
                       />
                     </fieldset>
-                    <fieldset>
+                    {/* <fieldset>
                       <label htmlFor="last-name">Last Name</label>
                       <input
                         type="text"
@@ -282,7 +248,7 @@ const Addresses = () => {
                         onChange={handleInputChange}
                         required
                       />
-                    </fieldset>
+                    </fieldset> */}
                   </div>
                   <div className="cols">
                     <fieldset>

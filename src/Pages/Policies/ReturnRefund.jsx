@@ -2,22 +2,19 @@ import React, { useEffect, useState } from "react";
 import { useGetRefundPolicyQuery } from "../../services/refundpolicy/refundpolicyApi";
 
 const ReturnRefund = () => {
-  const { data: policies, isLoading, isError } = useGetRefundPolicyQuery();
+  const { data: policy, isLoading, isError } = useGetRefundPolicyQuery();
   const [latestPolicy, setLatestPolicy] = useState(null);
 
-  useEffect(() => {
-    if (policies && policies.length > 0) {
-      // Get the most recent policy (sorted by createdAt DESC)
-      setLatestPolicy(policies[0]);
+useEffect(() => {
+  if (policy) {
+    if (policy.content) {
+      setLatestPolicy(policy);
     }
-  }, [policies]);
-
-  if (isLoading)
-    return <div className="loading">Loading privacy policy...</div>;
-  if (isError)
-    return <div className="error">Failed to load privacy policy</div>;
-
-
+    else if (Array.isArray(policy) && policy.length > 0) {
+      setLatestPolicy(policy[0]);
+    }
+  }
+}, [policy]);
 
   return (
     <div>

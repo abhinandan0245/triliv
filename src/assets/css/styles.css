@@ -81,7 +81,8 @@
   --surface-3: #f3f3f3;
   --shadow-1: 0px 4px 20px 0px #0000001a;
   --gradient-1: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #ffffff 100%);
-  --gradient-2: linear-gradient(180deg, rgba(231, 236, 210, 0) 0%, #e7ecd2 100%);
+  --gradient-2: linear-gradient(180deg, rgba(231, 236, 210, 0) 0%, #f1e554c4 100%);
+  --gradient-9: linear-gradient(90deg, #f1e554c4 100%, rgba(231, 236, 210, 0) 0%);
   --backdrop: rgba(0, 0, 0, 0.4);
   --bg-scrollbar-track: #f1f1f1;
   --bg-scrollbar-thumb: #c1c1c1;
@@ -1283,7 +1284,7 @@ video {
 }
 
 .bg-dark-green-4 {
-  background-color: #253321 !important;
+  background-color: #172969 !important;
 }
 
 .bg-dark-green-5 {
@@ -1610,6 +1611,12 @@ video {
   background: linear-gradient(90deg, #FFECD4 0%, #E5E1FF 100%);
 }
 
+.bg-gradient-9 {
+  background: linear-gradient(180deg, #d7f767c0 0%, #ffffff 100%);
+}
+.bg-gradient-10 {
+  background: linear-gradient( #e3f895c0 0%);
+}
 a {
   -webkit-transition: all 0.3s ease-in-out;
   -moz-transition: all 0.3s ease-in-out;
@@ -4730,10 +4737,10 @@ button.animate-btn::after,
   height: 26px;
 }
 .sw-dots.dot-white .swiper-pagination-bullet {
-  background: var(--white);
+  background: var(--dark);
 }
 .sw-dots.border-white .swiper-pagination-bullet::after {
-  border: 1px solid var(--white);
+  border: 1px solid var(--dark);
 }
 .sw-dots.small {
   height: 15px;
@@ -6727,7 +6734,7 @@ button.animate-btn::after,
 }
 
 .tf-social-icon {
-  --facebook-cl: rgb(59, 89, 152);
+  --facebook-cl:linear-gradient(#1877F2, #1877F2, #1877F2);
   --twitter-cl: rgb(85, 85, 85);
   --instagram-cl: linear-gradient(#8a3ab9, #e95950, #fccc63);
   --threads-cl: rgb(224, 53, 102);
@@ -6766,12 +6773,12 @@ button.animate-btn::after,
   -o-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
 }
-.tf-social-icon .social-facebook:hover {
+.tf-social-icon .social-facebook {
   background-color: transparent;
   color: var(--facebook-cl);
   border-color: var(--facebook-cl);
 }
-.tf-social-icon .social-instagram:hover {
+.tf-social-icon .social-instagram {
   background-color: transparent;
   color: var(--threads-cl);
   border-color: var(--threads-cl);
@@ -6803,20 +6810,20 @@ button.animate-btn::after,
   background-color: var(--line);
   border: none;
 }
-.tf-social-icon.style-fill .social-facebook:hover {
+.tf-social-icon.style-fill .social-facebook {
   background: var(--facebook-cl);
   color: var(--white);
-  border: none;
+  border: 1px;
 }
 .tf-social-icon.style-fill .social-x:hover {
   background: var(--twitter-cl);
   color: var(--white);
   border: none;
 }
-.tf-social-icon.style-fill .social-instagram:hover {
+.tf-social-icon.style-fill .social-instagram {
   background: var(--instagram-cl);
   color: var(--white);
-  border: none;
+  border: 1px;
 }
 .tf-social-icon.style-fill .social-tiktok:hover {
   background: var(--tiktok-cl);
@@ -6856,20 +6863,20 @@ button.animate-btn::after,
 .tf-social-icon.style-large .social-facebook {
   font-size: 18px;
 }
-.tf-social-icon.style-large .social-facebook:hover {
+.tf-social-icon.style-large .social-facebook {
   background: var(--facebook-cl);
   color: var(--white);
-  border: transparent;
+  /* border: transparent; */
 }
 .tf-social-icon.style-large .social-x:hover {
   background: var(--twitter-cl);
   color: var(--white);
   border: transparent;
 }
-.tf-social-icon.style-large .social-instagram:hover {
+.tf-social-icon.style-large .social-instagram {
   background: var(--instagram-cl);
   color: var(--white);
-  border: transparent;
+  /* border: transparent; */
 }
 .tf-social-icon.style-large .social-snapchat:hover {
   background-color: var(--snapchat-cl);
@@ -7735,14 +7742,14 @@ button.animate-btn::after,
   padding: 33px 0px;
 }
 .header-default .box-nav-menu .menu-item.active .item-link, .header-default .box-nav-menu .menu-item:hover .item-link {
-  color: var(--primary);
+  color: var(--secondary);
 }
 .header-default .box-nav-menu .menu-item.active .menu-link-text.active {
-  color: var(--primary);
+  color: var(--secondary);
 }
 .header-default .box-nav-menu .menu-item:hover .item-link .icon {
   transform: rotate(180deg);
-  color: var(--primary);
+  color: var(--secondary);
 }
 .header-default .box-nav-menu .menu-item:hover .item-link::after {
   display: block;
@@ -7752,7 +7759,7 @@ button.animate-btn::after,
   height: 17px;
   font-size: 11px;
   padding: 0px 8px;
-  color: var(--white);
+  color: var(--black);
   margin-left: 6px;
   border-radius: 5px;
 }
@@ -7788,7 +7795,7 @@ button.animate-btn::after,
   top: 0;
   right: 0;
   transform: translate(50%, -50%);
-  color: var(--white);
+  color: var(--dark);
   background-color: var(--primary);
   text-align: center;
   white-space: nowrap;
@@ -8030,10 +8037,10 @@ button.animate-btn::after,
 .header-white .mobile-menu,
 .header-white .nav-icon .nav-icon-item,
 .header-white .box-nav-menu .item-link {
-  color: var(--white);
+  color: var(--dark);
 }
 .header-white.header-bg {
-  background-color: var(--dark);
+  background-color: var(--white);
 }
 
 .header-uppercase .box-nav-menu .item-link {
@@ -18125,7 +18132,7 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
     margin: 0px 15px 80px;
   }
   #goTop.pos1 {
-    bottom: 210px;
+    bottom: 90px;
   }
   .wrapper-wishlist.wrapper-wishlist {
     row-gap: 40px;
@@ -22822,33 +22829,122 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
 
 /* custom css  *********************************************************************************************************************************************************/
 
-.menu-item.dropdown {
+
+/* ===== CATEGORY DROPDOWN STYLES ===== */
+
+/* Parent wrapper */
+.nav-dropdown-wrapper {
   position: relative;
 }
 
-.menu-item.dropdown .submenu {
-  display: none;
+/* Dropdown menu container */
+.category-dropdown-menu {
   position: absolute;
-  top: 80%;
+  top: 100%;
   left: 0;
-  background: white;
-  min-width: 200px;
-  border-radius: 6px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  background: #ffffff;
+  border: 1px solid #e8e8e8;
+  border-radius: 10px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12);
+  list-style: none;
+  padding: 8px;
+  margin: 0;
+  display: none;
+  min-width: 220px;
   z-index: 1000;
+  animation: fadeIn 0.2s ease;
 }
 
-.menu-item.dropdown:hover .submenu {
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Show dropdown on hover */
+.nav-dropdown-wrapper:hover .category-dropdown-menu {
   display: block;
 }
 
-.submenu li {
-  padding: 8px 16px;
-  border-radius: 6px;
+/* Individual dropdown items (li) */
+.category-dropdown-item {
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
-.submenu li:hover {
-  background-color: #f1f1f1;
+/* Dropdown links */
+.category-dropdown-item .category-link {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 12px 16px;
+  margin: 0;
+  color: #333;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.4;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+  position: relative;
+}
+
+/* Hover state with smooth animation */
+.category-dropdown-item .category-link:hover {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  color: blue;
+  padding-left: 20px;
+  transform: translateX(2px);
+}
+
+/* Active/Focus state */
+.category-dropdown-item .category-link:active {
+  background: #e0e0e0;
+  transform: scale(0.98);
+}
+
+/* Add subtle separator between items */
+.category-dropdown-item:not(:last-child) {
+  border-bottom: 1px solid #f5f5f5;
+}
+
+/* First and last item styling */
+.category-dropdown-item:first-child .category-link {
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+.category-dropdown-item:last-child .category-link {
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+/* Optional: Add icon/arrow on hover */
+.category-dropdown-item .category-link::before {
+  content: '›';
+  position: absolute;
+  left: 8px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  font-size: 18px;
+  color: #666;
+}
+
+.category-dropdown-item .category-link:hover::before {
+  opacity: 1;
+}
+
+/* Remove inherited line-height */
+.category-dropdown-menu,
+.category-dropdown-item {
+  line-height: 1;
 }
 
 /* profilev */
@@ -22950,47 +23046,7 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
 
 
 
-/* thumbnail image */
 
-
-/* .price-old {
-  text-decoration: line-through;
-  color: #999;
-  margin-left: 8px;
-  font-size: 0.9em;
-}
-
-.on-sale-wrap {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: #ff0000;
-  color: white;
-  padding: 3px 8px;
-  border-radius: 4px;
-  font-size: 12px;
-  z-index: 2;
-}
-
-.size-box {
-  display: flex;
-  gap: 8px;
-  margin-top: 10px;
-}
-
-.size-item {
-  padding: 2px 6px;
-  border: 1px solid #ddd;
-  border-radius: 3px;
-}
-
-.size-item.text-white {
-  background: #333;
-  border-color: #333;
-} */
-
-
-/* srerching result popup  */
 
 .product-card {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -23014,7 +23070,6 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
   font-weight: 600;
   color: #333;
 }
-/* Thumbnail slider styles */
    /* Thumbnail slider styles */
         .product-image-slider {
           position: sticky;
@@ -23040,10 +23095,11 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
           width: 100%;
           height: 800px;
           max-height: 1200px;
-          object-fit: cover;
+          object-fit: contain;   /* 👈 Changed from cover */
           display: block;
            position: relative;
            z-index: 1;
+           background: #fff;  /* optional: neutral bg so empty space looks clean */
           }
 
         .image-nav-btn {
@@ -23138,7 +23194,7 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
         .thumbnail-image {
           width: 100%;
           height: 100%;
-          object-fit: cover;
+          object-fit: contain; 
         }
 
         /* Mobile responsiveness */
@@ -23193,4 +23249,163 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
 
 
 
-        
+        /* backdrop  */
+
+
+/* Product card styling */
+.order-product-card {
+  border: 1px solid #dee2e6;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: transform 0.2s;
+}
+
+.order-product-card:hover {
+  transform: scale(1.02);
+}
+
+.order-product-card img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 0.25rem;
+  border: 1px solid #dee2e6;
+}
+
+/* Summary box */
+.order-summary {
+  border-top: 1px solid #dee2e6;
+  padding-top: 1rem;
+  margin-top: 1rem;
+}
+
+/* Back button */
+.back-link {
+  text-decoration: none;
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background-color: #0d6efd;
+  color: #fff;
+  border-radius: 0.5rem;
+  transition: background-color 0.2s;
+}
+
+.back-link:hover {
+  background-color: #0b5ed7;
+}
+
+
+
+/* QuickView Modal Styles */
+.modal-quick-view.show {
+  display: block;
+  padding-right: 17px;
+  background-color: rgba(0, 0, 0, 0.5);
+  
+}
+
+.icon-close-popup {
+  cursor: pointer;
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  z-index: 10;
+}
+
+.quickview-product-image {
+  width: 100%;
+  height: auto;
+  max-height: 600px;
+  object-fit: contain;
+}
+
+.no-image-fallback {
+  width: 100%;
+  height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f5f5f5;
+  color: #999;
+}
+
+/* Swiper Navigation Styles */
+.single-slide-next, .single-slide-prev {
+  width: 30px;
+  height: 30px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  color: #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+}
+
+.single-slide-next:after, .single-slide-prev:after {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+/* order details table  */
+/* Add to your CSS file */
+.table td, .table th {
+  vertical-align: middle;
+  text-align: center;
+}
+
+.table td:first-child, .table th:first-child {
+  text-align: left; /* Keep product name left-aligned */
+}
+
+.slider-link{
+  display: block;
+}
+
+/* Coupon List Scrollbar Styling */
+
+.coupon-list::-webkit-scrollbar {
+  width: 3px;
+}
+.coupon-list::-webkit-scrollbar-thumb {
+  background: #bbb;
+  border-radius: 10px;
+}
+
+
+/* Mobile menu container */
+.header-mobile-menu-btn-container {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Scrollable horizontal menu */
+.header-mobile-menu-btn {
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  white-space: nowrap;
+}
+
+.header-mobile-menu-btn .btn {
+  flex: 0 0 auto;
+  min-width: 100px;
+}
+
+.header-mobile-menu-btn::-webkit-scrollbar {
+  height: 5px;
+}
+.header-mobile-menu-btn::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 2px;
+}
+
+
+/* baneerr  */
+
+

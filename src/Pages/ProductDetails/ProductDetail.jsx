@@ -38,6 +38,8 @@ const ProductDetail = () => {
   const [isInWishlist, setIsInWishlist] = useState(false);
   const [wishlistId, setWishlistId] = useState(null);
   const [activeAccordion, setActiveAccordion] = useState(null);
+  const { isAuthenticated, user } = useSelector((state) => state.auth);
+
 
   // New state for image slider
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -49,7 +51,6 @@ const ProductDetail = () => {
     setActiveAccordion(activeAccordion === id ? null : id);
   };
 
-  const user = useSelector((state) => state.auth.user);
 
   useEffect(() => {
     console.log("Current wishlist status:", {
@@ -219,9 +220,7 @@ const ProductDetail = () => {
         },
       });
 
-      // Sync the swipers
-      thumbsSwiper.controller.control = mainSwiper;
-      mainSwiper.controller.control = thumbsSwiper;
+      
 
       thumbsSwiperRef.current = thumbsSwiper;
       mainSwiperRef.current = mainSwiper;
@@ -253,7 +252,7 @@ const ProductDetail = () => {
     );
   if (!productData) return <div className="error">Product not found</div>;
 
-  // add cart api call  ******************
+  
 
   // const handleAddToCart = async () => {
   //   if (!productData) return;
@@ -293,43 +292,54 @@ const ProductDetail = () => {
       return;
     }
 
-    // Guest user → store in localStorage (pass full variant arrays + fallback fields)
-    if (!user || !user.id) {
-      addToGuestCart({
-        productId: productData._id ?? productData.id,
-        title: productData.title ?? productData.name,
-        size: selectedSize,
-        quantity,
-        // pass variant arrays (may be undefined but that's fine)
-        priceVariants: productData.priceVariants ?? [],
-        imageVariants: productData.imageVariants ?? [],
-        images: productData.images ?? [],
-        // fallback single-image fields
-        image:
-          typeof productData.image === "string"
-            ? productData.image
-            : productData.image?.url ?? undefined,
-        // optionally include other fields used by addToGuestCart
-        originalPrice: productData.originalPrice,
-        price: productData.price,
-        // you can include the whole product if you want a snapshot
-        // fullProduct: productData
-      });
+     //  Guest user → block and show toast
+  // 🚫 Not logged in → toast + open login popup
+  if (!isAuthenticated || !user?.id) {
+    toast.info("Please log in to add items to your cart");
+    // openLogin(); // 🔥 same as Header
+    return;
+  }
 
-      toast.success("Added to cart (Guest)");
-      return;
-    }
+
+
+    // Guest user → store in localStorage (pass full variant arrays + fallback fields)
+    // if (!user || !user.id) {
+    //   addToGuestCart({
+    //     productId: productData._id ?? productData.id,
+    //     title: productData.title ?? productData.name,
+    //     size: selectedSize,
+    //     quantity,
+    //     // pass variant arrays (may be undefined but that's fine)
+    //     priceVariants: productData.priceVariants ?? [],
+    //     imageVariants: productData.imageVariants ?? [],
+    //     images: productData.images ?? [],
+    //     // fallback single-image fields
+    //     image:
+    //       typeof productData.image === "string"
+    //         ? productData.image
+    //         : productData.image?.url ?? undefined,
+    //     // optionally include other fields used by addToGuestCart
+    //     originalPrice: productData.originalPrice,
+    //     price: productData.price,
+    //     // you can include the whole product if you want a snapshot
+    //     // fullProduct: productData
+    //   });
+
+    //   toast.success("Added to cart (Guest)");
+    //   return;
+    // }
 
     // Logged-in user flow (unchanged)...
     try {
-      await addToCart({
+    const response =  await addToCart({
         customerId: user.id,
         productId: productData._id ?? productData.id,
         quantity,
         size: selectedSize,
       }).unwrap();
 
-      toast.success("Product added to cart");
+
+      toast.success(response.message || "cart items added!");
     } catch (error) {
       console.error("Cart error:", error);
       toast.error(error?.data?.message || "Failed to add product to cart");
@@ -459,7 +469,7 @@ const ProductDetail = () => {
               <div className="col-md-6">
                 <div className="product-image-slider">
                   {/* Main Image */}
-                  <div className="main-image-container position-relative">
+                  <div className="main-image-container position-relative rouned-2">
                     {filteredImages.length > 0 && (
                       <div 
                         className="main-image-wrapper"
@@ -484,28 +494,7 @@ const ProductDetail = () => {
                           }}
                         />
                         
-                        {/* Navigation Arrows */}
-                        {filteredImages.length > 1 && (
-  <>
-    <button
-      disabled={isPrevDisabled}
-      className="image-nav-btn prev-btn"
-      onClick={handlePrevImage}
-      aria-label="Previous image"
-    >
-       <ChevronLeft  size={20} />
-    </button>
-    <button
-      disabled={isNextDisabled}
-      className="image-nav-btn next-btn"
-      onClick={handleNextImage}
-      aria-label="Next image"
-    >
-      <ChevronRight  size={20} />
-
-    </button>
-  </>
-)}
+                       
                       </div>
                     )}
                   </div>
@@ -550,25 +539,26 @@ const ProductDetail = () => {
 
                       <div className="product-price">
                         <div className="display-sm price-new price-on-sale">
-                          Rs {productData.price?.toFixed(2) || "0.00"}
+                          ₹ {productData.price?.toFixed(2) || "0.00"}
                         </div>
                         {productData.originalPrice > productData.price && (
                           <>
                             <div className="display-sm price-old">
-                              Rs {productData.originalPrice.toFixed(2)}
+                              ₹ {productData.originalPrice.toFixed(2)}
                             </div>
                             <span className="badge-sale">
-                              {productData.discountPercentage}% Off
-                            </span>
+  {productData.discountPercentage
+    ? `${productData.discountPercentage}% Off`
+    : productData.discountAmount
+    ? `₹ ${productData.discountAmount} Off`
+    : null}
+</span>
+
                           </>
                         )}
                       </div>
 
-                      <div className="product-stock">
-                        <span className="stock in-stock">
-                          In Stock ({productData.stock} units)
-                        </span>
-                      </div>
+                      
                     </div>
 
                     {productData.sizes?.length > 0 && (
@@ -622,22 +612,22 @@ const ProductDetail = () => {
                             +
                           </button>
                         </div>
-                        <a
-                          href="#shoppingCart"
-                          onClick={handleAddToCart}
-                          disabled={isAdding}
-                          data-bs-toggle="offcanvas"
-                          className="tf-btn animate-btn btn-add-to-cart"
-                        >
-                          {isAdding ? "Adding..." : "Add to cart"}
-                        </a>
+                       <a
+  onClick={(e) => {
+    e.preventDefault();
+    handleAddToCart();
+  }}
+  disabled={isAdding}
+  className="tf-btn animate-btn btn-add-to-cart"
+  {...(user?.id
+    ? { "data-bs-toggle": "offcanvas", href: "#shoppingCart" } // ✅ only if logged in
+    : {})} // ❌ remove attributes when not logged in
+>
+  {isAdding ? "Adding..." : "Add to cart"}
+</a>
+
                       </div>
-                      <Link
-                        to="/checkout"
-                        className="tf-btn btn-primary w-100 animate-btn"
-                      >
-                        Buy it now
-                      </Link>
+                     
                     </div>
 
                     <div className="tf-product-extra-link">
@@ -662,14 +652,7 @@ const ProductDetail = () => {
                             : "Add to wishlist"}
                         </span>
                       </a>
-                      <a
-                        href="#shareSocial"
-                        data-bs-toggle="modal"
-                        className="product-extra-icon link"
-                      >
-                        <i className="icon icon-share" />
-                        Share
-                      </a>
+                      
                     </div>
                   </div>
                 </div>
@@ -705,8 +688,8 @@ const ProductDetail = () => {
                 className="accordion-body widget-material"
                 dangerouslySetInnerHTML={{
                   __html:
-                    productData.ingredients ||
-                    "No ingredients information available",
+                    productData.description ||
+                    "No Description information available",
                 }}
               />
             </div>
@@ -723,7 +706,7 @@ const ProductDetail = () => {
               aria-controls="material"
               role="button"
             >
-              <span>Ingridiance</span>
+              <span>Ingredients</span>
               <span className="icon icon-arrow-down" />
             </div>
             <div
@@ -775,7 +758,6 @@ const ProductDetail = () => {
           </div>
         </div>
       </section>
-      <PeopleAlsoBought />
 
       {showCompare && (
         <CompareModal products={[]} onClose={() => setShowCompare(false)} />

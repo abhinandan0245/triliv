@@ -100,13 +100,45 @@
 
 // export default ResetPasswordPopup;
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSendOtpMutation } from "../../../services/resetPassApi";
 import { toast } from "react-toastify";
 
 const ResetPasswordPopup = ({ show, onClose, onSuccess }) => {
   const [email, setEmail] = useState("");
   const [sendOtp, { isLoading, isError, error }] = useSendOtpMutation();
+
+
+
+      // backdrop fix 
+  
+    // LoginPopup, RegisterPopup, ResetPasswordPopup, VerifyOtpAndResetPasswordPopup में add करें:
+    
+  useEffect(() => {
+    if (!show) return;
+    
+    const modalElement = document.getElementById('modalId'); // अपना modal ID use करें
+    
+    if (modalElement) {
+      const handleHidden = () => {
+        // Cleanup after modal is hidden
+        setTimeout(() => {
+          const backdrops = document.querySelectorAll('.modal-backdrop, .offcanvas-backdrop');
+          backdrops.forEach(b => b.remove());
+          document.body.classList.remove('modal-open', 'offcanvas-open');
+          document.body.style.overflow = '';
+        }, 50);
+      };
+  
+      modalElement.addEventListener('hidden.bs.modal', handleHidden);
+      
+      return () => {
+        modalElement.removeEventListener('hidden.bs.modal', handleHidden);
+      };
+    }
+  }, [show]);
+
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -118,6 +150,11 @@ const ResetPasswordPopup = ({ show, onClose, onSuccess }) => {
       toast.error(err?.data?.message || "Failed to send OTP");
     }
   };
+
+
+  
+
+
 
   return (
     <div className={`offcanvas offcanvas-end popup-style-1 popup-reset-pass ${show ? "show d-block" : ""}`}

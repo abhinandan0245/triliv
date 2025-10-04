@@ -1,42 +1,48 @@
-import React from "react";
-import { useGetMyOrdersQuery } from "../../services/order/orderApi";
+import React, { useState } from "react";
+import { useCancelOrderMutation, useGetMyOrdersQuery } from "../../services/order/orderApi";
+import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import MobileMenuHeader from "../../components/ui/Modal/mobileMenuHeader";
 
 const Orders = () => { 
     const { data: orders = [], isLoading, isError } = useGetMyOrdersQuery();
+     const [cancelOrder, { isLoading: isCancelling }] = useCancelOrderMutation();
 
+  const [showModal, setShowModal] = useState(false);
+  const [selectedOrder, setSelectedOrder] = useState(null);
 
-  // Sample orders data - in a real app, this would likely come from an API or state management
-  // const orders = [
-  //   {
-  //     id: "#12345",
-  //     date: "15 May 2025",
-  //     status: "Delivered",
-  //     statusClass: "text-delivered",
-  //     total: "$690 / 3 items",
-  //   },
-  //   {
-  //     id: "#23154",
-  //     date: "16 May 2025",
-  //     status: "Delivered",
-  //     statusClass: "text-delivered",
-  //     total: "$460 / 2 items",
-  //   },
-  //   {
-  //     id: "#12467",
-  //     date: "17 May 2025",
-  //     status: "On the way",
-  //     statusClass: "text-on-the-way",
-  //     total: "$920 / 4 items",
-  //   },
-  // ];
+  const handleCancelClick = (order) => {
+    setSelectedOrder(order);
+    setShowModal(true);
+  };
 
-  // // State to track if user has orders (for demo purposes)
-  // const [hasOrders, setHasOrders] = React.useState(true);
+   const confirmCancel = async () => {
+    if (!selectedOrder) return;
+    try {
+     const response = await cancelOrder({ id: selectedOrder.id }).unwrap(); 
+      console.log("Order cancelled:", selectedOrder.id);
+      toast.success(response.message || "Order Cancelled !")
+      // yahan tum toast ya notification dikha sakte ho
+    } catch (error) {
+      console.error("Cancel failed:", error);
+      const errorMessage =
+    error?.data?.message || 
+    error?.error || 
+    "Cancel failed, please try again!";
 
-  // const toggleOrders = () => {
-  //   setHasOrders(!hasOrders);
-  // };
+  toast.error(errorMessage);
+      // yahan bhi toast ya error msg dikha sakte ho
+    } finally {
+      setShowModal(false);
+      setSelectedOrder(null);
+    }
+  };
 
+  const closeModal = () => {
+    setShowModal(false);
+    setSelectedOrder(null);
+  };
+  
     const hasOrders = orders.length > 0;
 
 
@@ -65,20 +71,7 @@ const Orders = () => {
       <div className="flat-spacing-13">
         <div className="container-7">
           {/* sidebar-account */}
-          <div className="btn-sidebar-mb d-lg-none">
-            <button
-              className="btn"
-              data-bs-toggle="offcanvas"
-              data-bs-target="#mbAccount"
-              onClick={(e) => {
-                // In React, we'd typically manage this with state rather than data attributes
-                e.preventDefault();
-                console.log("Sidebar toggle clicked - implement sidebar state");
-              }}
-            >
-              <i className="icon icon-sidebar" />
-            </button>
-          </div>
+        
           {/* /sidebar-account */}
 
           {/* Section-acount */}
@@ -101,14 +94,7 @@ const Orders = () => {
                     My Orders
                   </a>
                 </li>
-                <li>
-                  <a
-                    href="wish-list"
-                    className="text-sm link fw-medium my-account-nav-item"
-                  >
-                    My Wishlist
-                  </a>
-                </li>
+                
                 <li>
                   <a
                     href="addresses"
@@ -136,11 +122,15 @@ const Orders = () => {
               </ul>
             </div>
 
+
+               {/* menu for mobile */}
+                           <MobileMenuHeader/>
+
             <div className="my-acount-content account-orders">
             {isLoading ? (
-              <div>Loading orders...</div>
+              <div></div>
             ) : isError ? (
-              <div>Failed to load orders. Please try again.</div>
+              <div></div>
             ) : !hasOrders ? (
               <div className="account-no-orders-wrap">
                 <img className="lazyload" data-src="images/account-no-order.png" src="images/account-no-order.png" alt="No orders" />
@@ -155,6 +145,7 @@ const Orders = () => {
                   <table>
                     <thead>
                       <tr>
+                        <th className="text-md fw-medium">Image</th>
                         <th className="text-md fw-medium">Order ID</th>
                         <th className="text-md fw-medium">Date</th>
                         <th className="text-md fw-medium">Status</th>
@@ -165,6 +156,14 @@ const Orders = () => {
                     <tbody>
                       {orders.map((order) => (
                         <tr key={order.id} className="tf-order-item">
+<td className="text-md">
+  <img
+    src={order.orderItems?.[0]?.product?.imageVariants?.[0]?.imageUrl || 'placeholder.png'}
+    alt={order.orderItems?.[0]?.product?.title || 'Product Image'}
+    style={{ width: "60px", height: "80px", objectFit: "cover" }}
+    className="rounded-2"
+  />
+</td>
 <td className="text-md">{order.orderId}</td>
 <td className="text-md">{new Date(order.createdAt).toLocaleDateString()}</td>
 <td className={`text-md ₹{order.orderStatus === 'Delivered' ? 'text-delivered' : ''}`}>
@@ -173,18 +172,29 @@ const Orders = () => {
 <td className="text-md">{`₹${order.grandTotal} / ${order.orderItems.length} items`}</td>
 
                           <td>
-                            <a
-                              href="#order_detail"
-                              data-bs-toggle="modal"
+                            <div className="d-flex gap-2">
+                              <Link
+                              to={`/orders/${order._id || order.orderId}`}
+                              // data-bs-toggle="modal"
                               className="view-detail"
-                              onClick={(e) => {
-                                e.preventDefault();
-                                console.log(`View details for order ${order.id}`);
-                              }}
+                            
                             >
                               Detail
-                            </a>
+                            </Link>
+
+                            {/* cancel popup  */}
+  {/* Cancel button sirf tab dikhana jab status Ordered/Cancelled na ho */}
+    {!["Ordered", "Cancelled"].includes(order.orderStatus) && (
+      <button
+        className="view-detail btn btn-outline-secondary"
+        onClick={() => handleCancelClick(order)}
+      >
+        Cancel
+      </button>
+    )}
+                            </div>
                           </td>
+                          
                         </tr>
                       ))}
                     </tbody>
@@ -197,7 +207,45 @@ const Orders = () => {
           {/* /Account */}
         </div>
       </div>
-      {/* /Main Content */}
+      {/* confirmation popup order  */}
+
+      {showModal && (
+  <div
+    className="modal fade show"
+    style={{ display: "block", background: "rgba(0,0,0,0.5)" }}
+    onClick={closeModal}   // 🔑 backdrop click -> modal close
+  >
+    <div
+      className="modal-dialog modal-dialog-centered"
+      onClick={(e) => e.stopPropagation()} // 🔑 andar click pe modal band na ho
+    >
+      <div className="modal-content">
+        <div className="modal-header">
+          <h5 className="modal-title">Confirm Cancel</h5>
+          <button
+            type="button"
+            className="btn-close"
+            onClick={closeModal}
+          ></button>
+        </div>
+        <div className="modal-body">
+          Are you sure you want to cancel order{" "}
+          <strong>{selectedOrder?.orderId}</strong>?
+        </div>
+        <div className="modal-footer">
+          <button className="btn btn-secondary" onClick={closeModal}>
+            No
+          </button>
+          <button className="btn btn-danger" onClick={confirmCancel} disabled={isCancelling}>
+            {isCancelling ? "Cancelling..." : "Yes, Cancel"}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+)}
+
+
     </div>
   );
 };

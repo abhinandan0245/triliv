@@ -3,21 +3,19 @@ import { useGetShippingInfoQuery } from "../../services/shippinginfo/shippingInf
 
 const Shipping = () => {
 
-  const { data: shippingInfo, isLoading, isError } = useGetShippingInfoQuery();
-    const [latestShippingInfo, setLatestShippingInfo] = useState(null);
-
-    useEffect(() => {
-      if (shippingInfo && shippingInfo.length > 0) {
-        // Get the most recent policy (sorted by createdAt DESC)
-        setLatestShippingInfo(shippingInfo[0]);
-      }
-    }, [shippingInfo]);
-
-    if (isLoading)
-      return <div className="loading">Loading shipping information...</div>;
-    if (isError)
-      return <div className="error">Failed to load shipping information</div>;
-
+    const { data: policy, isLoading, isError } = useGetShippingInfoQuery();
+     const [latestPolicy, setLatestPolicy] = useState(null);
+   
+   useEffect(() => {
+     if (policy) {
+       if (policy.content) {
+         setLatestPolicy(policy);
+       }
+       else if (Array.isArray(policy) && policy.length > 0) {
+         setLatestPolicy(policy[0]);
+       }
+     }
+   }, [policy]);
  
 
   
@@ -49,8 +47,8 @@ const Shipping = () => {
       <section className="s-term-user flat-spacing-13">
         <div className="container">
           <div className="content">
-            {latestShippingInfo ? (
-              <div dangerouslySetInnerHTML={{ __html: latestShippingInfo.content }} />
+            {latestPolicy ? (
+              <div dangerouslySetInnerHTML={{ __html: latestPolicy.content }} />
             ) : (
               <div className="term-item">
                 <p className="term-text body-text text-main">
@@ -65,5 +63,4 @@ const Shipping = () => {
     </div>
   );
 };
-
 export default Shipping;

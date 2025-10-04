@@ -4,6 +4,7 @@ import { useGetUserProfileQuery, useUpdateUserProfileMutation } from "../../serv
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { logout } from "../../redux/slice/authSlice";
+import MobileMenuHeader from "../../components/ui/Modal/mobileMenuHeader";
 
 const AccountDetail = () => {
   const [formData, setFormData] = useState({
@@ -99,8 +100,7 @@ const [updateProfile, { isLoading: isUpdating }] =
     }
   };
 
-  if (isLoading) return <p>Loading profile...</p>;
-  if (isError) return <p>Error loading profile</p>;
+  
 
 
   // logout 
@@ -128,23 +128,22 @@ const [updateProfile, { isLoading: isUpdating }] =
 
       <div className="flat-spacing-13">
         <div className="container-7">
-          <div className="btn-sidebar-mb d-lg-none">
-            <button data-bs-toggle="offcanvas" data-bs-target="#mbAccount">
-              <i className="icon icon-sidebar" />
-            </button>
-          </div>
+            
 
           <div className="main-content-account">
             <div className="sidebar-account-wrap sidebar-content-wrap sticky-top d-lg-block d-none">
               <ul className="my-account-nav">
                 <li><Link to="/myaccount" className="my-account-nav-item">Dashboard</Link></li>
-                <li><Link to="/account-orders" className="my-account-nav-item">My Orders</Link></li>
-                <li><Link to="/wish-list" className="my-account-nav-item">My Wishlist</Link></li>
-                <li><Link to="/account-addresses" className="my-account-nav-item">Addresses</Link></li>
-                <li><Link to="/account-detail" className="my-account-nav-item active">Account Details</Link></li>
+                <li><Link to="/orders" className="my-account-nav-item">My Orders</Link></li>
+                {/* <li><Link to="/wish-list" className="my-account-nav-item">My Wishlist</Link></li> */}
+                <li><Link to="/addresses" className="my-account-nav-item">Addresses</Link></li>
+                <li><Link to="/accountdetail" className="my-account-nav-item active">Account Details</Link></li>
                 <li><span onClick={handleLogout} className="my-account-nav-item">Log Out</span></li>
               </ul>
             </div>
+            
+                                      {/* menu for mobile */}
+                           <MobileMenuHeader/>
 
             <div className="my-acount-content account-dashboard">
               <form onSubmit={handleSubmit} className="form-edit-account">

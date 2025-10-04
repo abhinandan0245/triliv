@@ -5,8 +5,7 @@ import { useGetAllBannersQuery } from "../../../services/homepage/banner2Api";
 const BannerOne = () => {
   const { data, error, isLoading } = useGetAllBannersQuery();
 
-  if (isLoading) return <p>Loading banner...</p>;
-  if (error) return <p>Error loading banner</p>;
+  
 
   const banner = data?.banners?.[0]; // ✅ FIX: Access nested banners array
 
@@ -16,8 +15,8 @@ const BannerOne = () => {
         <div className="s2-banner-with-text">
           <div className="banner">
             <img
-              src={banner?.homepageImage || ""}
-              data-src={banner?.homepageImage || ""}
+              src={banner?.homepageImage }
+              data-src={banner?.homepageImage}
               alt="banner"
               className="lazyload"
               loading="lazy"

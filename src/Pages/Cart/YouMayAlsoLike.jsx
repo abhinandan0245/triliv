@@ -185,120 +185,122 @@ const YouMayAlsoLike = () => {
   ];
 
   return (
-    <section className="flat-spacing pt-0">
-      <div className="container">
-        <div className="flat-title  mb_5" data-aos="fade-up">
-          <h4 className="title">You May Also Like</h4>
-        </div>
-        <div className="fl-control-sw wrap-pos-nav sw-over-product">
-          <div
-            dir="ltr"
-            className="swiper tf-swiper wrap-sw-over"
-            ref={swiperRef}
-          >
-            <div className="swiper-wrapper">
-              {products.map((product) => (
-                <div className="swiper-slide" key={product.id}>
-                  <div className="card-product style-2">
-                    <div className="card-product-wrapper">
-                      <a href="productdetail" className="product-img">
-                        <img
-                          className="img-product lazyload"
-                          data-src={product.mainImage}
-                          src={product.mainImage}
-                          alt="image-product"
-                        />
-                        <img
-                          className="img-hover lazyload"
-                          data-src={product.hoverImage}
-                          src={product.hoverImage}
-                          alt="image-product"
-                        />
-                      </a>
-                      <ul className="list-product-btn">
-                        <li>
-                          <a href="cart" className="hover-tooltip box-icon">
-                            <span className="icon icon-cart2"></span>
-                            <span className="tooltip">Add to Cart</span>
-                          </a>
-                        </li>
-                        <li className="wishlist">
-                          <a
-                            href="javascript:void(0);"
-                            className="hover-tooltip box-icon"
-                          >
-                            <span className="icon icon-heart2"></span>
-                            <span className="tooltip">Add to Wishlist</span>
-                          </a>
-                        </li>
-                        <li>
-                          <a
-                            href="#quickView"
-                            data-bs-toggle="modal"
-                            className="hover-tooltip box-icon quickview"
-                          >
-                            <span className="icon icon-view"></span>
-                            <span className="tooltip">Quick View</span>
-                          </a>
-                        </li>
-                        <li className="compare">
-                          <a
-                            href="#compare"
-                            data-bs-toggle="modal"
-                            className="hover-tooltip box-icon"
-                          >
-                            <span className="icon icon-compare"></span>
-                            <span className="tooltip">Add to Compare</span>
-                          </a>
-                        </li>
-                      </ul>
-                    </div>
-                    <div className="card-product-info">
-                      <a
-                        href="productdetail"
-                        className="name-product link fw-medium text-md"
-                      >
-                        {product.name}
-                      </a>
-                      <p className="price-wrap fw-medium">
-                        <span className="price-new">{product.priceNew}</span>
-                        <span className="price-old">{product.priceOld}</span>
-                      </p>
-                      <ul className="list-color-product">
-                        {product.colors.map((color, index) => (
-                          <li
-                            key={index}
-                            className={`list-color-item hover-tooltip tooltip-bot color-swatch ${
-                              color.active ? "active" : ""
-                            } ${color.line ? "line" : ""}`}
-                          >
-                            <span className="tooltip color-filter">
-                              {color.name}
-                            </span>
-                            <span
-                              className={`swatch-value ${color.class}`}
-                            ></span>
-                            <img
-                              className="lazyload"
-                              data-src={color.image}
-                              src={color.image}
-                              alt="image-product"
-                            />
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="d-flex d-xl-none sw-dot-default sw-pagination-also justify-content-center"></div>
-          <div className="d-none d-xl-flex swiper-button-next nav-swiper nav-next-also"></div>
-          <div className="d-none d-xl-flex swiper-button-prev nav-swiper nav-prev-also"></div>
-        </div>
-      </div>
-    </section>
+    // <section className="flat-spacing pt-0">
+    //   <div className="container">
+    //     <div className="flat-title  mb_5" data-aos="fade-up">
+    //       <h4 className="title">You May Also Like</h4>
+    //     </div>
+    //     <div className="fl-control-sw wrap-pos-nav sw-over-product">
+    //       <div
+    //         dir="ltr"
+    //         className="swiper tf-swiper wrap-sw-over"
+    //         ref={swiperRef}
+    //       >
+    //         <div className="swiper-wrapper">
+    //           {products.map((product) => (
+    //             <div className="swiper-slide" key={product.id}>
+    //               <div className="card-product style-2">
+    //                 <div className="card-product-wrapper">
+    //                   <a href="productdetail" className="product-img">
+    //                     <img
+    //                       className="img-product lazyload"
+    //                       data-src={product.mainImage}
+    //                       src={product.mainImage}
+    //                       alt="image-product"
+    //                     />
+    //                     <img
+    //                       className="img-hover lazyload"
+    //                       data-src={product.hoverImage}
+    //                       src={product.hoverImage}
+    //                       alt="image-product"
+    //                     />
+    //                   </a>
+    //                   <ul className="list-product-btn">
+    //                     <li>
+    //                       <a href="cart" className="hover-tooltip box-icon">
+    //                         <span className="icon icon-cart2"></span>
+    //                         <span className="tooltip">Add to Cart</span>
+    //                       </a>
+    //                     </li>
+    //                     <li className="wishlist">
+    //                       <a
+    //                         href="javascript:void(0);"
+    //                         className="hover-tooltip box-icon"
+    //                       >
+    //                         <span className="icon icon-heart2"></span>
+    //                         <span className="tooltip">Add to Wishlist</span>
+    //                       </a>
+    //                     </li>
+    //                     <li>
+    //                       <a
+    //                         href="#quickView"
+    //                         data-bs-toggle="modal"
+    //                         className="hover-tooltip box-icon quickview"
+    //                       >
+    //                         <span className="icon icon-view"></span>
+    //                         <span className="tooltip">Quick View</span>
+    //                       </a>
+    //                     </li>
+    //                     <li className="compare">
+    //                       <a
+    //                         href="#compare"
+    //                         data-bs-toggle="modal"
+    //                         className="hover-tooltip box-icon"
+    //                       >
+    //                         <span className="icon icon-compare"></span>
+    //                         <span className="tooltip">Add to Compare</span>
+    //                       </a>
+    //                     </li>
+    //                   </ul>
+    //                 </div>
+    //                 <div className="card-product-info">
+    //                   <a
+    //                     href="productdetail"
+    //                     className="name-product link fw-medium text-md"
+    //                   >
+    //                     {product.name}
+    //                   </a>
+    //                   <p className="price-wrap fw-medium">
+    //                     <span className="price-new">{product.priceNew}</span>
+    //                     <span className="price-old">{product.priceOld}</span>
+    //                   </p>
+    //                   <ul className="list-color-product">
+    //                     {product.colors.map((color, index) => (
+    //                       <li
+    //                         key={index}
+    //                         className={`list-color-item hover-tooltip tooltip-bot color-swatch ${
+    //                           color.active ? "active" : ""
+    //                         } ${color.line ? "line" : ""}`}
+    //                       >
+    //                         <span className="tooltip color-filter">
+    //                           {color.name}
+    //                         </span>
+    //                         <span
+    //                           className={`swatch-value ${color.class}`}
+    //                         ></span>
+    //                         <img
+    //                           className="lazyload"
+    //                           data-src={color.image}
+    //                           src={color.image}
+    //                           alt="image-product"
+    //                         />
+    //                       </li>
+    //                     ))}
+    //                   </ul>
+    //                 </div>
+    //               </div>
+    //             </div>
+    //           ))}
+    //         </div>
+    //       </div>
+    //       <div className="d-flex d-xl-none sw-dot-default sw-pagination-also justify-content-center"></div>
+    //       <div className="d-none d-xl-flex swiper-button-next nav-swiper nav-next-also"></div>
+    //       <div className="d-none d-xl-flex swiper-button-prev nav-swiper nav-prev-also"></div>
+    //     </div>
+    //   </div>
+    // </section>
+
+    <></>
   );
 };
 

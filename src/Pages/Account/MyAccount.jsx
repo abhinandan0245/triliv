@@ -1,8 +1,38 @@
 import React, { useEffect } from "react";
+import { useGetMyOrdersQuery } from "../../services/order/orderApi";
+import { useGetWishlistQuery } from "../../services/wishlist/wishlistApi";
+import { useDispatch, useSelector } from "react-redux";
+import SidebarAccount from "../../components/ui/Modal/SideBarAccount";
+import { Link, useNavigate } from "react-router-dom";
+import MobileMenuHeader from "../../components/ui/Modal/mobileMenuHeader";
+import { logout } from "../../redux/slice/authSlice";
 
 const MyAccount = () => {
+   const { isAuthenticated, user } = useSelector((state) => state.auth);
+     const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+ const customerId = user?.id;
+  const { data: orders = [], isLoading: ordersLoading } = useGetMyOrdersQuery();
+const { data: wishlistData, isLoading: wishlistLoading } = useGetWishlistQuery(customerId, {
+  skip: !customerId,
+});
+
+const wishlistCount = wishlistLoading 
+  ? 0 
+  : wishlistData?.count || 0;
   // This effect will run once after component mounts
-  useEffect(() => {}, []);
+    // Counts
+  const ordersCount = ordersLoading ? 0 : orders?.length || 0;
+
+
+  const handleLogout = () => {
+    dispatch(logout());
+    toast.success("Logged out successfully");
+    navigate("/");
+    if (onClose) onClose(); // close mobile menu
+  };
+
 
   return (
     <div>
@@ -29,11 +59,12 @@ const MyAccount = () => {
       <div className="flat-spacing-13">
         <div className="container-7">
           {/* sidebar-account */}
-          <div className="btn-sidebar-mb d-lg-none">
-            <button data-bs-toggle="offcanvas" data-bs-target="#mbAccount">
-              <i className="icon icon-sidebar" />
-            </button>
-          </div>
+          {/* <div className="btn-sidebar-mb d-lg-none">
+  <button data-bs-toggle="offcanvas" data-bs-target="#sidebarAccount">
+    <i className="icon icon-sidebar" />
+  </button>
+</div> */}
+
           {/* /sidebar-account */}
 
           {/* Section-acount */}
@@ -56,14 +87,7 @@ const MyAccount = () => {
                     My Orders
                   </a>
                 </li>
-                <li>
-                  <a
-                    href="/wish-list"
-                    className="text-sm link fw-medium my-account-nav-item"
-                  >
-                    My Wishlist
-                  </a>
-                </li>
+                
                 <li>
                   <a
                     href="/addresses"
@@ -91,43 +115,26 @@ const MyAccount = () => {
               </ul>
             </div>
 
+                          {/* menu for mobile */}
+               <MobileMenuHeader/>
+
             <div className="my-acount-content account-dashboard">
               <div className="box-account-title">
                 <p className="hello-name display-sm fw-medium">
-                  Hello Vineta Pham!
+                  Hello {user?.name}!
                   <span>
-                    (not <span className="name">Vineta Pham</span>?
+                    (not <span className="name">{user?.name}</span>?
                   </span>
-                  <a href="/" className="text-decoration-underline link">
+                  <span onClick={handleLogout} className="text-decoration-underline link">
                     Log Out
-                  </a>
+                  </span>
                   <span>)</span>
                 </p>
-                <p className="notice text-sm">
-                  Today is a great day to check your account page. You can check{" "}
-                  <a
-                    href="/orders"
-                    className="text-primary text-decoration-underline"
-                  >
-                    your last orders
-                  </a>{" "}
-                  or have a look to{" "}
-                  <a
-                    href="/wish-list"
-                    className="text-primary text-decoration-underline"
-                  >
-                    your wishlist
-                  </a>
-                  . Or maybe you can start to shop
-                  <a
-                    href="/product"
-                    className="text-primary text-decoration-underline"
-                  >
-                    our latest offers
-                  </a>
-                  ?
-                </p>
+                
               </div>
+
+
+
 
               <div className="content-account">
                 <ul className="box-check-list flex-sm-nowrap">
@@ -136,7 +143,7 @@ const MyAccount = () => {
                       <div className="icon">
                         <i className="icon-order" />
                         <span className="count-number text-sm text-white fw-medium">
-                          1
+                          {ordersCount}
                         </span>
                       </div>
                       <div className="text">
@@ -154,7 +161,7 @@ const MyAccount = () => {
                       <div className="icon">
                         <i className="icon-heart" />
                         <span className="count-number text-sm text-white fw-medium">
-                          1
+                          {wishlistCount}
                         </span>
                       </div>
                       <div className="text">
@@ -176,47 +183,10 @@ const MyAccount = () => {
                       className="lazyload"
                     />
                   </div>
-                  <div className="banner-content-right">
-                    <div className="banner-title">
-                      <p className="display-md fw-medium">Free Shipping</p>
-                      <p className="text-md">for all orders over $300.00</p>
-                    </div>
-                    <div className="banner-btn">
-                      <a href="shop" className="tf-btn animate-btn">
-                        Shop Now
-                      </a>
-                    </div>
-                  </div>
+                 
                 </div>
 
-                <div className="banner-account banner-acc-countdown bg-linear d-flex align-items-center">
-                  <div className="banner-content-left">
-                    <div className="banner-title">
-                      <p className="sub text-md fw-medium">SUMMER SALE</p>
-                      <p className="display-xl fw-medium">50% OFF</p>
-                      <p className="sub text-md fw-medium">
-                        WITH PROMOTE CODE: 12D34E
-                      </p>
-                    </div>
-                    <div className="banner-btn">
-                      <a
-                        href="/shop"
-                        className="tf-btn btn-white animate-btn animate-dark"
-                      >
-                        Shop Now
-                      </a>
-                    </div>
-                  </div>
-                  <div className="banner-countdown">
-                    <div className="wg-countdown-2">
-                      <span
-                        className="js-countdown"
-                        data-timer={46556}
-                        data-labels="Days,Hours,Mins,Secs"
-                      />
-                    </div>
-                  </div>
-                </div>
+                
               </div>
             </div>
           </div>
@@ -224,6 +194,7 @@ const MyAccount = () => {
         </div>
       </div>
       {/* /Main Content */}
+      
       
     </div>
 

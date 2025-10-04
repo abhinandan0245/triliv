@@ -1,59 +1,3 @@
-// import React from "react";
-// import ReactDOM from "react-dom/client";
-// import { BrowserRouter } from "react-router-dom";
-// import App from "./App";
-// import {Provider} from "react-redux"
-// import { store } from "./app/store";
-
-// // ✅ Bootstrap
-// import 'bootstrap/dist/css/bootstrap.min.css';
-
-// // ✅ Local CSS
-// import './assets/css/styles.css';
-// import './assets/css/animate.css';
-// import './assets/css/bootstrap-select.min.css';
-// import './assets/css/drift-basic.min.css';
-// import './assets/css/font-icons.css';
-// import './assets/css/fonts.css';
-// import './assets/css/photoswipe.css';
-// import './assets/css/swiper-bundle.min.css';
-
-// // ✅ Bootstrap Icons (installed via npm)
-// import 'bootstrap-icons/font/bootstrap-icons.css';
-
-// // ✅ Local JS (only if required and doesn't break React)
-// import './assets/js/jquery.min.js';
-// import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-// import './assets/js/bootstrap-select.min.js';
-// import './assets/js/carousel.js';
-// import './assets/js/count-down.js';
-// import './assets/js/drift.min.js';
-// import './assets/js/jquery-validate.js';
-// import './assets/js/lazysize.min.js';
-// import './assets/js/main.js';
-// import './assets/js/multiple-modal.js';
-// import './assets/js/nouislider.min.js';
-// import './assets/js/photoswipe-lightbox.umd.min.js';
-// import './assets/js/photoswipe.umd.min.js';
-// import './assets/js/shop.js';
-// import './assets/js/swiper-bundle.min.js';
-// import './assets/js/wow.min.js';
-// import './assets/js/zoom.js';
-
-
-
-// ReactDOM.createRoot(document.getElementById("root")).render(
-//   <React.StrictMode>
-   
-//     <Provider store={store}>
-//       <BrowserRouter>
-//       <App />
-//        {/* <ScrollTop/> */}
-//     </BrowserRouter>
-//     </Provider>
-//   </React.StrictMode>
-// );
-
 
 
 
@@ -82,7 +26,7 @@ import "bootstrap-select/dist/css/bootstrap-select.min.css";
 import "jquery-validation";
 
 
-// ✅ Other CSS
+//  Other CSS
 import "bootstrap-icons/font/bootstrap-icons.css";
 import "./assets/css/styles.css";
 import "./assets/css/animate.css";

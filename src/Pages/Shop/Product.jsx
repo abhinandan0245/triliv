@@ -1,31 +1,97 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useGetAllProductsQuery } from "../../services/products/productApi";
 import { useGetAllCategoriesQuery } from "../../services/category/categoryApi";
 import { Link, useParams } from "react-router-dom";
 import { useAddToCartMutation } from "../../services/cart/cartApi";
 import { addToGuestCart } from "../../utils/guestCart";
 import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
+import {
+  useAddToWishlistMutation,
+  useDeleteFromWishlistMutation,
+  useLazyCheckWishlistQuery,
+} from "../../services/wishlist/wishlistApi";
+const QuickViewModal = React.lazy(() => import("../../components/ui/Modal/QuickView"));
+
 
 const Product = () => {
   const [layout, setLayout] = useState("tf-col-4");
   const [sortValue, setSortValue] = useState("best-selling");
-  // const [selectedCategory, setSelectedCategory] = useState(null);
+  const [quickViewProduct, setQuickViewProduct] = useState(null);
+  const [wishlistStates, setWishlistStates] = useState({}); // Track wishlist state for each product
 
-   const { categorySlug } = useParams();
+  const { categoryId } = useParams();
   const { data: categories } = useGetAllCategoriesQuery();
+  const user = useSelector((state) => state.auth.user);
   
   // Find the selected category
-  const selectedCategory = categories?.find(cat => cat.slug === categorySlug);
+  // const selectedCategory = categories?.find(cat => cat.id === categoryId);
 
- // Fetch products with category filter if a category is selected
-  const { data: products, isLoading, error } = useGetAllProductsQuery(
-    selectedCategory ? { categoryId: selectedCategory.id } : {}
-  );
+  // Fetch products with category filter if a category is selected
+  // const { data: products, isLoading, error } = useGetAllProductsQuery(
+  //   selectedCategory ? { categoryId: selectedCategory.id } : {}
+  // );
 
+  // Directly call product API with categoryId
+const { data: products, isLoading, error } = useGetAllProductsQuery(
+  categoryId ? { categoryId: Number(categoryId) } : {}
+);
+
+  // Wishlist mutations
+  const [checkWishlist] = useLazyCheckWishlistQuery();
+  const [addToWishlist] = useAddToWishlistMutation();
+  const [deleteFromWishlist] = useDeleteFromWishlistMutation();
+  
   const [addToCart, { isLoading: isAdding }] = useAddToCartMutation();
 
-  if (isLoading) return <p>Loading...</p>;
-  if (error) return <p>Error fetching products</p>;
+
+useEffect(() => {
+  const isMobile = window.innerWidth < 768; // bootstrap ya tailwind breakpoint use kar
+  setLayout(isMobile ? "tf-col-2" : "tf-col-4");
+}, []);
+
+
+    // Check initial wishlist status for products
+  React.useEffect(() => {
+    const checkInitialWishlistStatus = async () => {
+      if (user?.id && products?.length) {
+        const wishlistChecks = products.map(async (product) => {
+          try {
+            const { data } = await checkWishlist({
+              customerId: user.id,
+              productId: product.id,
+            });
+            return {
+              productId: product.id,
+              isInWishlist: data?.inWishlist || false,
+              wishlistId: data?.wishlistId || null,
+            };
+          } catch (error) {
+            return {
+              productId: product.id,
+              isInWishlist: false,
+              wishlistId: null,
+            };
+          }
+        });
+
+        const results = await Promise.all(wishlistChecks);
+        const wishlistState = {};
+        results.forEach(result => {
+          wishlistState[result.productId] = {
+            isInWishlist: result.isInWishlist,
+            wishlistId: result.wishlistId,
+          };
+        });
+        setWishlistStates(wishlistState);
+      }
+    };
+
+    checkInitialWishlistStatus();
+  }, [user, products, checkWishlist]);
+
+  // if (isLoading) return <p>Loading...</p>;
+  // if (error) return <p>Error fetching products</p>;
 
   const handleSortChange = (value) => {
     setSortValue(value);
@@ -36,124 +102,145 @@ const Product = () => {
     setLayout(value);
   };
 
+  // Wishlist functionality
+  const handleWishlistToggle = async (productId) => {
+    if (!user?.id) {
+      toast.error("Please log in to manage your wishlist");
+      return;
+    }
 
+    try {
+      const currentState = wishlistStates[productId];
+      
+      if (currentState?.isInWishlist) {
+        // Remove from wishlist
+        if (currentState.wishlistId) {
+          await deleteFromWishlist(currentState.wishlistId).unwrap();
+          setWishlistStates(prev => ({
+            ...prev,
+            [productId]: { isInWishlist: false, wishlistId: null }
+          }));
+          toast.success("Removed from wishlist");
+        }
+      } else {
+        // Add to wishlist
+        const response = await addToWishlist({
+          customerId: user.id,
+          productId: productId,
+        }).unwrap();
 
-// Process products to include images and pricing
-const processedProducts = products.map(product => {
-  // Safely parse priceVariants (handles both string and array formats)
-  let priceVariants = [];
-  try {
-    priceVariants = typeof product.priceVariants === 'string' 
-      ? JSON.parse(product.priceVariants) 
-      : Array.isArray(product.priceVariants) 
-        ? product.priceVariants 
-        : [];
-  } catch (e) {
-    console.error('Error parsing priceVariants:', e);
-    priceVariants = [];
-  }
-
-  // Safely parse sizes (handles malformed JSON strings)
-  let sizes = [];
-  try {
-    sizes = typeof product.sizes === 'string' 
-      ? JSON.parse(product.sizes.replace(/'/g, '"')) 
-      : Array.isArray(product.sizes) 
-        ? product.sizes 
-        : [];
-  } catch (e) {
-    console.error('Error parsing sizes:', e);
-    sizes = [];
-  }
-
-  // Get default price variant with proper fallbacks
-  const defaultVariant = priceVariants[0] || {
-    size: sizes[0] || '',
-    originalPrice: product.originalPrice || 0,
-    discountPercentage: product.discountPercentage || 0,
-    discountAmount: product.discountAmount || 0,
-    price: product.price || product.originalPrice || 0
+        const wishlistItem = response.wishlist || response;
+        if (wishlistItem?.id) {
+          setWishlistStates(prev => ({
+            ...prev,
+            [productId]: { isInWishlist: true, wishlistId: wishlistItem.id }
+          }));
+          toast.success("Added to wishlist");
+        }
+      }
+    } catch (error) {
+      console.error("Wishlist error:", error);
+      toast.error(error.data?.message || "Failed to update wishlist");
+    }
   };
 
-  // Calculate prices with proper number conversion
-  const originalPrice = Number(defaultVariant.originalPrice) || 0;
-  const finalPrice = Number(defaultVariant.price) || originalPrice;
-  const hasDiscount = originalPrice > finalPrice;
 
-  // Calculate discount display
-  let discountDisplay = null;
-  if (defaultVariant.discountPercentage > 0) {
-    discountDisplay = `${defaultVariant.discountPercentage}% OFF`;
-  } else if (defaultVariant.discountAmount > 0) {
-    discountDisplay = `₹${defaultVariant.discountAmount} OFF`;
-  } else if (hasDiscount) {
-    const discountValue = Math.round((originalPrice - finalPrice) / originalPrice * 100);
-    discountDisplay = `${discountValue}% OFF`;
-  }
 
-  // Image handling with fallbacks
-  const defaultImage = product.imageVariants?.[0]?.imageUrl || '';
-  const hoverImage = product.imageVariants?.[1]?.imageUrl || defaultImage;
+  // Process products to include images and pricing
+ 
 
-  return {
-    ...product,
-    mainImage: defaultImage,
-    hoverImage: hoverImage,
-    priceNew: `₹${finalPrice.toFixed(2)}`,
-    priceOld: `₹${originalPrice.toFixed(2)}`,
-    discount: discountDisplay,
-    sizes: sizes,
-    priceVariants: priceVariants,
-    defaultVariant: defaultVariant
-  };
-});
 
-// add to cart api call
+  const processedProducts = React.useMemo(() => {
+   return products?.map(product => {
+    // Safely parse priceVariants (handles both string and array formats)
+    let priceVariants = [];
+    try {
+      priceVariants = typeof product.priceVariants === 'string' 
+        ? JSON.parse(product.priceVariants) 
+        : Array.isArray(product.priceVariants) 
+          ? product.priceVariants 
+          : [];
+    } catch (e) {
+      console.error('Error parsing priceVariants:', e);
+      priceVariants = [];
+    }
 
-const handleAddToCart = async () => {
-  if (!productData) return;
+    // Safely parse sizes (handles malformed JSON strings)
+    let sizes = [];
+    try {
+      sizes = typeof product.sizes === 'string' 
+        ? JSON.parse(product.sizes.replace(/'/g, '"')) 
+        : Array.isArray(product.sizes) 
+          ? product.sizes 
+          : [];
+    } catch (e) {
+      console.error('Error parsing sizes:', e);
+      sizes = [];
+    }
 
-  if (!selectedSize) {
-    toast.error("Please select a size");
-    return;
-  }
+    // Get default price variant with proper fallbacks
+    const defaultVariant = priceVariants[0] || {
+      size: sizes[0] || '',
+      originalPrice: product.originalPrice || 0,
+      discountPercentage: product.discountPercentage || 0,
+      discountAmount: product.discountAmount || 0,
+      price: product.price || product.originalPrice || 0
+    };
 
-  //  Guest user → store in localStorage
-  if (!user || !user.id) {
-    addToGuestCart({
-      productId: productData.id,
-      size: selectedSize,
-      quantity,
-      name: productData.name || productData.title, // handle both naming patterns
-      price: productData.price,
-      image: productData.image || productData.images?.[0]
-    });
-    toast.success("Added to cart (Guest)");
-    return;
-  }
+    // Calculate prices with proper number conversion
+    const originalPrice = Number(defaultVariant.originalPrice) || 0;
+    const finalPrice = Number(defaultVariant.price) || originalPrice;
+    const hasDiscount = originalPrice > finalPrice;
 
-  //  Logged-in user → store in DB
-  try {
-    await addToCart({
-      customerId: user.id,
-      productId: productData.id,
-      quantity,
-      size: selectedSize
-    }).unwrap();
+    // Calculate discount display
+    let discountDisplay = null;
+    if (defaultVariant.discountPercentage > 0) {
+      discountDisplay = `${defaultVariant.discountPercentage}% OFF`;
+    } else if (defaultVariant.discountAmount > 0) {
+      discountDisplay = `₹${defaultVariant.discountAmount} OFF`;
+    } else if (hasDiscount) {
+      const discountValue = Math.round((originalPrice - finalPrice) / originalPrice * 100);
+      discountDisplay = `${discountValue}% OFF`;
+    }
 
-    toast.success("Product added to cart");
-  } catch (error) {
-    console.error("Cart error:", error);
-    toast.error("Failed to add product to cart");
-  }
-};
+    // Image handling with fallbacks
+    const defaultImage = product.imageVariants?.[0]?.imageUrl || '';
+    const hoverImage = product.imageVariants?.[1]?.imageUrl || defaultImage;
+
+    return {
+      ...product,
+      mainImage: defaultImage,
+      hoverImage: hoverImage,
+      priceNew: `₹${finalPrice.toFixed(2)}`,
+      priceOld: `₹${originalPrice.toFixed(2)}`,
+      discount: discountDisplay,
+      sizes: sizes,
+      priceVariants: priceVariants,
+      defaultVariant: defaultVariant
+    };
+  }) || [];
+}, [products]);
+
+   
+
+  // Find the selected category by id
+const selectedCategory = categories?.find(
+  (cat) => String(cat.id) === String(categoryId)
+);
 
 
   return (
     <section className="flat-spacing-24 pt-0">
+      <section className="tf-page-title mb-4">
+      <div className="container">
+        <div className="box-title text-center">
+          <h4 className="title"> {selectedCategory ? selectedCategory.name : "Collection"}</h4>
+        </div>
+      </div>
+    </section>
       <div className="container">
         <div className="tf-shop-control">
-          <div className="tf-group-filter">
+          {/* <div className="tf-group-filter">
             <a
               href="#filterShop"
               data-bs-toggle="offcanvas"
@@ -222,7 +309,7 @@ const handleAddToCart = async () => {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
           <ul className="tf-control-layout">
             <li
               className={`tf-view-layout-switch sw-layout-list list-layout ${
@@ -297,117 +384,123 @@ const handleAddToCart = async () => {
             id="listLayout"
             style={{ display: layout === "list" ? "block" : "none" }}
           >
-            {processedProducts.map((product) => (
-              <div
-                key={product.productId}
-                className={`card-product style-list ${
-                  product.stock === 0 ? "out-of-stock" : ""
-                }`}
-                data-availability={product.stock === 0 ? "Out of stock" : "In stock"}
-                data-brand={product.brand}
-              >
-                <div className="card-product-wrapper">
-                  <a href="/productdetail" className="product-img">
-                    <img
-                      className="img-product lazyload"
-                      data-src={product.mainImage}
-                      src={product.mainImage}
-                      alt={product.title}
-                    />
-                    <img
-                      className="img-hover lazyload"
-                      data-src={product.hoverImage}
-                      src={product.hoverImage}
-                      alt={product.title}
-                    />
-                  </a>
-                  {product.discount && (
-                    <div className="on-sale-wrap">
-                      <span className="on-sale-item">{product.discount}</span>
-                    </div>
-                  )}
-                </div>
-                <div className="card-product-info">
-                  <div className="info-list">
-                    <a
-                      href="/productdetails"
-                      className="name-product link fw-medium text-md"
-                    >
-                      {product.title}
-                    </a>
-                    <p className="price-wrap fw-medium text-md">
-                      <span className="price-new">{product.priceNew}</span>
-                      {product.priceOld && (
-                        <span className="price-old">{product.priceOld}</span>
+            {processedProducts.map((product) => {
+              const wishlistState = wishlistStates[product.id] || {};
+              return (
+                <div
+                  key={product.productId}
+                  className={`card-product style-list ${
+                    product.stock === 0 ? "out-of-stock" : ""
+                  }`}
+                  data-availability={product.stock === 0 ? "Out of stock" : "In stock"}
+                  data-brand={product.brand}
+                >
+                  <div className="card-product-wrapper">
+                    <Link to={`/productdetail/${product.id}`} className="product-img">
+  {product.mainImage ? (
+    <img
+      className="img-product lazyload"
+      src={product.mainImage}
+      loading="lazy"
+      alt={product.title || "Product image"}
+    />
+  ) : null}
+
+  {product.hoverImage && product.hoverImage !== product.mainImage ? (
+    <img
+      className="img-hover lazyload"
+      src={product.hoverImage}
+      loading="lazy"
+      alt={product.title || "Product hover image"}
+    />
+  ) : null}
+</Link>
+
+                    {product.discount && (
+                      <div className="on-sale-wrap">
+                        <span className="on-sale-item">{product.discount}</span>
+                      </div>
+                    )}
+                  </div>
+                  <div className="card-product-info">
+                    <div className="info-list">
+                      <Link
+                        to={`/productdetail/${product.id}`}
+                        className="name-product link fw-medium text-md"
+                      >
+                        {product.title}
+                      </Link>
+                      <p className="price-wrap fw-medium text-md">
+                        <span className="price-new">{product.priceNew}</span>
+                        {product.priceOld && (
+                          <span className="price-old">{product.priceOld}</span>
+                        )}
+                      </p>
+                      <p 
+  className="desc text-sm text-main text-line-clamp-2"
+  dangerouslySetInnerHTML={{ __html: product.description }} 
+/>
+                      {product.colors && product.colors.length > 0 && (
+                        <ul className="list-color-product">
+                          {product.colors.map((color, index) => (
+                            <li
+                              key={index}
+                              className={`list-color-item color-swatch hover-tooltip ${
+                                index === 0 ? "active" : ""
+                              }`}
+                            >
+                              <span className="tooltip color-filter">
+                                {color}
+                              </span>
+                              <span className={`swatch-value bg-${color.toLowerCase()}`} />
+                            </li>
+                          ))}
+                        </ul>
                       )}
-                    </p>
-                    <p className="desc text-sm text-main text-line-clamp-2">
-                      {product.description}
-                    </p>
-                    {product.colors && product.colors.length > 0 && (
-                      <ul className="list-color-product">
-                        {product.colors.map((color, index) => (
-                          <li
-                            key={index}
-                            className={`list-color-item color-swatch hover-tooltip ${
-                              index === 0 ? "active" : ""
-                            }`}
-                          >
-                            <span className="tooltip color-filter">
-                              {color}
-                            </span>
-                            <span className={`swatch-value bg-${color.toLowerCase()}`} />
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                    {product.sizes && product.sizes.length > 0 && (
-                      <ul className="size-box">
-                        {product.sizes.map((size, index) => (
-                          <li key={index} className="size-item text-xs">
-                            {size}
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </div>
-                  <div className="list-product-btn">
-                    <a
-                      onClick={handleAddToCart}
-                      href="#shoppingCart"
-                      data-bs-toggle="offcanvas"
-                      className="tf-btn btn-main-product add-to-cart animate-btn"
-                    >
-                      Add To cart
-                    </a>
-                    <a
-                      href="javascript:void(0);"
-                      className="box-icon wishlist hover-tooltip"
-                    >
-                      <span className="icon icon-heart2" />
-                      <span className="tooltip">Add to Wishlist</span>
-                    </a>
-                    <a
-                      href="#quickView"
-                      data-bs-toggle="modal"
-                      className="box-icon hover-tooltip quickview"
-                    >
-                      <span className="icon icon-view" />
-                      <span className="tooltip">Quick View</span>
-                    </a>
-                    <a
-                      href="#compare"
-                      data-bs-toggle="modal"
-                      aria-controls="compare"
-                      className="box-icon compare hover-tooltip"
-                    >
-                      <span className="icon icon-compare" />
-                      <span className="tooltip">Add to Compare</span>
-                    </a>
+                      {product.sizes && product.sizes.length > 0 && (
+                        <ul className="size-box">
+                          {product.sizes.map((size, index) => (
+                            <li key={index} className="size-item text-xs">
+                              {size}
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </div>
+                    <div className="list-product-btn">
+                      <a
+                        href="#"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleWishlistToggle(product.id);
+                        }}
+                        className={`box-icon wishlist hover-tooltip ${
+                          wishlistState.isInWishlist ? "in-wishlist" : ""
+                        }`}
+                      >
+                        <span className={`icon ${
+                          wishlistState.isInWishlist ? "icon-trash" : "icon-heart2"
+                        }`} />
+                        <span className="tooltip">
+                          {wishlistState.isInWishlist ? "Remove from Wishlist" : "Add to Wishlist"}
+                        </span>
+                      </a>
+                      <a
+                        href="#"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setQuickViewProduct(product);
+                        }}
+                        className="box-icon hover-tooltip quickview"
+                      >
+                        <span className="icon icon-view" />
+                        <span className="tooltip">Quick View</span>
+                      </a>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
 
             <ul className="wg-pagination">
               <li className="active">
@@ -433,129 +526,129 @@ const handleAddToCart = async () => {
 
           {/* Grid Layout */}
           <div
+          key={layout} 
             className={`wrapper-shop tf-grid-layout ${layout}`}
             id="gridLayout"
             style={{ display: layout !== "list" ? "grid" : "none" }}
           >
-            {processedProducts.map((product) => (
-              <div
-                key={product.productId}
-                className={`card-product grid style-1 ${
-                  product.sizes?.length > 0 ? "card-product-size" : ""
-                } ${product.stock === 0 ? "out-of-stock" : ""}`}
-                data-availability={product.stock === 0 ? "Out of stock" : "In stock"}
-                data-brand={product.brand}
-              >
-                <div className="card-product-wrapper">
-                  <Link to={`/productdetail/${product.id}`} className="product-img">
-                    <img
-                      className="img-product lazyload"
-                      data-src={product.mainImage}
-                      src={product.mainImage}
-                      alt={product.title}
-                    />
-                    <img
-                      className="img-hover lazyload"
-                      data-src={product.hoverImage}
-                      src={product.hoverImage}
-                      alt={product.title}
-                    />
-                  </Link>
-                  {product.discount && (
-                    <div className="on-sale-wrap">
-                      <span className="on-sale-item">{product.discount}</span>
-                    </div>
-                  )}
-                  <ul className="list-product-btn">
-                    <li>
-                      <a
-                        href="#shoppingCart"
-                        data-bs-toggle="offcanvas"
-                        className="hover-tooltip tooltip-left box-icon"
-                      >
-                        <span className="icon icon-cart2" />
-                        <span className="tooltip">Add to Cart</span>
-                      </a>
-                    </li>
-                    <li className="wishlist">
-                      <a
-                        href="javascript:void(0);"
-                        className="hover-tooltip tooltip-left box-icon"
-                      >
-                        <span className="icon icon-heart2" />
-                        <span className="tooltip">Add to Wishlist</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        href="#quickView"
-                        data-bs-toggle="modal"
-                        className="hover-tooltip tooltip-left box-icon quickview"
-                      >
-                        <span className="icon icon-view" />
-                        <span className="tooltip">Quick View</span>
-                      </a>
-                    </li>
-                    <li className="compare">
-                      <a
-                        href="#compare"
-                        data-bs-toggle="modal"
-                        aria-controls="compare"
-                        className="hover-tooltip tooltip-left box-icon"
-                      >
-                        <span className="icon icon-compare" />
-                        <span className="tooltip">Add to Compare</span>
-                      </a>
-                    </li>
-                  </ul>
-                  {product.sizes?.length > 0 && (
-                    <ul className="size-box">
-                      {product.sizes.map((size, index) => (
-                        <li
-                          key={index}
-                          className="size-item text-xs text-white"
-                        >
-                          {size}
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
-                <div className="card-product-info">
-                  <a
-                    href="/productdetail"
-                    className="name-product link fw-medium text-md"
-                  >
-                    {product.title}
-                  </a>
-                  <p className="price-wrap fw-medium">
-                    <span className="price-new">{product.priceNew}</span>
-                    {product.priceOld && (
-                      <span className="price-old">{product.priceOld}</span>
+            {processedProducts.map((product) => {
+              const wishlistState = wishlistStates[product.id] || {};
+              return (
+                <div
+                  key={product.productId}
+                  className={`card-product grid style-1 ${
+                    product.sizes?.length > 0 ? "card-product-size" : ""
+                  } ${product.stock === 0 ? "out-of-stock" : ""}`}
+                  data-availability={product.stock === 0 ? "Out of stock" : "In stock"}
+                  data-brand={product.brand}
+                >
+                  <div className="card-product-wrapper">
+                    <Link to={`/productdetail/${product.id}`} className="product-img">
+  {product.mainImage ? (
+    <img
+      className="img-product lazyload"
+      src={product.mainImage}
+      alt={product.title || "Product image"}
+    />
+  ) : null}
+
+  {product.hoverImage && product.hoverImage !== product.mainImage ? (
+    <img
+      className="img-hover lazyload"
+      src={product.hoverImage}
+      alt={product.title || "Product hover image"}
+    />
+  ) : null}
+</Link>
+
+                    {product.discount && (
+                      <div className="on-sale-wrap">
+                        <span className="on-sale-item">{product.discount}</span>
+                      </div>
                     )}
-                  </p>
-                  {product.colors && product.colors.length > 0 && (
-                    <ul className="list-color-product">
-                      {product.colors.map((color, index) => (
-                        <li
-                          key={index}
-                          className={`list-color-item color-swatch hover-tooltip tooltip-bot ${
-                            index === 0 ? "active" : ""
+                    <ul className="list-product-btn">
+                      <li className="wishlist">
+                        <a
+                          href="#"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            handleWishlistToggle(product.id);
+                          }}
+                          className={`hover-tooltip tooltip-left box-icon ${
+                            wishlistState.isInWishlist ? "in-wishlist" : ""
                           }`}
                         >
-                          <span className="tooltip color-filter">
-                            {color}
+                          <span className={`icon ${
+                            wishlistState.isInWishlist ? "icon-trash" : "icon-heart2"
+                          }`} />
+                          <span className="tooltip">
+                            {wishlistState.isInWishlist ? "Remove from Wishlist" : "Add to Wishlist"}
                           </span>
-                          <span className={`swatch-value bg-${color.toLowerCase()}`} />
-                        </li>
-                      ))}
+                        </a>
+                      </li>
+                      <li>
+                        <a
+                          href="#"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setQuickViewProduct(product);
+                          }}
+                          className="box-icon hover-tooltip quickview"
+                        >
+                          <span className="icon icon-view" />
+                          <span className="tooltip">Quick View</span>
+                        </a>
+                      </li>
                     </ul>
-                  )}
+                    {product.sizes?.length > 0 && (
+                      <ul className="size-box">
+                        {product.sizes.map((size, index) => (
+                          <li
+                            key={index}
+                            className="size-item text-xs text-white"
+                          >
+                            {size}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                  <div className="card-product-info">
+                    <Link
+                      to={`/productdetail/${product.id}`}
+                      className="name-product link fw-medium text-md"
+                    >
+                      {product.title}
+                    </Link>
+                    <p className="price-wrap fw-medium">
+                      <span className="price-new">{product.priceNew}</span>
+                      {product.priceOld && (
+                        <span className="price-old">{product.priceOld}</span>
+                      )}
+                    </p>
+                    {product.colors && product.colors.length > 0 && (
+                      <ul className="list-color-product">
+                        {product.colors.map((color, index) => (
+                          <li
+                            key={index}
+                            className={`list-color-item color-swatch hover-tooltip tooltip-bot ${
+                              index === 0 ? "active" : ""
+                            }`}
+                          >
+                            <span className="tooltip color-filter">
+                              {color}
+                            </span>
+                            <span className={`swatch-value bg-${color.toLowerCase()}`} />
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
 
-            <ul className="wg-pagination">
+            {/* <ul className="wg-pagination">
               <li className="active">
                 <div className="pagination-item">1</div>
               </li>
@@ -574,9 +667,15 @@ const handleAddToCart = async () => {
                   <i className="icon-arr-right2" />
                 </a>
               </li>
-            </ul>
+            </ul> */}
           </div>
         </div>
+        {quickViewProduct && (
+  <React.Suspense fallback={<div>Loading...</div>}>
+    <QuickViewModal product={quickViewProduct} onClose={() => setQuickViewProduct(null)} />
+  </React.Suspense>
+)}
+
       </div>
     </section>
   );

@@ -6,9 +6,6 @@ import FeaturedProducts from "./Homesections/FeaturedProducts.jsx";
 import Slider from "./Homesections/Slider.jsx";
 import BannerTwo from "./Homesections/BannerTwo.jsx";
 import ShopNow from "./Homesections/ShopNow.jsx";
-import Testimonials from "./Homesections/Testimonials.jsx";
-import LatestTips from "./Homesections/LatestTips.jsx";
-import ShopGram from "./Homesections/ShopGram.jsx";
 const Homepage = () => {
   return (
     <>
@@ -18,10 +15,6 @@ const Homepage = () => {
       <FeaturedProducts />
       <BannerTwo />
       <ShopNow />
-      {/* <Testimonials /> */}
-      {/* <LatestTips /> */}
-      {/* <ShopGram /> */}
-      {/* <Footer/> */}
     </>
   );
 };

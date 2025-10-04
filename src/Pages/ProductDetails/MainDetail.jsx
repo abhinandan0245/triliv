@@ -231,11 +231,11 @@ const MainDetail = ({productId }) => {
                     
                     <div className="product-price">
                       <div className="display-sm price-new price-on-sale">
-                        Rs {product.price || '60.00'}
+                        ₹ {product.price }
                       </div>
                       {product.originalPrice && product.originalPrice > product.price && (
                         <>
-                          <div className="display-sm price-old">Rs {product.originalPrice}</div>
+                          <div className="display-sm price-old">₹ {product.originalPrice}</div>
                           <span className="badge-sale">
                             {Math.round(((product.originalPrice - product.price) / product.originalPrice * 100))} % Off
                           </span>

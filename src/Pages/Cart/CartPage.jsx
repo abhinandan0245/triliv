@@ -7,7 +7,7 @@ function Cart() {
     <>
       <CartTitle />
       <Shopping />
-      <YouMayAlsoLike />
+      
     </>
   );
 }

@@ -12,7 +12,7 @@ const TopBar = ({ isHomePage }) => (
       <div className="topbar-wraper">
         {isHomePage && (
           <div className="d-none d-xl-block flex-shrink-0">
-            <SocialIcons />
+            {/* <SocialIcons /> */}
           </div>
         )}
         <Marquee />

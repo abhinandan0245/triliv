@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSignupMutation } from "../../../services/auth/authApi";
 import { toast } from "react-toastify";
@@ -34,6 +34,35 @@ const RegisterPopup = ({ show, onClose, toggleLogin }) => {
       toast.error(msg);
     }
   };
+
+    // backdrop fix 
+  
+    // LoginPopup, RegisterPopup, ResetPasswordPopup, VerifyOtpAndResetPasswordPopup में add करें:
+  
+  useEffect(() => {
+    if (!show) return;
+    
+    const modalElement = document.getElementById('modalId'); // अपना modal ID use करें
+    
+    if (modalElement) {
+      const handleHidden = () => {
+        // Cleanup after modal is hidden
+        setTimeout(() => {
+          const backdrops = document.querySelectorAll('.modal-backdrop, .offcanvas-backdrop');
+          backdrops.forEach(b => b.remove());
+          document.body.classList.remove('modal-open', 'offcanvas-open');
+          document.body.style.overflow = '';
+        }, 50);
+      };
+  
+      modalElement.addEventListener('hidden.bs.modal', handleHidden);
+      
+      return () => {
+        modalElement.removeEventListener('hidden.bs.modal', handleHidden);
+      };
+    }
+  }, [show]);
+
 
   return (
     <div

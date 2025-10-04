@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import TopBar from "./TopBar";
 import SearchModal from "../../ui/Modal/Search";
@@ -18,62 +18,158 @@ import ResetPasswordPopup from "../../ui/Modal/ResetPassword";
 import VerifyOtpAndResetPasswordPopup from "../../ui/Modal/VerifyOtpAndResetPasswordPopup";
 import { useGetCartQuery } from "../../../services/cart/cartApi";
 import { useGetWishlistQuery } from "../../../services/wishlist/wishlistApi";
+import Toolbar from "../../ui/Modal/Toolbar";
+
 const Header = () => {
   const location = useLocation();
   const isHomePage = location.pathname === "/";
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
-   const [showReset, setShowReset] = useState(false);
+  const [showReset, setShowReset] = useState(false);
   const [showRegister, setShowRegister] = useState(false);
-
-  // const [showResetPopup, setShowResetPopup] = useState(false);
-const [showVerifyPopup, setShowVerifyPopup] = useState(false);
-const [emailForReset, setEmailForReset] = useState("");
+  const [showVerifyPopup, setShowVerifyPopup] = useState(false);
+  const [emailForReset, setEmailForReset] = useState("");
 
   const navigate = useNavigate();
-      const dispatch = useDispatch();
- const { isAuthenticated, user } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const { isAuthenticated, user } = useSelector((state) => state.auth);
 
- const customerId = user?.id; // Or user.id depending on your backend
+  const customerId = user?.id;
 
-   const { data: categories, isLoading, error } = useGetAllCategoriesQuery();
+  const { data: categories, isLoading, error } = useGetAllCategoriesQuery();
   const { data: cartData, isLoading: cartLoading } = useGetCartQuery(customerId, {
-  skip: !customerId,
-});
-const { data: wishlistData, isLoading: isLoadingWishlist } =
-  useGetWishlistQuery(user?.id, {
-    skip: !user?.id,
+    skip: !customerId,
   });
+  const { data: wishlistData, isLoading: isLoadingWishlist } =
+    useGetWishlistQuery(user?.id, {
+      skip: !user?.id,
+    });
 
-
-  const openLogin = () => {
-    setShowRegister(false);
-    setShowLogin(true);
+  // Universal backdrop cleanup function
+  const cleanupAllBackdrops = () => {
+    // Remove all possible backdrop elements
+    const backdrops = document.querySelectorAll('.offcanvas-backdrop, .modal-backdrop, .fade.show');
+    backdrops.forEach(backdrop => backdrop.remove());
+    
+    // Reset body styles
+    document.body.classList.remove('offcanvas-open', 'modal-open');
+    document.body.style.overflow = '';
+    document.body.style.paddingRight = '';
   };
 
-  const openRegister = () => {
-    setShowLogin(false);
-    setShowRegister(true);
-  };
-
-      const openReset = () => {
-    setShowReset(true);
-    setShowLogin(false);
-    setEmailForReset(""); // Reset email when opening
-  };
-
-  const openVerifyPopup = (email) => {
-    setShowVerifyPopup(true);
-    setShowReset(false);
-    setEmailForReset(email);
-  };
-
-  const closeAll = () => {
+  // Universal popup close function
+  const forceCloseAllPopups = () => {
+    // Close all Bootstrap modals and offcanvas
+    const modals = document.querySelectorAll('.modal.show, .offcanvas.show');
+    modals.forEach(modal => {
+      const modalInstance = window.bootstrap?.Modal?.getInstance(modal) || 
+                           window.bootstrap?.Offcanvas?.getInstance(modal);
+      if (modalInstance) {
+        modalInstance.hide();
+      }
+      
+      // Remove Bootstrap classes manually
+      modal.classList.remove('show', 'showing');
+    });
+    
+    // Clean state
     setShowLogin(false);
     setShowRegister(false);
     setShowReset(false);
     setShowVerifyPopup(false);
+    setShowMobileMenu(false);
     setEmailForReset("");
+    
+    // Cleanup after small delay
+    setTimeout(cleanupAllBackdrops, 100);
+  };
+
+  // Global backdrop and ESC key handler
+  useEffect(() => {
+    const handleGlobalBackdropClick = (e) => {
+      if (e.target.classList.contains('offcanvas-backdrop') || 
+          e.target.classList.contains('modal-backdrop')) {
+        e.preventDefault();
+        e.stopPropagation();
+        forceCloseAllPopups();
+      }
+    };
+
+    const handleGlobalEscape = (e) => {
+      if (e.key === 'Escape') {
+        forceCloseAllPopups();
+      }
+    };
+
+    document.addEventListener('click', handleGlobalBackdropClick, true);
+    document.addEventListener('keydown', handleGlobalEscape);
+    
+    return () => {
+      document.removeEventListener('click', handleGlobalBackdropClick, true);
+      document.removeEventListener('keydown', handleGlobalEscape);
+    };
+  }, []);
+
+  // Enhanced close functions for individual popups
+  const closeLogin = () => {
+    setShowLogin(false);
+    setTimeout(cleanupAllBackdrops, 100);
+  };
+
+  const closeRegister = () => {
+    setShowRegister(false);
+    setTimeout(cleanupAllBackdrops, 100);
+  };
+
+  const closeReset = () => {
+    setShowReset(false);
+    setTimeout(cleanupAllBackdrops, 100);
+  };
+
+  const closeVerify = () => {
+    setShowVerifyPopup(false);
+    setTimeout(cleanupAllBackdrops, 100);
+  };
+
+  const closeMobileMenu = () => {
+    setShowMobileMenu(false);
+    setTimeout(cleanupAllBackdrops, 100);
+  };
+
+  const openLogin = () => {
+    forceCloseAllPopups();
+    setTimeout(() => setShowLogin(true), 150);
+  };
+
+  const openRegister = () => {
+    forceCloseAllPopups();
+    setTimeout(() => setShowRegister(true), 150);
+  };
+
+  const openReset = () => {
+    forceCloseAllPopups();
+    setTimeout(() => {
+      setShowReset(true);
+      setEmailForReset("");
+    }, 150);
+  };
+
+  const openVerifyPopup = (email) => {
+    forceCloseAllPopups();
+    setTimeout(() => {
+      setShowVerifyPopup(true);
+      setEmailForReset(email);
+    }, 150);
+  };
+
+  const openMobileMenu = () => {
+    forceCloseAllPopups();
+    setTimeout(() => setShowMobileMenu(true), 150);
+  };
+
+  // Update the closeAll function
+  const closeAll = () => {
+    forceCloseAllPopups();
   };
 
   // TopBar announcements data
@@ -83,34 +179,15 @@ const { data: wishlistData, isLoading: isLoadingWishlist } =
     "Limited-Time Offer",
   ];
 
-
-
   const handleLogout = () => {
     dispatch(logout());
-     toast.success("Logged out successfully");
-  navigate("/"); 
+    toast.success("Logged out successfully");
+    navigate("/"); 
   };
-
-
-  // categoiry api inegtration 
-
-
-  if (isLoading) return <p>Loading...</p>;
-  if (error) return <p>Error loading categories</p>;
-
-  // cart count 
-
-  // const { user } = useSelector((state) => state.auth); // Assuming you store logged-in user here
-  
 
  
 
-  // Calculate total items (if your cart API returns [{ quantity }])
-  // const cartCount = cartData?.items?.reduce(
-  //   (total, item) => total + (item.quantity || 1),
-  //   0
-  // ) || 0;
-      const cartCount = cartData?.cart?.length || 0;
+  const cartCount = cartData?.cart?.length || 0;
 
   return (
     <>
@@ -127,8 +204,9 @@ const { data: wishlistData, isLoading: isLoadingWishlist } =
             <div className="col-md-4 col-3 d-xl-none">
               <a
                 className="mobile-menu"
-                onClick={() => setShowMobileMenu(true)}
+                onClick={openMobileMenu}
                 aria-label="Open mobile menu"
+                style={{ cursor: 'pointer' }}
               >
                 <i className="icon icon-categories1"></i>
               </a>
@@ -145,23 +223,20 @@ const { data: wishlistData, isLoading: isLoadingWishlist } =
                           Home<i className="icon"></i>
                         </Link>
                       </li>
-                      <li className="menu-item dropdown">
-          <Link to="/shop" className="item-link">Shop</Link><i className="icon"></i>
-  <ul className="submenu">
-    {isLoading ? (
-      <li>Loading...</li>
-    ) : (
-      categories.map((cat) => (
-        <li key={cat.id}>
-          <Link to={`/shop/category/${cat.slug}`} className="item-link">
-            {cat.name}
-          </Link>
-        </li>
-      ))
-    )}
+                      {/* // NEW CODE: */}
+<li className="nav-dropdown-wrapper menu-item">
+  <Link to="/shop" className="item-link">Shop</Link>
+  <i className="icon"></i>
+  <ul className="category-dropdown-menu">
+    {categories?.map((cat) => (
+      <li key={cat.id} className="category-dropdown-item">
+        <Link to={`/shop/category/${cat.id}`} className="category-link">
+          {cat.name}
+        </Link>
+      </li>
+    ))}
   </ul>
 </li>
-
                       <li className="menu-item">
                         <Link to="/aboutus" className="item-link">
                           Our Story<i className="icon"></i>
@@ -176,9 +251,9 @@ const { data: wishlistData, isLoading: isLoadingWishlist } =
                   </nav>
                 </div>
                 <div className="col-xl-2 col-md-4 col-6 text-xxl-center">
-                  <a href="/" className="logo-header">
+                  <Link to="/" className="logo-header">
                     <img src={logo1} alt="logo" className="logo" />
-                  </a>
+                  </Link>
                 </div>
               </>
             ) : (
@@ -196,20 +271,18 @@ const { data: wishlistData, isLoading: isLoadingWishlist } =
                           Home<i className="icon"></i>
                         </Link>
                       </li>
-                     <li className="menu-item dropdown">
-          <Link to="/shop" className="item-link">Shop</Link><i className="icon"></i>
-  <ul className="submenu">
-    {isLoading ? (
-      <li>Loading...</li>
-    ) : (
-      categories.map((cat) => (
-        <li key={cat.id}>
-          <Link to={`/shop/category/${cat.slug}`} className="item-link">
-            {cat.name}
-          </Link>
-        </li>
-      ))
-    )}
+                           {/* // NEW CODE: */}
+<li className="nav-dropdown-wrapper menu-item">
+  <Link to="/shop" className="item-link">Shop</Link>
+  <i className="icon"></i>
+  <ul className="category-dropdown-menu">
+    {categories?.map((cat) => (
+      <li key={cat.id} className="category-dropdown-item">
+        <Link to={`/shop/category/${cat.id}`} className="category-link">
+          {cat.name}
+        </Link>
+      </li>
+    ))}
   </ul>
 </li>
                       <li className="menu-item">
@@ -244,147 +317,171 @@ const { data: wishlistData, isLoading: isLoadingWishlist } =
                     <i className="icon icon-search"></i>
                   </a>
                 </li>
-                {/* <li className="nav-account">
-                  <a
-                  onClick={openLogin}
-                    href="#login"
-                    data-bs-toggle="offcanvas"
-                    className="nav-icon-item"
-                    
-                  >
-                    <i className="icon icon-user"></i>
-                  </a>
-                </li> */}
 
-      <li className="nav-account dropdown-wrapper">
-  {isAuthenticated ? (
-    <>
-    <Link to="/myaccount" className="nav-icon-item gap-2">
-   <span className="username">{user?.name || "My Account"}</span> <i className="icon icon-user"></i>
-  </Link>
-  <ul className="account-dropdown">
-    <li>
-      <Link to="/accountdetails" className="dropdown-link">
-        <i className="icon icon-user"></i> My Profile
-      </Link>
-    </li>
-    <li>
-      <button onClick={handleLogout} className="logout-btn">
-        {/* <i className="icon icon-log"></i>  */}
-        <LuLogOut/>
-        Logout
-      </button>
-    </li>
-  </ul>
-    </>
-  ):(
- <a
-                  onClick={openLogin}
-                    href="#login"
-                    data-bs-toggle="offcanvas"
-                    className="nav-icon-item"
-                    
-                  >
-                    <i className="icon icon-user"></i>
-                  </a>
-  )}
+                <li className="nav-account dropdown-wrapper">
+                  {isAuthenticated ? (
+                    <>
+                      <Link to="/myaccount" className="nav-icon-item gap-2">
+                        <span className="username">{user?.name || "My Account"}</span> 
+                        <i className="icon icon-user"></i>
+                      </Link>
+                      <ul className="account-dropdown">
+                        <li>
+                          <Link to="/accountdetails" className="dropdown-link">
+                            <i className="icon icon-user"></i> My Profile
+                          </Link>
+                        </li>
+                        <li>
+                          <button onClick={handleLogout} className="logout-btn">
+                            <LuLogOut/>
+                            Logout
+                          </button>
+                        </li>
+                      </ul>
+                    </>
+                  ) : (
+                    <a
+                      onClick={openLogin}
+                      className="nav-icon-item"
+                      style={{ cursor: 'pointer' }}
+                    >
+                      <i className="icon icon-user"></i>
+                    </a>
+                  )}
+                </li>
+
+                <li className="nav-wishlist">
+                  {isAuthenticated ? (
+                    <Link to="/wish-list" className="nav-icon-item">
+                      <i className="icon icon-heart"></i>
+                      {isLoadingWishlist ? (
+                        <span className="count-box">...</span>
+                      ) : wishlistData?.wishlist?.length > 0 ? (
+                        <span className="count-box">
+                          {wishlistData.wishlist.length}
+                        </span>
+                      ) : null}
+                    </Link>
+                  ) : (
+                    <a
+                      className="nav-icon-item"
+                      style={{ background: "none", border: "none", cursor: 'pointer' }}
+                      onClick={() => {
+                        toast.info("Please log in to access your wishlist");
+                        openLogin();
+                      }}
+                    >
+                      <i className="icon icon-heart"></i>
+                      <span className="count-box">0</span>
+                    </a>
+                  )}
+                </li>
+
+               <li className={`nav-cart ${isHomePage ? "pl" : ""}`}>
+  <a
+    className="nav-icon-item"
+    style={{ cursor: "pointer" }}
+    onClick={(e) => {
+      e.preventDefault();
+
+      if (!isAuthenticated) {
+        // Not logged in → show login
+        toast.info("Please log in to access your cart");
+        openLogin();
+        return;
+      }
+
+      if (cartCount === 0) {
+        // Logged in but cart empty → redirect to shop page
+        navigate("/shop");
+        toast.warn("Your cart is empty. Start shopping now!")
+        return;
+      }
+
+      // Otherwise open cart popup (offcanvas)
+      const cartEl = document.querySelector("#shoppingCart");
+      if (cartEl) {
+        const offcanvas = window.bootstrap?.Offcanvas?.getOrCreateInstance(cartEl);
+        offcanvas?.show();
+      }
+    }}
+  >
+    <i className="icon icon-cart"></i>
+    {cartLoading ? (
+      <span className="count-box">0</span>
+    ) : (
+      <span className="count-box">{cartCount}</span>
+    )}
+  </a>
 </li>
 
-
-              <li className="nav-wishlist">
-                                {isAuthenticated ? (
-                                  <Link to="/wish-list" className="nav-icon-item">
-                                    <i className="icon icon-heart"></i>
-                                    {isLoadingWishlist ? (
-                                      <span className="count-box">...</span>
-                                    ) : wishlistData?.wishlist?.length > 0 ? (
-                                      <span className="count-box">
-                                        {wishlistData.wishlist.length}
-                                      </span>
-                                    ) : null}
-                                  </Link>
-                                ) : (
-                                  <a
-                                    className="nav-icon-item"
-                                    style={{ background: "none", border: "none" }}
-                                    onClick={() => {
-                                      toast.info("Please log in to access your wishlist");
-                                      openLogin();
-                                    }}
-                                  >
-                                    <i className="icon icon-heart"></i>
-                                    <span className="count-box">0</span>
-                                  </a>
-                                )}
-                              </li>
-
-<li className={`nav-cart ${isHomePage ? "pl" : ""}`}>
-  
-    <a
-      href="#shoppingCart"
-      data-bs-toggle="offcanvas"
-      className="nav-icon-item"
-    >
-      <i className="icon icon-cart"></i>
-     {/* {isLoading &&  <span className="count-box">{isHomePage ? cartCount : "0"}</span>} */}
-     {cartLoading ? (
-          <span className="count-box">0</span>
-        ) : (
-          <span className="count-box">{cartCount}</span>
-        )}
-    </a>
- 
-    
-  
-</li>
 
               </ul>
             </div>
           </div>
         </div>
       </header>
+
       <SearchModal />
+      
       <LoginPopup
         show={showLogin}
-        onClose={closeAll}
-        toggleRegister={openRegister}  openResetPopup={openReset} // new prop to trigger reset
+        onClose={closeLogin}
+        toggleRegister={openRegister}
+        openResetPopup={openReset}
       />
-       <ResetPasswordPopup
+      
+      <ResetPasswordPopup
         show={showReset}
-        onClose={closeAll}
-        onSuccess={openVerifyPopup} // Pass email through this callback
+        onClose={closeReset}
+        onSuccess={openVerifyPopup}
       />
 
       <VerifyOtpAndResetPasswordPopup
         show={showVerifyPopup}
-        onClose={closeAll}
+        onClose={closeVerify}
         email={emailForReset}
       />
 
       <RegisterPopup
         show={showRegister}
-        onClose={closeAll}
+        onClose={closeRegister}
         toggleLogin={openLogin}
-      />  
-     
+      />
+      
       <ShoppingCart />
+      
       <MobileMenu
         show={showMobileMenu}
-        handleClose={() => setShowMobileMenu(false)}
+        handleClose={closeMobileMenu}
         toggleLogin={openLogin}
-  
+        categories={categories}   
+        isLoading={isLoading}
+        isAuthenticated={isAuthenticated} 
+        user={user}                        
+        handleLogout={handleLogout}        
       />
 
-      {/* Backdrop for any open modal */}
+      <Toolbar
+  cartCount={cartData?.cart?.length || 0}
+  wishlistCount={wishlistData?.wishlist?.length || 0}
+/>
+
+
+      {/* Enhanced Backdrop for any open modal */}
       {(showLogin || showRegister || showReset || showVerifyPopup || showMobileMenu) && (
         <div
           className="modal-backdrop"
-          onClick={() => {
-            setShowLogin(false);
-            setShowReset(false);
-            setShowVerifyPopup(false);
-            setShowRegister(false);
-            setShowMobileMenu(false);
+          onClick={forceCloseAllPopups}
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            zIndex: 1040,
+            cursor: 'pointer'
           }}
         ></div>
       )}

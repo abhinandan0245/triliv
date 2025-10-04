@@ -19,6 +19,9 @@ import { faqApi } from '../services/faq/faqApi';
 import { contactMessageApi } from '../services/contactmessage/contactMessageApi';
 import { contactusApi } from '../services/contact/contactusApi';
 import { refundPolicyApi } from '../services/refundpolicy/refundpolicyApi';
+import { aboutusApi } from '../services/aboutus/aboutusApi';
+import { couponApi } from '../services/coupon/couponApi';
+import { shipmentApi } from '../services/shipment/shipmentApi';
 
 export const store = configureStore({
   reducer: {
@@ -43,7 +46,10 @@ export const store = configureStore({
     [contactMessageApi.reducerPath]: contactMessageApi.reducer,
     [contactusApi.reducerPath]: contactusApi.reducer,
     [shippingInfoApi.reducerPath]: shippingInfoApi.reducer,
+    [aboutusApi.reducerPath]: aboutusApi.reducer,
+    [couponApi.reducerPath]: couponApi.reducer,
+    [shipmentApi.reducerPath]: shipmentApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(authApi.middleware, categoryApi.middleware , resetPasswordApi.middleware , whyShopApi.middleware , banner2Api.middleware , banner3Api.middleware , sliderApi.middleware , productApi.middleware , cartApi.middleware , wishlistApi.middleware , privacyPolicyApi.middleware , refundPolicyApi.middleware , termscondApi.middleware , orderApi.middleware , ccavenueApi.middleware , faqApi.middleware , contactusApi.middleware, contactMessageApi.middleware , shippingInfoApi.middleware), // FIXED HERE
+    getDefaultMiddleware().concat(authApi.middleware, categoryApi.middleware , resetPasswordApi.middleware , whyShopApi.middleware , banner2Api.middleware , banner3Api.middleware , sliderApi.middleware , productApi.middleware , cartApi.middleware , wishlistApi.middleware , privacyPolicyApi.middleware , refundPolicyApi.middleware , termscondApi.middleware , orderApi.middleware , ccavenueApi.middleware , faqApi.middleware , contactusApi.middleware, contactMessageApi.middleware , shippingInfoApi.middleware , aboutusApi.middleware, couponApi.middleware , shipmentApi.middleware   ), // FIXED HERE
 });
